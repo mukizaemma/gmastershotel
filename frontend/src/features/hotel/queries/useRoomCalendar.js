@@ -25,5 +25,14 @@ export function useRoomCalendars(roomSlugs = []) {
 
   const closed = new Set(results.flatMap((item) => item.data?.closed || []))
   const notes = [...new Set(results.flatMap((item) => item.data?.notes || []))]
-  return { closed, notes, isLoading: results.some((item) => item.isLoading) }
+  const byRoom = {}
+  slugs.forEach((slug, index) => {
+    const data = results[index]?.data
+    byRoom[slug || 'hotel'] = {
+      closed: new Set(data?.closed || []),
+      notes: data?.notes || [],
+      units: data?.units || 1,
+    }
+  })
+  return { closed, notes, byRoom, isLoading: results.some((item) => item.isLoading) }
 }

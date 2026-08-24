@@ -3,20 +3,25 @@ import { Link } from 'react-router-dom'
 import BookStayModal from './BookStayModal'
 import styles from './RoomCard.module.css'
 
-export default function RoomCard({ room }) {
+export default function RoomCard({ room, variant = 'default' }) {
   const [booking, setBooking] = useState(false)
+  const spec = [room.specs?.bed, room.specs?.occupancy].filter(Boolean).join(' · ')
 
   return (
-    <article className={styles.card}>
+    <article className={`${styles.card} ${variant === 'showcase' ? styles.showcase : ''}`}>
       <div className={styles.imageWrap}>
-        <div className={styles.image} style={{ backgroundImage: room.image ? `url("${room.image}")` : undefined }} />
+        {room.image ? (
+          <img className={styles.image} src={room.image} alt="" />
+        ) : (
+          <div className={styles.image} />
+        )}
       </div>
       <div className={styles.body}>
         <h3>{room.name}</h3>
         <p className={styles.price}>
           From <strong>${room.pricePerNight}</strong> / night
         </p>
-        <p className={styles.note}>{room.specs?.breakfast || 'Breakfast available'}</p>
+        <p className={styles.note}>{spec || room.specs?.breakfast || 'Breakfast available'}</p>
         <div className={styles.actions}>
           <Link to={`/accommodation/${room.id}`} className={styles.btn}>
             View room

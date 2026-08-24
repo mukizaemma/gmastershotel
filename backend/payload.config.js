@@ -46,7 +46,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     meta: {
-      titleSuffix: '- Grand Villa Apartment',
+      titleSuffix: '- Gmasters Boutique Hotel',
       favicon: '/favicon.svg',
     },
     components: {

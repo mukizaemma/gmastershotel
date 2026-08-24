@@ -78,6 +78,23 @@ export function SiteAuditReport() {
         </div>
       </div>
 
+      {report.next?.length > 0 && (
+        <div className="audit-board__next">
+          <p>Start here</p>
+          <ol>
+            {report.next.map((item) => (
+              <li key={item.id}>
+                <div>
+                  <b>{item.label}</b>
+                  {item.detail && <small>{item.detail}</small>}
+                </div>
+                {item.admin && <a href={item.admin}>{item.cta || 'Fix this'}</a>}
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+
       <div className="audit-board__tiles">
         <button
           type="button"
@@ -126,7 +143,7 @@ export function SiteAuditReport() {
                       <p>{item.label}</p>
                       {item.detail && <small>{item.detail}</small>}
                     </div>
-                    {item.fix?.admin && <a href={item.fix.admin}>Fix this</a>}
+                    {item.fix?.admin && <a href={item.fix.admin}>{item.fix.cta || 'Fix this'}</a>}
                   </li>
                 ))}
               </ul>

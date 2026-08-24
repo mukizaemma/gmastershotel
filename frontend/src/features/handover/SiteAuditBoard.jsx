@@ -14,6 +14,10 @@ export default function SiteAuditBoard({ report, fixKey = 'staff' }) {
   if (!report) return <p>Checking website content…</p>
 
   const missing = report.missing?.length ?? report.total - report.passed
+  const nextItems = (report.next || []).map((item) => ({
+    ...item,
+    href: item.href || item.fix?.[fixKey],
+  }))
 
   return (
     <div className={styles.board}>
@@ -24,6 +28,25 @@ export default function SiteAuditBoard({ report, fixKey = 'staff' }) {
           : ` ${missing} still need attention.`}
       </p>
       <p className={styles.hint}>{report.grade.hint}</p>
+
+      {nextItems.length > 0 && (
+        <div className={styles.next}>
+          <p>Start here</p>
+          <ol>
+            {nextItems.map((item) => (
+              <li key={item.id}>
+                <span>
+                  {item.label}
+                  {item.detail ? <small>{item.detail}</small> : null}
+                </span>
+                {item.href || item.fix?.[fixKey] ? (
+                  <a href={item.href || item.fix[fixKey]}>{item.cta || item.fix?.cta || 'Fix this'}</a>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
 
       <ul className={styles.areas}>
         <li>
@@ -67,7 +90,7 @@ export default function SiteAuditBoard({ report, fixKey = 'staff' }) {
                     <p>{item.label}</p>
                     {item.detail && <small>{item.detail}</small>}
                     {item.fix?.[fixKey] && (
-                      <a href={item.fix[fixKey]}>Open this in the staff desk</a>
+                      <a href={item.fix[fixKey]}>{item.fix.cta || 'Fix this'}</a>
                     )}
                   </li>
                 ))}

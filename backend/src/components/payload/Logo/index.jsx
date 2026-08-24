@@ -13,7 +13,7 @@ export function Logo() {
     >
       <img
         src="/images/gmasters-logo.png"
-        alt="Grand Villa Apartment"
+        alt="Gmasters Boutique Hotel"
         width="72"
         height="72"
         style={{

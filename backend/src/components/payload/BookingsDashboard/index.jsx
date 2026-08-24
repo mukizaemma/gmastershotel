@@ -143,7 +143,7 @@ export function BookingsDashboard() {
     const body = draft.trim()
     if (!body) return
     const channel = preferredChannel(row)
-    const text = `Grand Villa Apartment\n${staySummary(row)}\n\n${body}`
+    const text = `Gmasters Boutique Hotel\n${staySummary(row)}\n\n${body}`
 
     if (channel === 'whatsapp') {
       const phone = digits(row.guest?.mobile)

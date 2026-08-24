@@ -1,4 +1,4 @@
-# Grand Villa Apartment
+# Gmasters Boutique Hotel
 
 Public hotel website + Payload CMS in one repository. Hotel-specific code lives under `modules/hotel` / `features/hotel`. Reusable platform pieces live under `backend/src/core`.
 

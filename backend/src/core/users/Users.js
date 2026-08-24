@@ -23,7 +23,7 @@ function resetEmailHtml({ token }) {
   return `
     <div style="font-family:Georgia,serif;background:#f7f5f1;padding:32px">
       <div style="max-width:520px;margin:0 auto;background:#fff;padding:28px 32px;border:1px solid #e6e9f0">
-        <p style="color:#c4a574;letter-spacing:0.14em;text-transform:uppercase;font-size:12px;margin:0 0 8px">Grand Villa Apartment</p>
+        <p style="color:#c4a574;letter-spacing:0.14em;text-transform:uppercase;font-size:12px;margin:0 0 8px">Gmasters Boutique Hotel</p>
         <h1 style="color:#1a2b4b;font-size:22px;margin:0 0 12px">Reset your password</h1>
         <p style="color:#5c6578;line-height:1.6">We received a request to reset the admin password for this account. This link expires in one hour.</p>
         <p style="margin:24px 0">

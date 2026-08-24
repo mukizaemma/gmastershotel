@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { mediaUrl } from '@features/hotel/adapters'
 import { asHtml, htmlToLexical, isBlankHtml } from '@lib/richText'
@@ -33,15 +34,25 @@ const SPEC_FIELDS = [
 export default function StaffRooms() {
   const [rows, setRows] = useState([])
   const [form, setForm] = useState(null)
+  const [params] = useSearchParams()
 
   async function load() {
     const { data } = await staffClient.get('/api/rooms?limit=100&depth=1')
-    setRows(data.docs || [])
+    const docs = data.docs || []
+    setRows(docs)
+    return docs
   }
 
   useEffect(() => {
-    load().catch(() => toast.error('Could not load rooms.'))
-  }, [])
+    load()
+      .then((docs) => {
+        const id = params.get('edit')
+        if (!id) return
+        const row = docs.find((item) => item.id === id)
+        if (row) openEdit(row)
+      })
+      .catch(() => toast.error('Could not load rooms.'))
+  }, [params])
 
   function openCreate() {
     setForm({ ...empty, specs: { ...empty.specs } })

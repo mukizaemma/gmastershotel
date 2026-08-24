@@ -47,6 +47,11 @@ export default function StaffSettings() {
       .finally(() => setLoaded(true))
   }, [])
 
+  useEffect(() => {
+    if (!loaded || window.location.hash !== '#seo') return
+    document.getElementById('seo')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [loaded])
+
   async function save(event) {
     event.preventDefault()
     try {
@@ -116,7 +121,7 @@ export default function StaffSettings() {
               placeholder="Google Maps → Share → Embed a map → paste the iframe"
             />
           </label>
-          <label className="staffField col-3">
+          <label id="seo" className="staffField col-3">
             SEO title
             <input value={form.seoTitle} onChange={(e) => setForm({ ...form, seoTitle: e.target.value })} />
           </label>

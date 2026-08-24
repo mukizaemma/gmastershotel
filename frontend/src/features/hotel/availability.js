@@ -86,6 +86,12 @@ export function stayHasClosedNight(checkIn, checkOut, blocks, roomSlugs = []) {
   return eachNight(checkIn, checkOut).some((night) => isNightClosed(night, blocks, roomSlugs))
 }
 
+export function isStayOpen(closedNights, checkIn, checkOut) {
+  if (!checkIn || !checkOut) return false
+  const closed = closedNights instanceof Set ? closedNights : new Set(closedNights || [])
+  return eachNight(checkIn, checkOut).every((night) => !closed.has(night))
+}
+
 export function describeClosure(block) {
   if (!block) return ''
   if (block.guestMessage) return block.guestMessage

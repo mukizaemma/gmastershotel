@@ -19,8 +19,9 @@ export default function StaffAudit() {
     <div className="staffPage">
       <h1>Site audit</h1>
       <p className="staffLead">
-        Live score of company details, rooms, facilities, gallery photos, and page content. Open{' '}
-        <Link to="/handover">/handover</Link> for the full hotel handbook.
+        Live score of what guests see: company details, rooms, facilities, gallery, and page copy.
+        Use <strong>Start here</strong> below, then open each gap. The full handbook is on{' '}
+        <Link to="/handover">/handover</Link>.
       </p>
       <SiteAuditBoard report={report} />
     </div>

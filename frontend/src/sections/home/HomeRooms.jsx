@@ -13,7 +13,7 @@ export default function HomeRooms() {
 
   return (
     <section className={styles.section}>
-      <div className="container">
+      <div className={`container ${styles.wide}`}>
         <Reveal className={styles.header}>
           {section.eyebrow && <span className={styles.eyebrow}>{section.eyebrow}</span>}
           <h2>{section.headline || 'Our rooms'}</h2>
@@ -21,11 +21,10 @@ export default function HomeRooms() {
         </Reveal>
         <CardGrid
           items={rooms}
-          columns={2}
-          initialCount={4}
+          initialCount={3}
           moreTo="/accommodation"
           moreLabel="View all rooms"
-          renderCard={(room) => <RoomCard key={room.id} room={room} />}
+          renderCard={(room) => <RoomCard key={room.id} room={room} variant="showcase" />}
         />
       </div>
     </section>

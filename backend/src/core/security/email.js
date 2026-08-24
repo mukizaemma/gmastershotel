@@ -2,7 +2,7 @@ import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 
 export function createEmailAdapter() {
   const fromAddress = process.env.SMTP_FROM || 'noreply@grandvilla.local'
-  const fromName = process.env.SMTP_FROM_NAME || 'Grand Villa Apartment'
+  const fromName = process.env.SMTP_FROM_NAME || 'Gmasters Boutique Hotel'
 
   if (process.env.SMTP_HOST) {
     return nodemailerAdapter({
