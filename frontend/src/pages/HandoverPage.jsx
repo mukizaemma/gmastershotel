@@ -10,6 +10,18 @@ import styles from './HandoverPage.module.css'
 
 const SECTIONS = HANDOVER_TABS.map((tab) => tab.id)
 
+const MANAGE_LINKS = [
+  'settings',
+  'pages',
+  'rooms',
+  'amenities',
+  'activities',
+  'menu',
+  'gallery',
+  'bookings',
+  'reviews',
+]
+
 function tabFromHash() {
   const id = String(window.location.hash || '').replace('#', '')
   return SECTIONS.includes(id) ? id : 'overview'
@@ -28,6 +40,22 @@ function copyText(value, ok) {
   )
 }
 
+/** Turn **important terms** into highlighted marks. */
+function Rich({ text }) {
+  if (!text) return null
+  const parts = String(text).split(/(\*\*[^*]+\*\*)/g)
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <mark key={index} className={styles.term}>
+          {part.slice(2, -2)}
+        </mark>
+      )
+    }
+    return <span key={index}>{part}</span>
+  })
+}
+
 export default function HandoverPage() {
   const [tab, setTab] = useState(() => (typeof window === 'undefined' ? 'overview' : tabFromHash()))
   const [report, setReport] = useState(null)
@@ -39,7 +67,8 @@ export default function HandoverPage() {
 
   const section = HANDOVER_SECTIONS[tab] || HANDOVER_SECTIONS.overview
   const chapter = HANDOVER_TABS.findIndex((item) => item.id === tab) + 1
-  const adminUrl = `${CMS_URL}/admin`
+  const demoUrl = origin || 'https://demov2.iremetech.com'
+  const loginUrl = origin ? `${origin}/staff` : '/staff'
   const shareUrl = origin ? `${origin}/handover${tab === 'overview' ? '' : `#${tab}`}` : '/handover'
 
   useEffect(() => {
@@ -52,7 +81,7 @@ export default function HandoverPage() {
   }, [])
 
   useEffect(() => {
-    document.title = `How to use the website — ${brand.name}`
+    document.title = `Client guide — ${brand.name}`
   }, [brand.name])
 
   function openTab(id) {
@@ -64,14 +93,13 @@ export default function HandoverPage() {
 
   const credentials = useMemo(
     () => [
-      { label: 'Public website', value: origin || '/', href: '/' },
-      { label: 'This guide (share this link)', value: shareUrl, href: shareUrl, copy: shareUrl },
-      { label: 'Staff desk', value: origin ? `${origin}/staff` : '/staff', href: '/staff' },
-      { label: 'Admin', value: adminUrl, href: adminUrl },
+      { label: 'Demo website', value: demoUrl, href: '/', copy: demoUrl, accent: true },
+      { label: 'Login URL (Staff desk)', value: loginUrl, href: '/staff', copy: loginUrl, accent: true },
       { label: 'Login email', value: HANDOVER_CREDENTIALS.email, copy: HANDOVER_CREDENTIALS.email },
       { label: 'Password', value: HANDOVER_CREDENTIALS.password, copy: HANDOVER_CREDENTIALS.password },
+      { label: 'This guide', value: shareUrl, href: shareUrl, copy: shareUrl },
     ],
-    [adminUrl, origin, shareUrl],
+    [demoUrl, loginUrl, shareUrl],
   )
 
   async function sendFeedback(event) {
@@ -100,16 +128,44 @@ export default function HandoverPage() {
           {brand.logo ? <img src={brand.logo} alt="" /> : null}
           <div>
             <strong>{brand.name}</strong>
-            <small>A short guide to your website</small>
+            <small>Client handover guide</small>
           </div>
         </Link>
         <div className={styles.topLinks}>
           <button type="button" onClick={() => copyText(shareUrl, 'Guide link copied.')}>
-            Copy this page’s link
+            Copy guide link
           </button>
-          <Link to="/">Visit the website</Link>
+          <a href="/">View demo</a>
+          <a href="/staff">Staff login</a>
         </div>
       </header>
+
+      <div className={styles.heroStrip}>
+        <div className={styles.heroInner}>
+          <div className={styles.heroCopy}>
+            <p className={styles.heroEyebrow}>Development demo</p>
+            <h2 className={styles.heroTitle}>Review the site, then manage content in Staff desk</h2>
+            <p className={styles.heroLead}>
+              This <mark className={styles.term}>demo URL</mark> is for development and approval only.
+              Data added while testing will be <mark className={styles.term}>migrated to the real domain</mark> once
+              the demo is approved.
+            </p>
+          </div>
+          <div className={styles.heroLinks}>
+            <a className={styles.heroPrimary} href="/">
+              Open demo website
+            </a>
+            <a className={styles.heroSecondary} href="/staff">
+              Open Staff desk login
+            </a>
+            {report ? (
+              <button type="button" className={styles.heroAudit} onClick={() => openTab('audit')}>
+                Site audit · <strong>{report.score}%</strong>
+              </button>
+            ) : null}
+          </div>
+        </div>
+      </div>
 
       <div className={styles.layout}>
         <nav className={styles.contents} aria-label="Guide contents">
@@ -131,14 +187,17 @@ export default function HandoverPage() {
         </nav>
 
         <article className={styles.chapter}>
-          <p className={styles.kicker}>Chapter {String(chapter).padStart(2, '0')}</p>
+          <p className={styles.kicker}>Section {String(chapter).padStart(2, '0')}</p>
           <h1>{section.title}</h1>
-          <p className={styles.lead}>{section.lead}</p>
+          <p className={styles.lead}>
+            <Rich text={section.lead} />
+          </p>
 
-          {tab === 'access' && (
+          {(tab === 'access' || tab === 'overview') && (
             <div className={styles.creds}>
+              <p className={styles.credsTitle}>Quick links</p>
               {credentials.map((row) => (
-                <div key={row.label}>
+                <div key={row.label} className={row.accent ? styles.credAccent : undefined}>
                   <span>{row.label}</span>
                   <div className={styles.credRow}>
                     {row.href ? (
@@ -156,26 +215,93 @@ export default function HandoverPage() {
                   </div>
                 </div>
               ))}
-              <p className={styles.warn}>
-                Anyone with this guide can see the password. Change it in My account after you take
-                over if you want it private.
-              </p>
+              {tab === 'access' ? (
+                <p className={styles.warn}>
+                  Share this guide only with your team. Change the password in <mark className={styles.term}>My account</mark>{' '}
+                  after go-live if you want it private.
+                </p>
+              ) : (
+                <p className={styles.warn}>
+                  Sign in only at the <mark className={styles.term}>Staff desk</mark>. Use it to manage all website content.
+                </p>
+              )}
             </div>
           )}
 
           {section.blocks.map((block) => (
-            <section key={block.heading}>
-              <h2>{block.heading}</h2>
-              {block.body ? <p>{block.body}</p> : null}
+            <section key={block.heading} className={styles.block}>
+              <h2>
+                <span className={styles.h2Mark} aria-hidden="true" />
+                {block.heading}
+              </h2>
+              {block.body ? (
+                <p>
+                  <Rich text={block.body} />
+                </p>
+              ) : null}
+
+              {block.callout === 'demo' ? (
+                <aside className={styles.callout}>
+                  <strong>Remember</strong>
+                  <p>
+                    Demo = review &amp; testing. Approved content moves to your <mark className={styles.term}>real domain</mark>{' '}
+                    at launch.
+                  </p>
+                </aside>
+              ) : null}
+
+              {block.features?.length ? (
+                <ul className={styles.featureGrid}>
+                  {block.features.map((item) => (
+                    <li key={item.title}>
+                      <strong>{item.title}</strong>
+                      <p>{item.text}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+
+              {tab === 'manage' ? (
+                <div className={styles.topicLinks}>
+                  {MANAGE_LINKS.map((id) => {
+                    const item = HANDOVER_TABS.find((t) => t.id === id)
+                    if (!item) return null
+                    return (
+                      <button key={id} type="button" onClick={() => openTab(id)}>
+                        {item.label}
+                      </button>
+                    )
+                  })}
+                </div>
+              ) : null}
+
               {block.steps?.length ? (
                 <ol className={styles.steps}>
                   {block.steps.map((step) => (
-                    <li key={step}>{step}</li>
+                    <li key={step}>
+                      <Rich text={step} />
+                    </li>
                   ))}
                 </ol>
               ) : null}
             </section>
           ))}
+
+          {tab === 'overview' && report ? (
+            <section className={styles.block}>
+              <h2>
+                <span className={styles.h2Mark} aria-hidden="true" />
+                Site audit snapshot
+              </h2>
+              <p>
+                Live readiness from the demo content:{' '}
+                <mark className={styles.term}>{report.score}% ready</mark>.
+              </p>
+              <button type="button" className={styles.auditJump} onClick={() => openTab('audit')}>
+                Open full site audit
+              </button>
+            </section>
+          ) : null}
 
           {tab === 'audit' && <SiteAuditBoard report={report} />}
 
@@ -219,8 +345,8 @@ export default function HandoverPage() {
               Prepared by{' '}
               <a href="https://iremetech.com" target="_blank" rel="noopener noreferrer">
                 Ireme Tech
-              </a>
-              {' '}for {brand.name}.
+              </a>{' '}
+              for {brand.name}.
             </p>
           </footer>
         </article>

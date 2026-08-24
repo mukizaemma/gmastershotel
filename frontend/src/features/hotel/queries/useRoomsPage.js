@@ -51,7 +51,7 @@ export function useRoomsList() {
   return useQuery({
     queryKey: ['rooms-list'],
     queryFn: async () => {
-      const res = await apiClient.get('/api/rooms?limit=100&depth=1')
+      const res = await apiClient.get('/api/rooms?limit=100&depth=2')
       return (res.data.docs || []).map(adaptRoom)
     },
     staleTime: 5 * 60 * 1000,

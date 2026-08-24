@@ -151,17 +151,17 @@ export const HomePage = {
           description: 'Heading only. Individual rooms are edited under Rooms.',
           fields: [
             unnamedGroup('roomsSection', [
-              { name: 'eyebrow', type: 'text', defaultValue: 'Our rooms', admin: { width: '25%' } },
+              { name: 'eyebrow', type: 'text', defaultValue: 'Stay', admin: { width: '25%' } },
               {
                 name: 'headline',
                 type: 'text',
-                defaultValue: 'Find a room that feels like home',
+                defaultValue: 'Rooms made for real rest',
                 admin: { width: '75%' },
               },
               {
                 name: 'intro',
                 type: 'textarea',
-                defaultValue: 'Comfortable and affordable accommodation options.',
+                defaultValue: 'Quiet nights, thoughtful details, and space to unwind by Lake Kivu.',
                 admin: { width: '100%' },
               },
             ]),

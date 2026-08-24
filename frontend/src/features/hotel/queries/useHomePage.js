@@ -69,9 +69,11 @@ async function fetchHomePage() {
     },
 
     roomsSection: {
-      eyebrow: page.roomsSection?.eyebrow || 'Our rooms',
-      headline: page.roomsSection?.headline || 'Find a room that feels like home',
-      intro: page.roomsSection?.intro || 'Comfortable and affordable accommodation options.',
+      eyebrow: page.roomsSection?.eyebrow || 'Stay',
+      headline: page.roomsSection?.headline || 'Rooms made for real rest',
+      intro:
+        page.roomsSection?.intro ||
+        'Quiet nights, thoughtful details, and space to unwind by Lake Kivu.',
     },
 
     barRestaurant: {

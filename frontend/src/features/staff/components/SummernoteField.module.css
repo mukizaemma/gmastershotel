@@ -1,3 +1,44 @@
+.label {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.wrap {
+  position: relative;
+}
+
+.loading {
+  min-height: 180px;
+  border: 1px solid #e5ddcd;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #faf7f0, #fff, #faf7f0);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+
+.pending {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.fallbackNote {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #8a7a64;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
 .wrap :global(.note-editor) {
   font-weight: 400;
   border: 1px solid #e5ddcd;

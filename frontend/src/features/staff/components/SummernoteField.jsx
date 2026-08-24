@@ -1,23 +1,27 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import $ from 'jquery'
 import 'summernote/dist/summernote-lite.css'
+import 'summernote/dist/summernote-lite.js'
 import styles from './SummernoteField.module.css'
+
+window.jQuery = window.$ = $
 
 export default function SummernoteField({ label, value, onChange, height = 180, className = 'full' }) {
   const holder = useRef(null)
   const onChangeRef = useRef(onChange)
+  const [ready, setReady] = useState(false)
+  const [failed, setFailed] = useState(false)
   onChangeRef.current = onChange
 
   useEffect(() => {
     const el = holder.current
-    if (!el) return undefined
+    if (!el || typeof $.fn.summernote !== 'function') {
+      setFailed(true)
+      return undefined
+    }
 
-    window.jQuery = window.$ = $
-    let cancelled = false
-
-    import('summernote/dist/summernote-lite.js').then(() => {
-      if (cancelled || !holder.current) return
-      const $el = $(holder.current)
+    const $el = $(el)
+    try {
       $el.summernote({
         height,
         disableDragAndDrop: true,
@@ -34,24 +38,42 @@ export default function SummernoteField({ label, value, onChange, height = 180, 
         },
       })
       $el.summernote('code', value || '')
-    })
+      setReady(true)
+    } catch {
+      setFailed(true)
+    }
 
     return () => {
-      cancelled = true
       try {
-        if (holder.current) $(holder.current).summernote('destroy')
+        $el.summernote('destroy')
       } catch {
-        // editor already removed with the modal
+        // modal already unmounted
       }
     }
-    // Mount once per modal open; parent remounts this field with a new key.
+    // Mount once per modal/panel open; parent remounts with a new key when content changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  if (failed) {
+    return (
+      <label className={`staffField ${className} ${styles.wrap}`}>
+        {label}
+        <textarea
+          value={value || ''}
+          onChange={(event) => onChange(event.target.value)}
+          rows={8}
+          aria-label={typeof label === 'string' ? label : 'Rich text'}
+        />
+        <span className={styles.fallbackNote}>Editor toolbar unavailable — you can still edit HTML here.</span>
+      </label>
+    )
+  }
+
   return (
-    <label className={`staffField ${className} ${styles.wrap}`}>
-      {label}
-      <textarea ref={holder} defaultValue={value} />
-    </label>
+    <div className={`staffField ${className} ${styles.wrap}`}>
+      <span className={styles.label}>{label}</span>
+      {!ready ? <div className={styles.loading} aria-hidden="true" /> : null}
+      <div ref={holder} className={ready ? undefined : styles.pending} />
+    </div>
   )
 }

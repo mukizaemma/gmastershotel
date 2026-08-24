@@ -53,6 +53,7 @@ function TextContentPanel({
   introLabel = 'Intro',
   headlineLabel = 'Headline',
   headlineRequired,
+  editorKey = 'section-intro',
 }) {
   return (
     <details className="staffPanel full" open>
@@ -66,7 +67,7 @@ function TextContentPanel({
           {headlineLabel}
           <input value={headline} onChange={(e) => onHeadline(e.target.value)} required={headlineRequired} />
         </label>
-        <SummernoteField label={introLabel} value={intro} onChange={onIntro} />
+        <SummernoteField key={editorKey} label={introLabel} value={intro} onChange={onIntro} />
       </div>
     </details>
   )
@@ -151,9 +152,11 @@ function readPage(slug, page) {
         })),
       },
       roomsSection: {
-        eyebrow: page.roomsSection?.eyebrow || 'Our rooms',
-        headline: page.roomsSection?.headline || 'Find a room that feels like home',
-        intro: page.roomsSection?.intro || 'Comfortable and affordable accommodation options.',
+        eyebrow: page.roomsSection?.eyebrow || 'Stay',
+        headline: page.roomsSection?.headline || 'Rooms made for real rest',
+        intro:
+          page.roomsSection?.intro ||
+          'Quiet nights, thoughtful details, and space to unwind by Lake Kivu.',
       },
       location: {
         eyebrow: page.location?.eyebrow || 'Our location',
@@ -507,6 +510,7 @@ export default function StaffPages() {
                       intro={slide.subline}
                       introLabel="Subline"
                       headlineRequired
+                      editorKey={`home-slide-${index}`}
                       onEyebrow={(eyebrow) => updateSlide(index, { eyebrow })}
                       onHeadline={(headline) => updateSlide(index, { headline })}
                       onIntro={(subline) => updateSlide(index, { subline })}
@@ -708,6 +712,7 @@ export default function StaffPages() {
                   intro={form.banner.body}
                   headlineLabel="Quote"
                   introLabel="Supporting text"
+                  editorKey="home-banner"
                   onEyebrow={(eyebrow) => setForm({ ...form, banner: { ...form.banner, eyebrow } })}
                   onHeadline={(headline) => setForm({ ...form, banner: { ...form.banner, headline } })}
                   onIntro={(body) => setForm({ ...form, banner: { ...form.banner, body } })}
@@ -742,6 +747,7 @@ export default function StaffPages() {
                   eyebrow={form.eyebrow}
                   headline={form.headline}
                   intro={form.intro}
+                  editorKey={`page-${form.slug || 'edit'}-intro`}
                   onEyebrow={(eyebrow) => setForm({ ...form, eyebrow })}
                   onHeadline={(headline) => setForm({ ...form, headline })}
                   onIntro={(intro) => setForm({ ...form, intro })}
