@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { Eye, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { staffClient } from '../api/staffClient'
+import { useSiteLayout } from '@lib/queries/useSiteLayout'
+import { brandFromCompany } from '@features/hotel/companyBrand'
 import StaffModal from '../components/StaffModal'
 import '../staff.css'
 
@@ -57,6 +59,8 @@ function preferredChannel(row) {
 
 export default function StaffReservations() {
   const today = new Date().toISOString().slice(0, 10)
+  const { data: layout } = useSiteLayout()
+  const hotel = brandFromCompany(layout?.company).name
   const [rows, setRows] = useState([])
   const [start, setStart] = useState(today)
   const [end, setEnd] = useState(today)
@@ -117,7 +121,7 @@ export default function StaffReservations() {
     const body = draft.trim()
     if (!body) return
     const channel = preferredChannel(row)
-    const text = `Gmasters Boutique Hotel\n${staySummary(row)}\n\n${body}`
+    const text = `${hotel}\n${staySummary(row)}\n\n${body}`
 
     if (channel === 'whatsapp') {
       const phone = digits(row.guest?.mobile)
@@ -132,7 +136,7 @@ export default function StaffReservations() {
         return
       }
       window.open(
-        `mailto:${row.guest.email}?subject=${encodeURIComponent(`Your booking at Grand Villa — ${row.guestName || ''}`)}&body=${encodeURIComponent(text)}`,
+        `mailto:${row.guest.email}?subject=${encodeURIComponent(`Your booking at ${hotel} — ${row.guestName || ''}`)}&body=${encodeURIComponent(text)}`,
         '_blank',
       )
     }

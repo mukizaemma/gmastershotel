@@ -10,7 +10,7 @@ export default function AboutHero() {
       image={backgroundImage}
       eyebrow={eyebrow || 'About us'}
       title={headline || 'A home by Lake Kivu'}
-      text={intro || 'Gmasters Boutique Hotel is a comfortable stay in Karongi — rooms, dining, and the lake just outside.'}
+      text={intro || 'A comfortable stay in Karongi — rooms, dining, and the lake just outside.'}
       primaryTo="/book"
       primaryLabel="Book now"
       secondaryTo="/accommodation"

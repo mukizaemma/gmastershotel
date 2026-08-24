@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { CMS_URL } from '@lib/apiClient'
-import { BRAND } from '@features/hotel/brand'
+import { brandFromCompany } from '@features/hotel/companyBrand'
+import { useSiteLayout } from '@lib/queries/useSiteLayout'
 import SiteAuditBoard from '@features/handover/SiteAuditBoard'
 import { HANDOVER_CREDENTIALS, HANDOVER_SECTIONS, HANDOVER_TABS } from '@features/handover/guide'
 import styles from './HandoverPage.module.css'
@@ -33,6 +34,8 @@ export default function HandoverPage() {
   const [origin, setOrigin] = useState('')
   const [form, setForm] = useState({ name: '', email: '', section: 'overview', message: '' })
   const [busy, setBusy] = useState(false)
+  const { data: layout } = useSiteLayout()
+  const brand = brandFromCompany(layout?.company)
 
   const section = HANDOVER_SECTIONS[tab] || HANDOVER_SECTIONS.overview
   const chapter = HANDOVER_TABS.findIndex((item) => item.id === tab) + 1
@@ -40,7 +43,6 @@ export default function HandoverPage() {
   const shareUrl = origin ? `${origin}/handover${tab === 'overview' ? '' : `#${tab}`}` : '/handover'
 
   useEffect(() => {
-    document.title = `How to use the website — GMasters Boutique Hotel`
     setOrigin(window.location.origin)
     setTab(tabFromHash())
     readJson('/api/site-audit/report').then(setReport).catch(() => {})
@@ -48,6 +50,10 @@ export default function HandoverPage() {
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
+
+  useEffect(() => {
+    document.title = `How to use the website — ${brand.name}`
+  }, [brand.name])
 
   function openTab(id) {
     setTab(id)
@@ -91,9 +97,9 @@ export default function HandoverPage() {
     <div className={styles.page}>
       <header className={styles.top}>
         <Link to="/" className={styles.brand}>
-          <img src={BRAND.logo} alt="" />
+          {brand.logo ? <img src={brand.logo} alt="" /> : null}
           <div>
-            <strong>GMasters Boutique Hotel</strong>
+            <strong>{brand.name}</strong>
             <small>A short guide to your website</small>
           </div>
         </Link>
@@ -214,7 +220,7 @@ export default function HandoverPage() {
               <a href="https://iremetech.com" target="_blank" rel="noopener noreferrer">
                 Ireme Tech
               </a>
-              {' '}for GMasters Boutique Hotel.
+              {' '}for {brand.name}.
             </p>
           </footer>
         </article>

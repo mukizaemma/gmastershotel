@@ -14,7 +14,7 @@ export default function PolicyPage() {
         </nav>
         <h1 className={styles.headline}>Booking policy</h1>
         <p className={styles.lede}>
-          These terms apply when you request a stay at Gmasters Boutique Hotel. Staff confirm every
+          These terms apply when you request a stay. Staff confirm every
           reservation before it is final.
         </p>
         <div className={styles.body}>

@@ -181,16 +181,16 @@ export default function Step3Confirm() {
           <p className={styles.successText}>
             {effectiveStatus === 'success'
               ? details.confirmationMethod === 'whatsapp'
-                ? 'Your reservation is saved. Continue the conversation on WhatsApp to finish up with Grand Villa.'
+                ? 'Your reservation is saved. Continue the conversation on WhatsApp to finish up with the hotel.'
                 : "Your reservation is saved, and we've emailed a copy of your booking details."
-              : "Your reservation is saved, but we weren't able to send a confirmation receipt automatically — Grand Villa will still see your booking and reach out directly."}
+              : "Your reservation is saved, but we weren't able to send a confirmation receipt automatically — the hotel will still see your booking and reach out directly."}
           </p>
 
           {details.paymentMethod === 'western-union' && (
             <div className={styles.wuBox}>
               <p className={styles.wuTitle}>Complete your payment via Western Union</p>
               <p className={styles.wuText}>
-                Send ${total.toFixed(2)} to {company?.name || 'Gmasters Boutique Hotel'} and include your
+                Send ${total.toFixed(2)} to {company?.name || 'the hotel'} and include your
                 booking reference below. Contact us via WhatsApp or phone for the exact receiver
                 details to use — we'll confirm your payment once it's received.
               </p>

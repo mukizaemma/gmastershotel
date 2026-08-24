@@ -181,7 +181,7 @@ export default function HomeHero() {
             />
             <div className={`${styles.slideContent} fade-in-up is-visible`}>
               <span className={styles.slideKicker}>{slide.eyebrow || 'Welcome to'}</span>
-              <h1 className={styles.slideTitle}>{slide.headline || 'Gmasters Boutique Hotel'}</h1>
+              <h1 className={styles.slideTitle}>{slide.headline || 'Welcome'}</h1>
               <p className={styles.slideDescription}>
                 {slide.subline || 'Comfortable rooms by Lake Kivu — a calm stay in Karongi, Western Province.'}
               </p>

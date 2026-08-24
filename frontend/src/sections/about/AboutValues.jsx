@@ -1,6 +1,8 @@
 import { Heart, Wallet, Sparkles, Handshake, Home, Sunrise } from 'lucide-react';
 import { useInView } from '@hooks/useInView';
 import { useAboutPage } from '@lib/queries/useAboutPage';
+import { useSiteLayout } from '@lib/queries/useSiteLayout';
+import { brandFromCompany } from '@features/hotel/companyBrand';
 import styles from './AboutValues.module.css';
 
 const ICONS = {
@@ -15,14 +17,16 @@ const ICONS = {
 export default function AboutValues() {
   const [sectionRef, inView] = useInView(0.15);
   const { data } = useAboutPage();
+  const { data: layout } = useSiteLayout();
   const { values } = data;
+  const brand = brandFromCompany(layout?.company);
 
   return (
     <section className={styles.section} ref={sectionRef}>
       <div className="container">
         <div className={`${styles.header} fade-in-up ${inView ? 'is-visible' : ''}`}>
           <span className={styles.eyebrow}>What We Believe</span>
-          <h2 className={styles.headline}>The Grand Villa Way</h2>
+          <h2 className={styles.headline}>{brand.name}</h2>
         </div>
 
         <div className={styles.grid}>

@@ -54,7 +54,7 @@ export async function requestToPay({ referenceId, amount, currency, externalId, 
       currency,
       externalId,
       payer: { partyIdType: 'MSISDN', partyId: phoneNumber },
-      payerMessage: 'Grand Villa booking payment',
+      payerMessage: 'Hotel booking payment',
       payeeNote: `Booking ${externalId}`,
     }),
   })

@@ -20,8 +20,9 @@ import {
   BookOpen,
   User,
 } from 'lucide-react'
-import { BRAND } from '@features/hotel/brand'
+import { brandFromCompany } from '@features/hotel/companyBrand'
 import { useStaffAuth } from '../auth/StaffAuthContext'
+import { useSiteLayout } from '@lib/queries/useSiteLayout'
 import styles from './StaffLayout.module.css'
 
 const NAV = [
@@ -46,11 +47,13 @@ export default function StaffLayout() {
   const { user, ready, logout } = useStaffAuth()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+  const { data } = useSiteLayout()
+  const brand = brandFromCompany(data?.company)
 
   useEffect(() => {
-    document.title = `${BRAND.shortName} — Staff`
+    document.title = `${brand.name} — Staff`
     if (ready && !user) navigate('/staff/login', { replace: true })
-  }, [ready, user, navigate])
+  }, [brand.name, ready, user, navigate])
 
   if (!ready || !user) return null
 
@@ -60,9 +63,13 @@ export default function StaffLayout() {
     <div className={styles.shell}>
       <aside className={`${styles.sidebar} ${open ? styles.open : ''}`}>
         <div className={styles.brand}>
-          <span className={styles.mark}>{BRAND.mark}</span>
+          {brand.logo ? (
+            <img className={styles.logo} src={brand.logo} alt="" />
+          ) : (
+            <span className={styles.mark}>{brand.initials}</span>
+          )}
           <div>
-            <strong>{BRAND.shortName}</strong>
+            <strong>{brand.name}</strong>
             <small>Staff desk</small>
           </div>
         </div>

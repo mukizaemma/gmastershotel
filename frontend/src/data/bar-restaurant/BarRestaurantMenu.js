@@ -1,7 +1,7 @@
 /**
  * TODO: every dish name, description, and price below is a placeholder
  * (a few are realistic Rwandan menu items — isombe, brochettes — but
- * still need confirming, not sourced from an actual Grand Villa menu).
+ * still need confirming, not sourced from an actual hotel menu).
  * Confirm the real menu before this goes live.
  */
 export const barRestaurantMenu = {

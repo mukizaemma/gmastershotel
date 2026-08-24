@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Check, Copy, ExternalLink, MessageCircle, Star } from 'lucide-react'
 import { useSiteLayout } from '@lib/queries/useSiteLayout'
+import { brandFromCompany } from '@features/hotel/companyBrand'
 import { reviewLinks } from '@features/hotel/reviewLinks'
 import { SOCIAL_ICONS } from '@features/hotel/socialIcons'
 import Reveal from '@components/ui/Reveal'
@@ -51,7 +52,7 @@ function PlatformCard({ name, mark, writeUrl, readUrl, writeLabel }) {
 export default function ReviewsPage() {
   const { data } = useSiteLayout()
   const company = data?.company || {}
-  const hotel = company.name || 'GMasters Boutique Hotel'
+  const hotel = brandFromCompany(company).name
   const links = reviewLinks(company)
   const [copied, setCopied] = useState(false)
   const pageUrl = typeof window !== 'undefined' ? `${window.location.origin}/reviews` : '/reviews'

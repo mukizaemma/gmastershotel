@@ -69,6 +69,7 @@ export function BookingsDashboard() {
   const today = new Date().toISOString().slice(0, 10)
   const [rows, setRows] = useState([])
   const [staffName, setStaffName] = useState('Staff')
+  const [hotelName, setHotelName] = useState('Hotel')
   const [start, setStart] = useState(today)
   const [end, setEnd] = useState(today)
   const [applied, setApplied] = useState({ start: '', end: '' })
@@ -88,6 +89,11 @@ export function BookingsDashboard() {
         const user = data.user || data
         const name = [user.firstName, user.lastName].filter(Boolean).join(' ')
         setStaffName(name || user.name || user.email || 'Staff')
+      })
+      .catch(() => {})
+    api('/api/globals/company?depth=0')
+      .then((data) => {
+        if (data?.name) setHotelName(String(data.name).trim())
       })
       .catch(() => {})
   }, [])
@@ -143,7 +149,7 @@ export function BookingsDashboard() {
     const body = draft.trim()
     if (!body) return
     const channel = preferredChannel(row)
-    const text = `Gmasters Boutique Hotel\n${staySummary(row)}\n\n${body}`
+    const text = `${hotelName}\n${staySummary(row)}\n\n${body}`
 
     if (channel === 'whatsapp') {
       const phone = digits(row.guest?.mobile)
@@ -159,7 +165,7 @@ export function BookingsDashboard() {
         return
       }
       window.open(
-        `mailto:${email}?subject=${encodeURIComponent(`Your booking at Grand Villa — ${row.guestName || ''}`)}&body=${encodeURIComponent(text)}`,
+        `mailto:${email}?subject=${encodeURIComponent(`Your booking at ${hotelName} — ${row.guestName || ''}`)}&body=${encodeURIComponent(text)}`,
         '_blank',
       )
     }

@@ -148,7 +148,7 @@ export default function Hero() {
   return (
     <section className={styles.hero}>
       <nav className={styles.navbar}>
-        <span className={styles.logo}>Grand Villa</span>
+        <span className={styles.logo}>Hotel</span>
         <div className={styles.navLinks}>
           <a href="#home">Home</a>
           <a href="#rooms">Rooms</a>

@@ -1,9 +1,7 @@
 export const BRAND = {
-  name: 'Gmasters Boutique Hotel',
-  shortName: 'Grand Villa',
-  tagline: 'Comfortable rooms, honest food, and Lake Kivu right outside.',
-  mark: 'GV',
-  logo: '/images/brand/gmasters-logo.png',
+  name: 'Hotel',
+  tagline: '',
+  logo: '',
 }
 
 export const PUBLIC_NAV = [

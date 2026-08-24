@@ -27,7 +27,7 @@ export default function ThingsToDoPage() {
     <>
       <PageHero
         image={hero.backgroundImage}
-        eyebrow={hero.eyebrow || 'Around Grand Villa'}
+        eyebrow={hero.eyebrow || 'Around the hotel'}
         title={hero.headline || 'Things to do in Karongi'}
         text={
           hero.intro ||

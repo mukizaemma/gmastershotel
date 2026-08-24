@@ -22,7 +22,7 @@ export const HANDOVER_CREDENTIALS = {
 export const HANDOVER_SECTIONS = {
   overview: {
     title: 'What was delivered',
-    lead: 'GMasters Boutique Hotel has a public website for guests and a staff desk for the team. Share this page — it is public and does not require a login.',
+    lead: 'This property has a public website for guests and a staff desk for the team. Share this page — it is public and does not require a login.',
     blocks: [
       {
         heading: 'Public website',
