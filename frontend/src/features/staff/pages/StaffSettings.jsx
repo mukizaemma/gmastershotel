@@ -109,15 +109,15 @@ export default function StaffSettings() {
             <textarea value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
           </label>
           <label className="staffField col-6">
-            Map URL
+            Directions URL
             <input
               value={form.mapUrl}
               onChange={(e) => setForm({ ...form, mapUrl: e.target.value })}
-              placeholder="Optional Google Maps place link"
+              placeholder="Google Maps link for Get Directions in the footer"
             />
           </label>
           <label className="staffField col-6">
-            Map embed — shown in the footer and on Contact
+            Map embed — Contact page only
             <textarea
               value={form.mapEmbed}
               onChange={(e) => setForm({ ...form, mapEmbed: e.target.value })}

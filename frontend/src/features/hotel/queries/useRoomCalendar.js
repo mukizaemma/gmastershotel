@@ -13,13 +13,15 @@ async function fetchCalendar(room) {
   }
 }
 
-export function useRoomCalendars(roomSlugs = []) {
+export function useRoomCalendars(roomSlugs = [], options = {}) {
+  const enabled = options.enabled !== false
   const slugs = roomSlugs.length ? roomSlugs : ['']
   const results = useQueries({
     queries: slugs.map((room) => ({
       queryKey: ['availability-calendar', room || 'hotel'],
       queryFn: () => fetchCalendar(room),
       staleTime: 60 * 1000,
+      enabled,
     })),
   })
 
@@ -34,5 +36,10 @@ export function useRoomCalendars(roomSlugs = []) {
       units: data?.units || 1,
     }
   })
-  return { closed, notes, byRoom, isLoading: results.some((item) => item.isLoading) }
+  return {
+    closed,
+    notes,
+    byRoom,
+    isLoading: enabled && results.some((item) => item.isLoading),
+  }
 }

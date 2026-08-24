@@ -159,7 +159,11 @@ export const Company = {
             {
               name: 'mapUrl',
               type: 'text',
-              admin: { width: '50%', description: 'Google Maps link. Optional — the footer map uses the embed below.' },
+              label: 'Directions URL',
+              admin: {
+                width: '50%',
+                description: 'Google Maps link for the Get Directions button under Contact in the footer.',
+              },
             },
             {
               name: 'mapEmbed',
@@ -167,7 +171,7 @@ export const Company = {
               admin: {
                 width: '50%',
                 description:
-                  'This is the map in the footer (and on Contact). Google Maps → Share → Embed a map, then paste the iframe here.',
+                  'Optional map on the Contact page only. Google Maps → Share → Embed a map, then paste the iframe here.',
               },
             },
           ],

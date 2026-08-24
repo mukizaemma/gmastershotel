@@ -185,54 +185,27 @@
   max-width: 28rem;
 }
 
-.mapBand {
-  margin-top: var(--space-xl);
-  padding-top: var(--space-lg);
-  border-top: 1px solid rgba(245, 239, 230, 0.1);
+.directionsBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  min-height: 40px;
+  padding: 0 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(196, 165, 116, 0.55);
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background var(--transition-base), color var(--transition-base), border-color var(--transition-base);
 }
 
-.mapHead {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem 1.25rem;
-  margin-bottom: 0.9rem;
-}
-
-.mapHead .colTitle {
-  margin: 0;
-}
-
-.mapHead p {
-  margin: 0;
-  font-size: 0.88rem;
-  color: var(--color-sand-muted);
-}
-
-.mapWrap {
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(196, 165, 116, 0.28);
-  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.28);
-  background: #0f1728;
-}
-
-.map,
-.map iframe {
-  display: block;
-  width: 100%;
-  min-height: 280px;
-  height: 280px;
-  border: 0;
-}
-
-@media (min-width: 900px) {
-  .map,
-  .map iframe {
-    min-height: 340px;
-    height: 340px;
-  }
+.directionsBtn:hover {
+  background: rgba(196, 165, 116, 0.14);
+  border-color: var(--color-gold);
+  color: #fff;
 }
 
 .bottomBar {

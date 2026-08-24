@@ -433,7 +433,7 @@ export default function StaffPages() {
       <h1>Pages</h1>
       <p className="staffLead">
         Same sections as the public site. Home includes hero, features, rooms heading,
-        bar &amp; restaurant, and the closing banner. Stay points and the map live in the footer.
+        bar &amp; restaurant, and the closing banner. Stay points live in the footer; Get Directions uses the map URL in Site setting.
         Lists like rooms are edited in their own menus. Set a default header once; a page uses it when it has no image of its own.
       </p>
       <div className="staffCard">
@@ -662,8 +662,8 @@ export default function StaffPages() {
                 <div className="full">
                   <strong>Footer stay points</strong>
                   <p className="staffLead">
-                    These lines appear in the site footer, above the Google map. The map itself is
-                    pasted in <a href="/staff/settings">Site setting</a> → Address &amp; map.
+                    These lines appear in the site footer. Get Directions uses the link in{' '}
+                    <a href="/staff/settings">Site setting</a> → Directions URL.
                   </p>
                 </div>
                 {form.location.highlights.map((text, index) => (
