@@ -160,14 +160,19 @@ export default function BookStayModal({ room, onClose }) {
         </div>
 
         <footer className={styles.footer}>
-          <p className={styles.nights}>
-            {nights > 0 && selectedOpen
-              ? `${nights} ${nights === 1 ? 'night' : 'nights'} · $${total}`
-              : 'Select dates that are free to continue'}
-          </p>
-          <button type="button" className={styles.continue} disabled={!selectedOpen} onClick={continueToGuest}>
-            Continue
+          <button type="button" className={styles.cancel} onClick={onClose}>
+            Close
           </button>
+          <div className={styles.footerActions}>
+            <p className={styles.nights}>
+              {nights > 0 && selectedOpen
+                ? `${nights} ${nights === 1 ? 'night' : 'nights'} · $${total}`
+                : 'Pick free dates to continue'}
+            </p>
+            <button type="button" className={styles.continue} disabled={!selectedOpen} onClick={continueToGuest}>
+              Continue
+            </button>
+          </div>
         </footer>
       </div>
     </div>

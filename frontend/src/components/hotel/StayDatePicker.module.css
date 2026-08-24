@@ -77,6 +77,7 @@
 
 .day {
   aspect-ratio: 1;
+  max-height: 3rem;
   border: 0;
   border-radius: 8px;
   background: #f6f1e8;
@@ -87,6 +88,54 @@
   display: grid;
   place-items: center;
   position: relative;
+}
+
+@media (max-width: 640px) {
+  .wrap {
+    gap: 0.5rem;
+  }
+
+  .guide {
+    font-size: 0.74rem;
+  }
+
+  .week,
+  .grid {
+    gap: 0.15rem;
+  }
+
+  .day {
+    aspect-ratio: auto;
+    min-height: 2.35rem;
+    max-height: none;
+    height: 2.35rem;
+    font-size: 0.74rem;
+    border-radius: 6px;
+  }
+
+  .edgeStart span,
+  .edgeEnd span {
+    transform: translateY(-0.12rem);
+  }
+
+  .day em {
+    font-size: 0.42rem;
+    bottom: 0.05rem;
+  }
+
+  .selected {
+    grid-template-columns: 1fr;
+  }
+
+  .selected span {
+    padding: 0.45rem 0.55rem;
+    font-size: 0.78rem;
+  }
+
+  .legend {
+    gap: 0.55rem;
+    font-size: 0.65rem;
+  }
 }
 
 .edgeStart span,
