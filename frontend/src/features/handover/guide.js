@@ -28,7 +28,7 @@ export const HANDOVER_SECTIONS = {
         heading: 'Public website',
         body: 'Guests can browse without logging in. These pages are live:',
         steps: [
-          'Home — hero, welcome points, rooms, restaurant spotlight, location, and a booking call to action.',
+          'Home — hero, rooms, restaurant spotlight, and a booking call to action. Stay points and the map are in the footer.',
           'Accommodation — room cards with View room and Book now. Book now opens available dates; after check-in and check-out the guest goes to the booking form.',
           'Room page — photos, description, selected amenities, and a stay calendar.',
           'Bar & Restaurant — page copy plus the live menu.',
@@ -127,7 +127,7 @@ export const HANDOVER_SECTIONS = {
       },
       {
         heading: 'Home page',
-        body: 'Home includes hero slides (photo and headline), welcome features, the rooms heading, restaurant spotlight, location copy, and the booking call to action. Restaurant photos that appear on Home are edited on the Bar & Restaurant tab, in the Home page section.',
+        body: 'Home includes hero slides (photo and headline), welcome features, the rooms heading, restaurant spotlight, and the booking call to action. Stay points and the Google map are in the footer. Restaurant photos that appear on Home are edited on the Bar & Restaurant tab, in the Home page section.',
       },
     ],
   },

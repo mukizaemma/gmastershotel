@@ -5,7 +5,6 @@ import HomeHero from '@sections/home/HomeHero'
 import HomeFeatures from '@sections/home/HomeFeatures'
 import HomeRooms from '@sections/home/HomeRooms'
 import HomeBarRestaurant from '@sections/home/HomeBarRestaurant'
-import HomeLocation from '@sections/home/HomeLocation'
 import HomeCTA from '@sections/home/HomeCTA'
 
 export default function HomePage() {
@@ -29,7 +28,6 @@ export default function HomePage() {
       <HomeFeatures />
       <HomeRooms />
       <HomeBarRestaurant />
-      <HomeLocation />
       <HomeCTA />
     </>
   )

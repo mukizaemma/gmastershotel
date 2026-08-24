@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { asHtml, htmlToLexical } from '@lib/richText'
 import { DEFAULT_HOME_FEATURES } from '@features/hotel/homeFeatures'
@@ -42,7 +43,17 @@ const emptyFeature = (item = {}) => ({
 })
 const emptyBadge = () => ({ source: '', score: '', tier: '', reviewCount: 0 })
 
-function TextContentPanel({ eyebrow, headline, intro, onEyebrow, onHeadline, onIntro, introLabel = 'Intro', headlineRequired }) {
+function TextContentPanel({
+  eyebrow,
+  headline,
+  intro,
+  onEyebrow,
+  onHeadline,
+  onIntro,
+  introLabel = 'Intro',
+  headlineLabel = 'Headline',
+  headlineRequired,
+}) {
   return (
     <details className="staffPanel full" open>
       <summary>Text content</summary>
@@ -52,7 +63,7 @@ function TextContentPanel({ eyebrow, headline, intro, onEyebrow, onHeadline, onI
           <input value={eyebrow} onChange={(e) => onEyebrow(e.target.value)} />
         </label>
         <label className="staffField headlineField col-9">
-          Headline
+          {headlineLabel}
           <input value={headline} onChange={(e) => onHeadline(e.target.value)} required={headlineRequired} />
         </label>
         <SummernoteField label={introLabel} value={intro} onChange={onIntro} />
@@ -157,8 +168,8 @@ function readPage(slug, page) {
         eyebrow: page.cta?.eyebrow || '',
         headline: page.cta?.headline || '',
         body: asHtml(page.cta?.body),
-        ctaLabel: page.cta?.cta?.label || '',
-        ctaPath: page.cta?.cta?.path || '',
+        ctaLabel: page.cta?.cta?.label || 'Book Now',
+        ctaPath: page.cta?.cta?.path || '/book',
         backgroundImage: page.cta?.backgroundImage || '',
       },
     }
@@ -340,6 +351,7 @@ function pagesPayload(doc, patch) {
 }
 
 export default function StaffPages() {
+  const queryClient = useQueryClient()
   const [form, setForm] = useState(null)
   const [defaults, setDefaults] = useState({ defaultHeaderImage: '' })
   const [params] = useSearchParams()
@@ -381,6 +393,8 @@ export default function StaffPages() {
       )
       toast.success('Page saved.')
       setForm(null)
+      await queryClient.invalidateQueries({ queryKey: ['pages'] })
+      await queryClient.invalidateQueries({ queryKey: ['home-page'] })
     } catch (err) {
       toast.error(err.response?.data?.errors?.[0]?.message || 'Could not save this page.')
     }
@@ -419,8 +433,8 @@ export default function StaffPages() {
       <h1>Pages</h1>
       <p className="staffLead">
         Same sections as the public site. Home includes hero, features, rooms heading,
-        bar &amp; restaurant, location, and the closing banner. Lists like rooms are edited in their
-        own menus. Set a default header once; a page uses it when it has no image of its own.
+        bar &amp; restaurant, and the closing banner. Stay points and the map live in the footer.
+        Lists like rooms are edited in their own menus. Set a default header once; a page uses it when it has no image of its own.
       </p>
       <div className="staffCard">
         <div className="formGrid">
@@ -646,28 +660,15 @@ export default function StaffPages() {
                 </div>
 
                 <div className="full">
-                  <strong>Location</strong>
+                  <strong>Footer stay points</strong>
                   <p className="staffLead">
-                    The live map is set in <a href="/staff/settings">Site setting</a> → Address &amp; map
-                    (paste a Google Maps embed). Use the photo below only if you want an image instead of
-                    the map.
+                    These lines appear in the site footer, above the Google map. The map itself is
+                    pasted in <a href="/staff/settings">Site setting</a> → Address &amp; map.
                   </p>
                 </div>
-                <TextContentPanel
-                  eyebrow={form.location.eyebrow}
-                  headline={form.location.headline}
-                  intro={form.location.body}
-                  onEyebrow={(eyebrow) =>
-                    setForm({ ...form, location: { ...form.location, eyebrow } })
-                  }
-                  onHeadline={(headline) =>
-                    setForm({ ...form, location: { ...form.location, headline } })
-                  }
-                  onIntro={(body) => setForm({ ...form, location: { ...form.location, body } })}
-                />
                 {form.location.highlights.map((text, index) => (
                   <label key={index} className="staffField full">
-                    Highlight
+                    Stay point
                     <input
                       value={text}
                       onChange={(e) => {
@@ -693,43 +694,20 @@ export default function StaffPages() {
                       })
                     }
                   >
-                    Add highlight
+                    Add stay point
                   </button>
-                </div>
-                <label className="staffField col-3">
-                  Link label
-                  <input
-                    value={form.location.ctaLabel}
-                    onChange={(e) =>
-                      setForm({ ...form, location: { ...form.location, ctaLabel: e.target.value } })
-                    }
-                  />
-                </label>
-                <label className="staffField col-9">
-                  Link path
-                  <input
-                    value={form.location.ctaPath}
-                    onChange={(e) =>
-                      setForm({ ...form, location: { ...form.location, ctaPath: e.target.value } })
-                    }
-                  />
-                </label>
-                <div className="mediaSlot">
-                  <MediaField
-                    label="Location photo (used if no map embed)"
-                    value={form.location.image}
-                    onChange={(image) => setForm({ ...form, location: { ...form.location, image } })}
-                  />
                 </div>
 
                 <div className="full">
                   <strong>Closing banner</strong>
+                  <p className="staffLead">Full-screen photo, large quote, and Book Now. Leave the quote blank to use the default line.</p>
                 </div>
                 <TextContentPanel
                   eyebrow={form.banner.eyebrow}
                   headline={form.banner.headline}
                   intro={form.banner.body}
-                  introLabel="Text"
+                  headlineLabel="Quote"
+                  introLabel="Supporting text"
                   onEyebrow={(eyebrow) => setForm({ ...form, banner: { ...form.banner, eyebrow } })}
                   onHeadline={(headline) => setForm({ ...form, banner: { ...form.banner, headline } })}
                   onIntro={(body) => setForm({ ...form, banner: { ...form.banner, body } })}

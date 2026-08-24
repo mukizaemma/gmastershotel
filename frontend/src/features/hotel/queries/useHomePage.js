@@ -93,26 +93,15 @@ async function fetchHomePage() {
       },
     },
 
-    location: {
-      eyebrow: page.location?.eyebrow || 'Our location',
-      headline: page.location?.headline || 'By the lake — and close to town',
-      body: asPlain(page.location?.body),
-      highlights: (page.location?.highlights || [])
-        .map((item) => item.text)
-        .filter(Boolean),
-      cta: {
-        label: page.location?.cta?.label || 'Get directions',
-        path: page.location?.cta?.path || '/contact',
-      },
-      image: mediaUrl(page.location?.image),
-    },
-
     cta: {
-      eyebrow: page.cta?.eyebrow,
-      headline: page.cta?.headline,
+      eyebrow: page.cta?.eyebrow || '',
+      headline: String(page.cta?.headline || '').trim(),
       body: asPlain(page.cta?.body),
-      cta: page.cta?.cta || {},
-      backgroundImage: mediaUrl(page.cta?.backgroundImage),
+      cta: {
+        label: page.cta?.cta?.label || 'Book Now',
+        path: page.cta?.cta?.path || '/book',
+      },
+      backgroundImage: mediaUrl(page.cta?.backgroundImage) || '/images/home/cta-bg.jpg',
     },
 
     rooms,

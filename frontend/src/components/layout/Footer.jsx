@@ -1,110 +1,138 @@
-import { NavLink } from 'react-router-dom';
-import { MapPin, Clock, Phone, Mail, Navigation } from 'lucide-react';
-import { useSiteLayout } from '@lib/queries/useSiteLayout';
-import { PUBLIC_NAV } from '@features/hotel/brand';
-import { brandFromCompany } from '@features/hotel/companyBrand';
-import { normalizeSocials, visibleSocials } from '@features/hotel/socials';
-import { SOCIAL_ICONS } from '@features/hotel/socialIcons';
-import styles from './Footer.module.css';
+import { NavLink } from 'react-router-dom'
+import { MapPin, Phone, Mail, MessageCircle } from 'lucide-react'
+import { useSiteLayout } from '@lib/queries/useSiteLayout'
+import { usePages } from '@lib/queries/usePages'
+import { LOCATION_HIGHLIGHTS, PUBLIC_CTA, PUBLIC_NAV } from '@features/hotel/brand'
+import { brandFromCompany } from '@features/hotel/companyBrand'
+import { normalizeSocials, visibleSocials } from '@features/hotel/socials'
+import { SOCIAL_ICONS } from '@features/hotel/socialIcons'
+import { safeMapEmbed } from '@lib/richText'
+import styles from './Footer.module.css'
 
 export default function Footer() {
-  const { data } = useSiteLayout();
-  const primaryNav = PUBLIC_NAV;
-  const company = data.company;
-  const brand = brandFromCompany(company);
-  const socials = visibleSocials(normalizeSocials(company.socials));
+  const { data } = useSiteLayout()
+  const { data: pages } = usePages()
+  const company = data.company
+  const brand = brandFromCompany(company)
+  const socials = visibleSocials(normalizeSocials(company.socials))
+  const map = safeMapEmbed(company.mapEmbed)
+  const highlights = (pages?.home?.location?.highlights || [])
+    .map((item) => (typeof item === 'string' ? item : item?.text))
+    .map((text) => String(text || '').trim())
+    .filter(Boolean)
+  const points = highlights.length ? highlights : LOCATION_HIGHLIGHTS
+  const whatsapp = String(company.whatsapp || company.phone || '').replace(/[^\d]/g, '')
 
   return (
     <footer className={styles.footer}>
-      <div className={`container ${styles.grid}`}>
-        <div className={styles.brandCol}>
-          <NavLink to="/" className={styles.logo}>
-            {brand.logo ? (
-              <img src={brand.logo} alt={brand.name} style={{ height: 52, width: 'auto' }} />
+      <div className={`container ${styles.inner}`}>
+        <div className={styles.grid}>
+          <div className={styles.brandCol}>
+            <NavLink to="/" className={styles.logo}>
+              {brand.logo ? <img src={brand.logo} alt="" /> : <span className={styles.mark}>{brand.initials}</span>}
+              <strong>{brand.name}</strong>
+            </NavLink>
+            {brand.tagline ? <p className={styles.tagline}>{brand.tagline}</p> : null}
+            {company.address ? <p className={styles.address}>{company.address}</p> : null}
+            <NavLink to={PUBLIC_CTA.path} className={styles.bookBtn}>
+              {PUBLIC_CTA.label}
+            </NavLink>
+            {socials.length > 0 ? (
+              <div className={styles.socials}>
+                {socials.map(({ name, label, href }) => (
+                  <a
+                    key={name}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.socialLink}
+                    aria-label={label}
+                  >
+                    {SOCIAL_ICONS[name]}
+                  </a>
+                ))}
+              </div>
             ) : null}
-            <span>{brand.name}</span>
-          </NavLink>
-          {brand.tagline ? <p className={styles.tagline}>{brand.tagline}</p> : null}
+          </div>
 
-          {socials.length > 0 && (
-            <div className={styles.socials}>
-              {socials.map(({ name, label, href }) => (
-                <a
-                  key={name}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.socialLink}
-                  aria-label={label}
-                >
-                  {SOCIAL_ICONS[name]}
-                </a>
+          <nav className={styles.col} aria-label="Footer">
+            <h4 className={styles.colTitle}>Menu</h4>
+            <ul>
+              {PUBLIC_NAV.map((link) => (
+                <li key={link.path}>
+                  <NavLink to={link.path} end={link.path === '/'}>
+                    {link.label}
+                  </NavLink>
+                </li>
               ))}
+            </ul>
+          </nav>
+
+          <div className={styles.col}>
+            <h4 className={styles.colTitle}>Contact</h4>
+            <ul className={styles.iconList}>
+              {company.phone ? (
+                <li>
+                  <Phone size={16} />
+                  <a href={`tel:${company.phone.replace(/\s/g, '')}`}>{company.phone}</a>
+                </li>
+              ) : null}
+              {company.email ? (
+                <li>
+                  <Mail size={16} />
+                  <a href={`mailto:${company.email}`}>{company.email}</a>
+                </li>
+              ) : null}
+              {whatsapp ? (
+                <li>
+                  <MessageCircle size={16} />
+                  <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">
+                    WhatsApp
+                  </a>
+                </li>
+              ) : null}
+              {!company.phone && !company.email && !whatsapp && company.address ? (
+                <li>
+                  <MapPin size={16} />
+                  <span>{company.address}</span>
+                </li>
+              ) : null}
+            </ul>
+          </div>
+
+          <div className={styles.col}>
+            <h4 className={styles.colTitle}>Stay with us</h4>
+            <ul className={styles.points}>
+              {points.map((item) => (
+                <li key={item}>
+                  <MapPin size={15} />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {map ? (
+          <div className={styles.mapBand}>
+            <div className={styles.mapHead}>
+              <h4 className={styles.colTitle}>Find us</h4>
+              {company.address ? <p>{company.address}</p> : null}
             </div>
-          )}
-        </div>
-
-        <div className={styles.col}>
-          <h4 className={styles.colTitle}>Explore</h4>
-          <ul>
-            {primaryNav.map((link) => (
-              <li key={link.path}>
-                <NavLink to={link.path} end={link.path === '/'}>
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
-            <li>
-              <NavLink to="/reviews">Leave a review</NavLink>
-            </li>
-          </ul>
-        </div>
-
-        <div className={styles.col}>
-          <h4 className={styles.colTitle}>Getting Here</h4>
-          <ul className={styles.iconList}>
-            <li>
-              <MapPin size={16} />
-              <span>{company.address}</span>
-            </li>
-            <li>
-              <Clock size={16} />
-              <span>{company.distanceFromKigali}</span>
-            </li>
-          </ul>
-          <a
-            href={company.mapUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.directionsLink}
-          >
-            <Navigation size={14} />
-            Get Directions
-          </a>
-        </div>
-
-        <div className={styles.col}>
-          <h4 className={styles.colTitle}>Contact</h4>
-          <ul className={styles.iconList}>
-            <li>
-              <Phone size={16} />
-              <span>{company.phone}</span>
-            </li>
-            <li>
-              <Mail size={16} />
-              <span>{company.email}</span>
-            </li>
-          </ul>
-        </div>
+            <div className={styles.mapWrap}>
+              <div className={styles.map} dangerouslySetInnerHTML={{ __html: map }} />
+            </div>
+          </div>
+        ) : null}
       </div>
 
       <div className={styles.bottomBar}>
         <div className={`container ${styles.bottomInner}`}>
           <p>
-            &copy; {new Date().getFullYear()} {brand.name}. All Rights Reserved.
+            &copy; {new Date().getFullYear()} {brand.name}. All rights reserved.
           </p>
         </div>
       </div>
     </footer>
-  );
+  )
 }

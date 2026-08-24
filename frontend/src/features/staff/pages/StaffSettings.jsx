@@ -113,11 +113,11 @@ export default function StaffSettings() {
             <input
               value={form.mapUrl}
               onChange={(e) => setForm({ ...form, mapUrl: e.target.value })}
-              placeholder="Used by Get directions on Home"
+              placeholder="Optional Google Maps place link"
             />
           </label>
           <label className="staffField col-6">
-            Map embed — shown on the Home location section
+            Map embed — shown in the footer and on Contact
             <textarea
               value={form.mapEmbed}
               onChange={(e) => setForm({ ...form, mapEmbed: e.target.value })}

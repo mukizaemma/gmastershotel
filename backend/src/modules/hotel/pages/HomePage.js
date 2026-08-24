@@ -168,65 +168,56 @@ export const HomePage = {
           ],
         },
         {
-          label: 'Location',
+          label: 'Stay points',
           description:
-            'Headlines and the optional photo live here. The live map is pasted in Site setting → Address & map (Google Maps → Share → Embed a map).',
+            'Short lines shown in the site footer above the Google map. Paste the map in Site setting → Address & map.',
           fields: [
             unnamedGroup('location', [
-              textContentBlock([
-                { name: 'eyebrow', type: 'text', defaultValue: 'Our location', admin: { width: '25%' } },
-                {
-                  name: 'headline',
-                  type: 'text',
-                  defaultValue: 'Close to the work — and the views',
-                  admin: { width: '75%' },
-                },
-                { name: 'body', type: 'richText' },
-              ]),
               {
                 name: 'highlights',
                 type: 'array',
-                labels: { singular: 'Highlight', plural: 'Highlights' },
+                labels: { singular: 'Stay point', plural: 'Stay points' },
                 fields: [{ name: 'text', type: 'text', required: true }],
               },
+              { name: 'eyebrow', type: 'text', admin: { hidden: true } },
+              { name: 'headline', type: 'text', admin: { hidden: true } },
+              { name: 'body', type: 'richText', admin: { hidden: true } },
               {
                 name: 'cta',
                 type: 'group',
-                label: 'Link',
-                admin: { width: '50%', className: 'hero-cta-card' },
+                admin: { hidden: true },
                 fields: [
-                  { name: 'label', type: 'text', defaultValue: 'Get directions', admin: { width: '50%' } },
-                  { name: 'path', type: 'text', defaultValue: '/contact', admin: { width: '50%' } },
+                  { name: 'label', type: 'text' },
+                  { name: 'path', type: 'text' },
                 ],
               },
-              previewUpload('image', {
-                admin: {
-                  width: '50%',
-                  description:
-                    'Shown on Home if no map embed is set in Site setting. The map embed always wins when both exist.',
-                },
-              }),
+              previewUpload('image', { admin: { hidden: true } }),
             ]),
           ],
         },
         {
           label: 'Closing banner',
-          description: 'Last band on the home page. Address and directions on the card come from Site setting.',
+          description: 'Full-screen photo at the bottom of Home, with a large quote and Book Now.',
           fields: [
             unnamedGroup('cta', [
               textContentBlock([
                 { name: 'eyebrow', type: 'text', admin: { width: '25%' } },
-                { name: 'headline', type: 'text', admin: { width: '75%' } },
-                { name: 'body', type: 'richText' },
+                {
+                  name: 'headline',
+                  type: 'text',
+                  label: 'Quote',
+                  admin: { width: '75%', description: 'Large italic line over the photo. Leave blank to use the default quote.' },
+                },
+                { name: 'body', type: 'richText', label: 'Supporting text' },
               ]),
               {
                 name: 'cta',
                 type: 'group',
-                label: 'Primary button',
+                label: 'Book Now button',
                 admin: { width: '50%', className: 'hero-cta-card' },
                 fields: [
-                  { name: 'label', type: 'text', admin: { width: '50%' } },
-                  { name: 'path', type: 'text', admin: { width: '50%' } },
+                  { name: 'label', type: 'text', defaultValue: 'Book Now', admin: { width: '50%' } },
+                  { name: 'path', type: 'text', defaultValue: '/book', admin: { width: '50%' } },
                 ],
               },
               previewUpload('backgroundImage'),
