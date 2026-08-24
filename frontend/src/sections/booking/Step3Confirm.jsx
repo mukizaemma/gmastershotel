@@ -190,7 +190,7 @@ export default function Step3Confirm() {
             <div className={styles.wuBox}>
               <p className={styles.wuTitle}>Complete your payment via Western Union</p>
               <p className={styles.wuText}>
-                Send ${total.toFixed(2)} to {company?.name || 'Grand Villa Apartment'} and include your
+                Send ${total.toFixed(2)} to {company?.name || 'Gmasters Boutique Hotel'} and include your
                 booking reference below. Contact us via WhatsApp or phone for the exact receiver
                 details to use — we'll confirm your payment once it's received.
               </p>

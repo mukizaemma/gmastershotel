@@ -17,7 +17,7 @@ export default function HomeLocation() {
   const body =
     location.body ||
     company.address ||
-    'Grand Villa Apartment sits in Karongi, on the shores of Lake Kivu, about a three-hour drive from Kigali.'
+    'Gmasters Boutique Hotel sits in Karongi, on the shores of Lake Kivu, about a three-hour drive from Kigali.'
   const directionsHref = company.mapUrl || location.cta?.path || '/contact'
   const directionsExternal = Boolean(company.mapUrl)
   const photo = location.image
@@ -56,7 +56,7 @@ export default function HomeLocation() {
           ) : (
             <div className={styles.fallback}>
               <MapPin size={28} />
-              <strong>{company.name || 'Grand Villa Apartment'}</strong>
+              <strong>{company.name || 'Gmasters Boutique Hotel'}</strong>
               <p>{company.address || 'Karongi, Western Province, Rwanda'}</p>
             </div>
           )}

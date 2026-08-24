@@ -8,16 +8,16 @@ import Footer from './Footer'
 import styles from './Layout.module.css'
 
 const PAGE_TITLES = {
-  '/': 'Grand Villa Apartment',
-  '/accommodation': 'Accommodation — Grand Villa Apartment',
-  '/bar-restaurant': 'Bar & Restaurant — Grand Villa Apartment',
-  '/things-to-do': 'Things to do — Grand Villa Apartment',
-  '/gallery': 'Gallery — Grand Villa Apartment',
-  '/about': 'About — Grand Villa Apartment',
-  '/contact': 'Contact — Grand Villa Apartment',
-  '/book': 'Book a stay — Grand Villa Apartment',
+  '/': 'Gmasters Boutique Hotel',
+  '/accommodation': 'Accommodation — Gmasters Boutique Hotel',
+  '/bar-restaurant': 'Bar & Restaurant — Gmasters Boutique Hotel',
+  '/things-to-do': 'Things to do — Gmasters Boutique Hotel',
+  '/gallery': 'Gallery — Gmasters Boutique Hotel',
+  '/about': 'About — Gmasters Boutique Hotel',
+  '/contact': 'Contact — Gmasters Boutique Hotel',
+  '/book': 'Book a stay — Gmasters Boutique Hotel',
   '/reviews': 'Share your stay — GMasters Boutique Hotel',
-  '/policy': 'Booking policy — Grand Villa Apartment',
+  '/policy': 'Booking policy — Gmasters Boutique Hotel',
 }
 
 export default function Layout({ hasHero = false }) {
@@ -30,7 +30,7 @@ export default function Layout({ hasHero = false }) {
   }, [pathname])
 
   useEffect(() => {
-    const brand = company?.name || 'Grand Villa Apartment'
+    const brand = company?.name || 'Gmasters Boutique Hotel'
     const roomMatch = pathname.startsWith('/accommodation/') && pathname !== '/accommodation'
     document.title = pathname === '/' && company?.seoTitle
       ? company.seoTitle

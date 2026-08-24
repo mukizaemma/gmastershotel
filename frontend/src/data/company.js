@@ -8,7 +8,7 @@
  */
 
 export const company = {
-  name: 'Grand Villa Apartment',
+  name: 'Gmasters Boutique Hotel',
   tagline: 'Comfortable rooms, honest food, and Lake Kivu right outside.',
 
   // TODO: confirm/replace with the real phone and email

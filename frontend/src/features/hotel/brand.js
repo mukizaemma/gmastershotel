@@ -1,5 +1,5 @@
 export const BRAND = {
-  name: 'Grand Villa Apartment',
+  name: 'Gmasters Boutique Hotel',
   shortName: 'Grand Villa',
   tagline: 'Comfortable rooms, honest food, and Lake Kivu right outside.',
   mark: 'GV',

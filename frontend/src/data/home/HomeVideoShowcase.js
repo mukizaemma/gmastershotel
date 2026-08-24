@@ -11,7 +11,7 @@
 
 export const homeVideoShowcase = {
   eyebrow: 'Property Video',
-  headline: 'Explore Grand Villa Apartment',
+  headline: 'Explore Gmasters Boutique Hotel',
   // TODO: replace with a real property photo/still
   backgroundImage: '/images/home/videoframe.png',
   // TODO: add a real hosted video file or embed URL (YouTube/Vimeo) once filmed

@@ -14,7 +14,7 @@
 export const homeWelcome = {
   eyebrow: 'Welcome to Grand Villa',
   headline: 'A quieter kind of comfort on Lake Kivu',
-  body: "Grand Villa Apartment offers restful rooms with breakfast included, and a bar & restaurant looking out over the water. We built this place for travelers who want Karongi's calm without paying resort prices — clean, comfortable, and genuinely welcoming.",
+  body: "Gmasters Boutique Hotel offers restful rooms with breakfast included, and a bar & restaurant looking out over the water. We built this place for travelers who want Karongi's calm without paying resort prices — clean, comfortable, and genuinely welcoming.",
   cta: { label: 'Discover More', path: '/about' },
   images: {
     // TODO: replace both with real property photography

@@ -6,7 +6,7 @@ export const heroSlides = [
   {
     id: 'overview',
     kicker: 'Karongi · Lake Kivu',
-    title: 'Grand Villa Apartment',
+    title: 'Gmasters Boutique Hotel',
     description:
       'Comfortable rooms, breakfast included, on the shores of Lake Kivu.',
     // TODO: replace with real hero photo (property exterior / lake view)

@@ -12,7 +12,7 @@ export const heroSlides = [
   {
     id: 'overview',
     eyebrow: 'Karongi · Lake Kivu',
-    headline: 'Grand Villa Apartment',
+    headline: 'Gmasters Boutique Hotel',
     subline:
       'Comfortable rooms, breakfast included, on the shores of Lake Kivu.',
     image: '/images/home/hero-overview.jpg',
