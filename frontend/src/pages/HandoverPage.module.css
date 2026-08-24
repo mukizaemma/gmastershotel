@@ -1,0 +1,332 @@
+.page {
+  min-height: 100vh;
+  background: #faf6ef;
+  color: #2b2b28;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 1.5rem;
+  border-bottom: 1px solid #eadfcd;
+  background: #fffdf8;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand strong {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.05rem;
+  color: #1a2b4b;
+}
+
+.brand small {
+  color: #8a8172;
+  font-size: 0.78rem;
+}
+
+.topLinks {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.topLinks a,
+.topLinks button,
+.credRow button,
+.form button {
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  color: #1a2b4b;
+}
+
+.topLinks a {
+  font-size: 0.88rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.topLinks button {
+  font-size: 0.82rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid #d8cdbe;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(200px, 240px) minmax(0, 44rem);
+  gap: 2.5rem;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2.25rem 1.5rem 4rem;
+}
+
+.contents p {
+  margin: 0 0 0.7rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a8172;
+}
+
+.contents ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contents button {
+  width: 100%;
+  border: 0;
+  background: none;
+  text-align: left;
+  padding: 0.4rem 0;
+  font: inherit;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: #5c6578;
+  cursor: pointer;
+  display: flex;
+  gap: 0.55rem;
+}
+
+.contents button span {
+  color: #c4a574;
+  font-size: 0.72rem;
+  padding-top: 0.18rem;
+  min-width: 1.4rem;
+}
+
+.contents button:hover,
+.active {
+  color: #1a2b4b;
+}
+
+.active {
+  font-weight: 600;
+  box-shadow: inset 0 -1px 0 #c4a574;
+}
+
+.chapter h1 {
+  margin: 0 0 0.7rem;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  line-height: 1.2;
+  color: #1a2b4b;
+}
+
+.kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #c4a574;
+}
+
+.lead,
+.chapter section p,
+.steps,
+.warn,
+.foot {
+  color: #4f5648;
+  line-height: 1.7;
+}
+
+.lead {
+  margin: 0 0 1.75rem;
+  font-size: 1.05rem;
+}
+
+.chapter section {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eadfcd;
+}
+
+.chapter section:last-of-type {
+  border-bottom: 0;
+}
+
+.chapter h2 {
+  margin: 0 0 0.45rem;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  color: #1a2b4b;
+}
+
+.chapter section p {
+  margin: 0;
+}
+
+.steps {
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.steps li + li {
+  margin-top: 0.45rem;
+}
+
+.creds {
+  display: grid;
+  gap: 1rem;
+  margin: 0 0 1.75rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid #eadfcd;
+  border-bottom: 1px solid #eadfcd;
+}
+
+.creds span {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a8172;
+  margin-bottom: 0.2rem;
+}
+
+.credRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.creds a,
+.creds strong {
+  color: #1a2b4b;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.credRow button {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.warn {
+  margin: 0.35rem 0 0;
+  font-size: 0.88rem;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem 1rem;
+  margin: 1.25rem 0 0;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: #1a2b4b;
+}
+
+.form input,
+.form select,
+.form textarea {
+  border: 0;
+  border-bottom: 1px solid #d8cdbe;
+  border-radius: 0;
+  padding: 0.5rem 0;
+  background: transparent;
+  font: inherit;
+}
+
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  outline: none;
+  border-bottom-color: #c4a574;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.form button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin-top: 0.4rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #1a2b4b;
+  font-weight: 600;
+}
+
+.foot {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eadfcd;
+  font-size: 0.82rem;
+}
+
+.foot a {
+  color: #1a2b4b;
+}
+
+@media (max-width: 800px) {
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .contents {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background: #faf6ef;
+    padding-bottom: 0.5rem;
+    margin: 0 -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .contents ol {
+    display: flex;
+    gap: 0.35rem 1rem;
+    overflow: auto;
+  }
+
+  .contents button {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+  }
+}

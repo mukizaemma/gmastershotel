@@ -1,0 +1,59 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useCartActions } from '@lib/cart/CartContext'
+import { useAvailability } from '@lib/queries/useAvailability'
+import { findBlockingClosure, guestClosureMessage } from '@features/hotel/availability'
+import { persistStayDates } from '@features/hotel/booking/persistStay'
+import StayDatePicker from '@components/hotel/StayDatePicker'
+import styles from './RoomStayForm.module.css'
+
+export default function RoomStayForm({ room }) {
+  const navigate = useNavigate()
+  const { addRoom } = useCartActions()
+  const { data: closures = [] } = useAvailability()
+  const [checkIn, setCheckIn] = useState('')
+  const [checkOut, setCheckOut] = useState('')
+  const [adults, setAdults] = useState(2)
+  const [closed, setClosed] = useState('')
+
+  function submit(event) {
+    event.preventDefault()
+    const blocked = findBlockingClosure(closures, {
+      checkIn,
+      checkOut,
+      roomSlugs: [room.id],
+    })
+    if (blocked) {
+      setClosed(guestClosureMessage(blocked))
+      return
+    }
+    addRoom(room)
+    persistStayDates({ checkIn, checkOut, adults, step: 2 })
+    navigate('/book')
+  }
+
+  return (
+    <form className={styles.form} onSubmit={submit}>
+      <h3>Book this room</h3>
+      <StayDatePicker
+        checkIn={checkIn}
+        checkOut={checkOut}
+        closures={closures}
+        roomSlugs={[room.id]}
+        onChange={(next) => {
+          setCheckIn(next.checkIn)
+          setCheckOut(next.checkOut)
+          setClosed('')
+        }}
+      />
+      <label>
+        Guests
+        <input type="number" min="1" value={adults} onChange={(e) => setAdults(e.target.value)} />
+      </label>
+      {closed && <p className={styles.notice}>{closed}</p>}
+      <button type="submit" disabled={!checkIn || !checkOut}>
+        Check availability
+      </button>
+    </form>
+  )
+}
