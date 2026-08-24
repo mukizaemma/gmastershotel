@@ -50,6 +50,52 @@
   border-color: var(--color-terracotta);
 }
 
+.selectField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: var(--space-md);
+}
+
+.selectField select {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--color-charcoal);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.8rem;
+  background: #fff;
+}
+
+.selectField select:focus {
+  outline: none;
+  border-color: var(--color-terracotta);
+}
+
+.calendarBlock {
+  margin-top: 0.15rem;
+}
+
+.calendarLead {
+  margin: 0 0 0.55rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.calendarLead strong {
+  color: var(--color-charcoal);
+}
+
+.statusOk {
+  margin-top: var(--space-sm);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-hillside-green);
+  background: rgba(74, 107, 90, 0.1);
+  padding: 0.7rem 0.85rem;
+  border-radius: 8px;
+}
+
 .nightsPill {
   display: inline-flex;
   align-items: center;
@@ -142,63 +188,9 @@
   border: 1px dashed var(--color-terracotta);
 }
 
-/* ── Empty cart: date-first availability ─────────────────── */
-
-.availableBlock {
-  margin-top: var(--space-lg);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--color-border);
-}
-
-.availableTitle {
-  font-size: 0.95rem;
-  color: var(--color-lake-teal);
-  margin: 0 0 var(--space-sm);
-}
-
 .availableNote {
   font-size: 0.85rem;
   color: var(--color-text-muted);
   line-height: 1.5;
   margin: 0;
-}
-
-.availableList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.availableRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
-  padding: 0.85rem 0;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.availableRow:last-child {
-  border-bottom: none;
-}
-
-.addAvailableBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #2c1608;
-  background: var(--color-terracotta);
-  padding: 0.6rem 0.9rem;
-  border-radius: var(--radius-sm);
-  flex-shrink: 0;
-  transition: transform var(--transition-base);
-}
-
-.addAvailableBtn:hover {
-  transform: translateY(-1px);
 }

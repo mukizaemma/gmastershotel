@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Plus, Sparkles } from 'lucide-react'
 import { useCart, useCartActions } from '@lib/cart/CartContext'
 import { useBooking } from '@lib/booking/BookingContext'
@@ -17,87 +17,106 @@ export default function Step1Stay() {
   const { stay, nights, setStay } = useBooking()
   const { data: closures = [] } = useAvailability()
   const { data: catalog = [], isLoading: roomsLoading } = useRoomsList()
+  const [pickedId, setPickedId] = useState('')
   const [roomPickerOpen, setRoomPickerOpen] = useState(false)
   const [experiencePickerOpen, setExperiencePickerOpen] = useState(false)
 
-  const roomSlugs = useMemo(() => catalog.map((room) => room.id), [catalog])
-  const needAvailability = roomCount === 0 && Boolean(stay.checkIn && stay.checkOut && nights > 0)
-  const calendars = useRoomCalendars(roomSlugs, { enabled: needAvailability && roomSlugs.length > 0 })
+  const picked = useMemo(() => catalog.find((room) => room.id === pickedId) || null, [catalog, pickedId])
+  const calendarSlugs = roomCount > 0 ? rooms.map((room) => room.roomId) : pickedId ? [pickedId] : []
+  const calendars = useRoomCalendars(calendarSlugs, { enabled: calendarSlugs.length > 0 })
 
   const blocked = findBlockingClosure(closures, {
     checkIn: stay.checkIn,
     checkOut: stay.checkOut,
-    roomSlugs: rooms.map((room) => room.roomId),
+    roomSlugs: roomCount > 0 ? rooms.map((room) => room.roomId) : pickedId ? [pickedId] : [],
   })
 
-  const availableRooms = useMemo(() => {
-    if (!stay.checkIn || !stay.checkOut || calendars.isLoading) return []
-    return catalog.filter(
-      (room) => !isInCart(room.id) && isStayOpen(calendars.byRoom[room.id]?.closed, stay.checkIn, stay.checkOut),
-    )
-  }, [calendars.byRoom, calendars.isLoading, catalog, isInCart, stay.checkIn, stay.checkOut])
+  const pickedOpen =
+    Boolean(picked && stay.checkIn && stay.checkOut && nights > 0 && !calendars.isLoading) &&
+    isStayOpen(calendars.byRoom[picked.id]?.closed, stay.checkIn, stay.checkOut)
 
-  const unavailableCount =
-    stay.checkIn && stay.checkOut && !calendars.isLoading
-      ? catalog.filter((room) => !isInCart(room.id)).length - availableRooms.length
-      : 0
+  useEffect(() => {
+    if (!picked || !pickedOpen || isInCart(picked.id)) return
+    addRoom(picked)
+  }, [addRoom, isInCart, picked, pickedOpen])
+
+  useEffect(() => {
+    if (roomCount > 0 && !pickedId) {
+      setPickedId(rooms[0].roomId)
+    }
+  }, [pickedId, roomCount, rooms])
+
+  function selectRoom(id) {
+    const next = String(id || '')
+    if (pickedId && pickedId !== next && isInCart(pickedId)) {
+      removeRoom(pickedId)
+    }
+    setPickedId(next)
+    setStay({ checkIn: '', checkOut: '' })
+  }
 
   if (roomCount === 0) {
     return (
       <div className={styles.card}>
-        <h2 className={styles.title}>Choose your dates</h2>
-        <p className={styles.subtitle}>
-          Pick check-in and check-out first. We then show which rooms are free for those nights so you can add one.
-        </p>
-        {blocked && stay.checkIn && stay.checkOut ? (
-          <p className={styles.dateError}>{guestClosureMessage(blocked)}</p>
+        <h2 className={styles.title}>Your stay</h2>
+        <p className={styles.subtitle}>Choose a room, then pick your nights. Continue unlocks when that room is free.</p>
+
+        <label className={styles.selectField}>
+          <span className={styles.fieldLabel}>Room *</span>
+          <select
+            value={pickedId}
+            onChange={(e) => selectRoom(e.target.value)}
+            disabled={roomsLoading || catalog.length === 0}
+          >
+            <option value="">{roomsLoading ? 'Loading rooms…' : 'Select a room'}</option>
+            {catalog.map((room) => (
+              <option key={room.id} value={room.id}>
+                {room.name} — ${room.pricePerNight}/night
+              </option>
+            ))}
+          </select>
+        </label>
+
+        {!roomsLoading && catalog.length === 0 ? (
+          <p className={styles.dateError}>No rooms are published yet. Please check back shortly.</p>
         ) : null}
 
-        <StayDatePicker
-          checkIn={stay.checkIn}
-          checkOut={stay.checkOut}
-          closures={closures}
-          roomSlugs={[]}
-          onChange={(next) => setStay({ checkIn: next.checkIn, checkOut: next.checkOut })}
-        />
-
-        {stay.checkIn && stay.checkOut && nights > 0 ? (
-          <div className={styles.availableBlock}>
-            <h3 className={styles.availableTitle}>
-              Available {formatDay(stay.checkIn)} – {formatDay(stay.checkOut)}
-            </h3>
-            {roomsLoading || calendars.isLoading ? (
-              <p className={styles.availableNote}>Checking availability…</p>
-            ) : availableRooms.length === 0 ? (
-              <p className={styles.availableNote}>
-                No rooms are free for those nights
-                {unavailableCount ? ` (${unavailableCount} room type${unavailableCount === 1 ? '' : 's'} sold out or closed)` : ''}.
-                Try other dates.
+        {picked ? (
+          <>
+            <div className={styles.calendarBlock}>
+              <p className={styles.calendarLead}>
+                Dates for <strong>{picked.name}</strong>
               </p>
-            ) : (
-              <ul className={styles.availableList}>
-                {availableRooms.map((room) => {
-                  const units = Math.max(1, Number(calendars.byRoom[room.id]?.units || room.units || 1))
-                  return (
-                    <li key={room.id} className={styles.availableRow}>
-                      <div>
-                        <p className={styles.roomName}>{room.name}</p>
-                        <p className={styles.roomDates}>
-                          ${room.pricePerNight} / night
-                          {units > 1 ? ` · ${units} units` : ''}
-                        </p>
-                      </div>
-                      <button type="button" className={styles.addAvailableBtn} onClick={() => addRoom(room)}>
-                        <Plus size={15} />
-                        Add room
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
-          </div>
-        ) : null}
+              <StayDatePicker
+                checkIn={stay.checkIn}
+                checkOut={stay.checkOut}
+                closures={closures}
+                roomSlugs={[picked.id]}
+                onChange={(next) => setStay({ checkIn: next.checkIn, checkOut: next.checkOut })}
+              />
+            </div>
+
+            {stay.checkIn && stay.checkOut && nights > 0 ? (
+              calendars.isLoading ? (
+                <p className={styles.availableNote}>Checking availability…</p>
+              ) : pickedOpen ? (
+                <p className={styles.statusOk}>
+                  {picked.name} is available {formatDay(stay.checkIn)} – {formatDay(stay.checkOut)}. You can continue.
+                </p>
+              ) : (
+                <p className={styles.dateError}>
+                  {picked.name} is not available for those nights. Choose other dates or another room.
+                </p>
+              )
+            ) : null}
+
+            {blocked && stay.checkIn && stay.checkOut ? (
+              <p className={styles.dateError}>{guestClosureMessage(blocked)}</p>
+            ) : null}
+          </>
+        ) : (
+          <p className={styles.availableNote}>Select a room above to open the calendar.</p>
+        )}
       </div>
     )
   }
