@@ -10,7 +10,9 @@ frontend/.env
 
 # keep example env files even though real .env is ignored above
 !backend/.env.example
+!backend/.env.production.example
 !frontend/.env.example
+!frontend/.env.production
 
 # editor/OS
 .DS_Store
