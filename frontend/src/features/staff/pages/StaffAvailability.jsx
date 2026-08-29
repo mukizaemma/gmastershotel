@@ -3,6 +3,7 @@ import { toast } from 'sonner'
 import { formatDay } from '@features/hotel/availability'
 import { staffClient } from '../api/staffClient'
 import StaffModal from '../components/StaffModal'
+import StaffRowActions from '../components/StaffRowActions'
 import '../staff.css'
 
 const empty = {
@@ -73,7 +74,6 @@ export default function StaffAvailability() {
   }
 
   async function remove(id) {
-    if (!window.confirm('Remove this closed-date range?')) return
     try {
       await staffClient.delete(`/api/availability-blocks/${id}`)
       load()
@@ -103,7 +103,7 @@ export default function StaffAvailability() {
               <th>What</th>
               <th>Note</th>
               <th>Status</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -125,9 +125,7 @@ export default function StaffAvailability() {
                         Open again
                       </button>
                     )}
-                    <button type="button" className="staffBtn staffBtnDanger" onClick={() => remove(row.id)}>
-                      Delete
-                    </button>
+                    <StaffRowActions onDelete={() => remove(row.id)} label={row.label || 'these closed dates'} />
                   </div>
                 </td>
               </tr>

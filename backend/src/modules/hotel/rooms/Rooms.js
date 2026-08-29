@@ -1,5 +1,6 @@
 import { applyAutoSlug } from '../../../core/fields/slug.js'
 import { previewUpload } from '../../../core/fields/pageHero.js'
+import { rowActionsField, withRowActions } from '../../../core/fields/rowActions.js'
 import { countRoomImages } from './roomImages.js'
 
 export const Rooms = {
@@ -17,7 +18,7 @@ export const Rooms = {
   admin: {
     group: false,
     useAsTitle: 'name',
-    defaultColumns: ['image', 'name', 'imageCount', 'units', 'pricePerNight'],
+    defaultColumns: withRowActions(['image', 'name', 'imageCount', 'units', 'pricePerNight']),
     description: 'Click a room name or Edit to change it. Slug is generated from the name.',
   },
   forceSelect: {
@@ -141,5 +142,6 @@ export const Rooms = {
         },
       },
     },
+    rowActionsField,
   ],
 }

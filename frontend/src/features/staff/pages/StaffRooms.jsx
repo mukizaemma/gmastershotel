@@ -8,6 +8,7 @@ import { slugify } from '../lib/slugify'
 import MediaGalleryField from '../components/MediaGalleryField'
 import RoomAmenityPicker from '../components/RoomAmenityPicker'
 import StaffModal from '../components/StaffModal'
+import StaffRowActions from '../components/StaffRowActions'
 import SummernoteField from '../components/SummernoteField'
 import '../staff.css'
 
@@ -117,7 +118,6 @@ export default function StaffRooms() {
   }
 
   async function remove(id) {
-    if (!window.confirm('Delete this room?')) return
     try {
       await staffClient.delete(`/api/rooms/${id}`)
       toast.success('Room deleted.')
@@ -148,7 +148,7 @@ export default function StaffRooms() {
               <th>Photos</th>
               <th>Rooms of this type</th>
               <th>Price / night</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -168,14 +168,12 @@ export default function StaffRooms() {
                 <td>{row.units || 1}</td>
                 <td>${row.pricePerNight}</td>
                 <td>
-                  <div className="rowActions">
-                    <button type="button" className="staffBtn" onClick={() => openEdit(row)}>
-                      Edit
-                    </button>
-                    <button type="button" className="staffBtn staffBtnDanger" onClick={() => remove(row.id)}>
-                      Delete
-                    </button>
-                  </div>
+                  <StaffRowActions
+                    viewHref={row.slug ? `/accommodation/${row.slug}` : ''}
+                    onEdit={() => openEdit(row)}
+                    onDelete={() => remove(row.id)}
+                    label={row.name || 'this room'}
+                  />
                 </td>
               </tr>
               )

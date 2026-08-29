@@ -206,8 +206,29 @@
   background: #c4a574;
 }
 
+.bookings-dash__icon--edit {
+  background: #1a2b4b;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+}
+
 .bookings-dash__icon--delete {
   background: #b42318;
+}
+
+.bookings-dash__confirm {
+  width: min(420px, 100%);
+  padding: 1.25rem 1.35rem;
+  border-radius: 12px;
+  background: #fff;
+  color: #1a2b4b;
+}
+
+.bookings-dash__confirm p {
+  margin: 0 0 1rem;
+  font-weight: 600;
+  line-height: 1.45;
 }
 
 .bookings-dash__overlay {

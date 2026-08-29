@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { Link } from '@payloadcms/ui'
 import './bookingsDashboard.css'
 
 function day(value) {
@@ -76,6 +78,8 @@ export function BookingsDashboard() {
   const [view, setView] = useState(null)
   const [draft, setDraft] = useState('')
   const [error, setError] = useState('')
+  const [deleteStep, setDeleteStep] = useState(0)
+  const [deleteTarget, setDeleteTarget] = useState(null)
 
   async function load() {
     const data = await api('/api/bookings?limit=200&sort=-createdAt&depth=0')
@@ -196,11 +200,17 @@ export function BookingsDashboard() {
     await saveBooking(row.id, { status })
   }
 
+  function askDelete(row) {
+    setDeleteTarget(row)
+    setDeleteStep(1)
+  }
+
   async function remove(id) {
-    if (!window.confirm('Delete this reservation?')) return
     await api(`/api/bookings/${id}`, { method: 'DELETE' })
     setRows((current) => current.filter((row) => row.id !== id))
     setView(null)
+    setDeleteStep(0)
+    setDeleteTarget(null)
   }
 
   return (
@@ -264,7 +274,7 @@ export function BookingsDashboard() {
               <th>Check-out</th>
               <th>Days</th>
               <th>Amount</th>
-              <th>Action</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -289,20 +299,42 @@ export function BookingsDashboard() {
                     <button
                       type="button"
                       className="bookings-dash__icon bookings-dash__icon--view"
+                      aria-label="View"
+                      title="View"
                       onClick={() => {
                         setView(row)
                         setDraft('')
                         setError('')
                       }}
                     >
-                      View
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
                     </button>
+                    <Link
+                      className="bookings-dash__icon bookings-dash__icon--edit"
+                      href={`/admin/collections/bookings/${row.id}`}
+                      aria-label="Edit"
+                      title="Edit"
+                    >
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 20h9" />
+                        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                      </svg>
+                    </Link>
                     <button
                       type="button"
                       className="bookings-dash__icon bookings-dash__icon--delete"
-                      onClick={() => remove(row.id)}
+                      aria-label="Delete"
+                      title="Delete"
+                      onClick={() => askDelete(row)}
                     >
-                      Del
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M3 6h18" />
+                        <path d="M8 6V4h8v2" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                      </svg>
                     </button>
                   </div>
                 </td>
@@ -416,7 +448,7 @@ export function BookingsDashboard() {
               <button type="button" className="bookings-dash__btn bookings-dash__btn--navy" onClick={() => setStatus(view, 'confirmed')}>
                 Confirm
               </button>
-              <button type="button" className="bookings-dash__btn bookings-dash__btn--danger" onClick={() => remove(view.id)}>
+              <button type="button" className="bookings-dash__btn bookings-dash__btn--danger" onClick={() => askDelete(view)}>
                 Delete
               </button>
               <button type="button" className="bookings-dash__btn bookings-dash__btn--ghost" onClick={() => setView(null)}>
@@ -426,6 +458,39 @@ export function BookingsDashboard() {
           </div>
         </div>
       )}
+      {deleteStep > 0 && deleteTarget && typeof document !== 'undefined'
+        ? createPortal(
+            <div className="bookings-dash__overlay" role="dialog" aria-modal="true">
+              <div className="bookings-dash__confirm">
+                <p>
+                  {deleteStep === 1
+                    ? `Delete ${deleteTarget.guestName || 'this reservation'}?`
+                    : `Permanently delete ${deleteTarget.guestName || 'this reservation'}? This cannot be undone.`}
+                </p>
+                <div className="bookings-dash__row">
+                  <button
+                    type="button"
+                    className="bookings-dash__btn bookings-dash__btn--ghost"
+                    onClick={() => {
+                      setDeleteStep(0)
+                      setDeleteTarget(null)
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="bookings-dash__btn bookings-dash__btn--danger"
+                    onClick={() => (deleteStep === 1 ? setDeleteStep(2) : remove(deleteTarget.id))}
+                  >
+                    {deleteStep === 1 ? 'Continue' : 'Delete permanently'}
+                  </button>
+                </div>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   )
 }

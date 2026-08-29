@@ -7,6 +7,7 @@ import { staffClient, mediaId } from '../api/staffClient'
 import { slugify } from '../lib/slugify'
 import MediaField from '../components/MediaField'
 import StaffModal from '../components/StaffModal'
+import StaffRowActions from '../components/StaffRowActions'
 import SummernoteField from '../components/SummernoteField'
 import '../staff.css'
 
@@ -96,7 +97,6 @@ export default function StaffMenuItems() {
   }
 
   async function remove(id) {
-    if (!window.confirm('Delete this menu item?')) return
     try {
       await staffClient.delete(`/api/menu-items/${id}`)
       toast.success('Deleted.')
@@ -127,7 +127,7 @@ export default function StaffMenuItems() {
               <th>Category</th>
               <th>Price</th>
               <th>On menu</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -145,14 +145,12 @@ export default function StaffMenuItems() {
                 <td>{formatMoney(row.price)}</td>
                 <td>{row.available === false ? 'Hidden' : 'Yes'}</td>
                 <td>
-                  <div className="rowActions">
-                    <button type="button" className="staffBtn" onClick={() => openEdit(row)}>
-                      Edit
-                    </button>
-                    <button type="button" className="staffBtn staffBtnDanger" onClick={() => remove(row.id)}>
-                      Delete
-                    </button>
-                  </div>
+                  <StaffRowActions
+                    viewHref="/bar-restaurant"
+                    onEdit={() => openEdit(row)}
+                    onDelete={() => remove(row.id)}
+                    label={row.name || 'this menu item'}
+                  />
                 </td>
               </tr>
             ))}

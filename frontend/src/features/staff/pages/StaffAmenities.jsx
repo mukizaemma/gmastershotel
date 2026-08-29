@@ -6,6 +6,7 @@ import { staffClient, mediaId } from '../api/staffClient'
 import { slugify } from '../lib/slugify'
 import MediaField from '../components/MediaField'
 import StaffModal from '../components/StaffModal'
+import StaffRowActions from '../components/StaffRowActions'
 import SummernoteField from '../components/SummernoteField'
 import '../staff.css'
 
@@ -46,7 +47,6 @@ export default function StaffAmenities() {
   }
 
   async function remove(id) {
-    if (!window.confirm('Delete this amenity?')) return
     try {
       await staffClient.delete(`/api/amenities/${id}`)
       load()
@@ -71,7 +71,7 @@ export default function StaffAmenities() {
               <th></th>
               <th>Name</th>
               <th>Icon</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -87,28 +87,22 @@ export default function StaffAmenities() {
                 <td>{row.name}</td>
                 <td>{row.icon}</td>
                 <td>
-                  <div className="rowActions">
-                    <button
-                      type="button"
-                      className="staffBtn"
-                      onClick={() =>
-                        setForm({
-                          id: row.id,
-                          name: row.name || '',
-                          slug: row.slug || '',
-                          icon: row.icon || 'wifi',
-                          description: asHtml(row.description),
-                          image: row.image || '',
-                          sort: row.sort || 0,
-                        })
-                      }
-                    >
-                      Edit
-                    </button>
-                    <button type="button" className="staffBtn staffBtnDanger" onClick={() => remove(row.id)}>
-                      Delete
-                    </button>
-                  </div>
+                  <StaffRowActions
+                    viewHref="/"
+                    onEdit={() =>
+                      setForm({
+                        id: row.id,
+                        name: row.name || '',
+                        slug: row.slug || '',
+                        icon: row.icon || 'wifi',
+                        description: asHtml(row.description),
+                        image: row.image || '',
+                        sort: row.sort || 0,
+                      })
+                    }
+                    onDelete={() => remove(row.id)}
+                    label={row.name || 'this amenity'}
+                  />
                 </td>
               </tr>
             ))}

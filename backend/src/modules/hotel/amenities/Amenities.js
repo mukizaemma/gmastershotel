@@ -1,5 +1,6 @@
 import { applyAutoSlug } from '../../../core/fields/slug.js'
 import { previewUpload } from '../../../core/fields/pageHero.js'
+import { rowActionsField, withRowActions } from '../../../core/fields/rowActions.js'
 
 export const Amenities = {
   slug: 'amenities',
@@ -13,7 +14,7 @@ export const Amenities = {
   admin: {
     group: false,
     useAsTitle: 'name',
-    defaultColumns: ['image', 'name', 'updatedAt'],
+    defaultColumns: withRowActions(['image', 'name', 'updatedAt']),
     description: 'Hotel amenities shown on the public site.',
   },
   hooks: {
@@ -40,5 +41,6 @@ export const Amenities = {
     },
     { name: 'description', type: 'richText' },
     previewUpload('image', { admin: { width: '25%' } }),
+    rowActionsField,
   ],
 }

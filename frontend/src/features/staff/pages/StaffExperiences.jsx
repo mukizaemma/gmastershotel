@@ -6,6 +6,7 @@ import { staffClient, mediaId } from '../api/staffClient'
 import { slugify } from '../lib/slugify'
 import MediaField from '../components/MediaField'
 import StaffModal from '../components/StaffModal'
+import StaffRowActions from '../components/StaffRowActions'
 import SummernoteField from '../components/SummernoteField'
 import '../staff.css'
 
@@ -56,7 +57,6 @@ export default function StaffExperiences() {
   }
 
   async function remove(id) {
-    if (!window.confirm('Delete this activity?')) return
     try {
       await staffClient.delete(`/api/experiences/${id}`)
       toast.success('Deleted.')
@@ -82,7 +82,7 @@ export default function StaffExperiences() {
               <th></th>
               <th>Name</th>
               <th>Price</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -98,14 +98,12 @@ export default function StaffExperiences() {
                 <td>{row.name}</td>
                 <td>{row.price == null || row.price === '' ? '—' : `$${row.price}`}</td>
                 <td>
-                  <div className="rowActions">
-                    <button type="button" className="staffBtn" onClick={() => openEdit(row)}>
-                      Edit
-                    </button>
-                    <button type="button" className="staffBtn staffBtnDanger" onClick={() => remove(row.id)}>
-                      Delete
-                    </button>
-                  </div>
+                  <StaffRowActions
+                    viewHref="/things-to-do"
+                    onEdit={() => openEdit(row)}
+                    onDelete={() => remove(row.id)}
+                    label={row.name || 'this activity'}
+                  />
                 </td>
               </tr>
             ))}

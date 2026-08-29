@@ -1,3 +1,5 @@
+import { rowActionsField, withRowActions } from '../../../core/fields/rowActions.js'
+
 export const GalleryPhotos = {
   slug: 'gallery-photos',
   access: {
@@ -10,7 +12,7 @@ export const GalleryPhotos = {
   admin: {
     group: false,
     useAsTitle: 'caption',
-    defaultColumns: ['caption', 'category', 'photo'],
+    defaultColumns: withRowActions(['caption', 'category', 'photo']),
     description: 'Legacy gallery rows. The public Gallery now uses Media files marked Show on gallery.',
   },
   fields: [
@@ -60,5 +62,6 @@ export const GalleryPhotos = {
         },
       },
     },
+    rowActionsField,
   ],
 }

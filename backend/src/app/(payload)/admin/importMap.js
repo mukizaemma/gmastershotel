@@ -3,6 +3,7 @@ import { ThumbnailCell as ThumbnailCell_95384848cef57d902cd36ebafd9b93e0 } from 
 import { RoomTitleCell as RoomTitleCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
 import { HiddenField as HiddenField_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
 import { ImageCountCell as ImageCountCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
+import { RowActionsCell as RowActionsCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
 import { GalleryCategoryField as GalleryCategoryField_3a15863d77786846f06d40b3ca8147a9 } from '../../../../src/components/payload/HideInDrawer/index.jsx'
 import { GalleryOrderField as GalleryOrderField_3a15863d77786846f06d40b3ca8147a9 } from '../../../../src/components/payload/HideInDrawer/index.jsx'
 import { ShowOnGalleryField as ShowOnGalleryField_3a15863d77786846f06d40b3ca8147a9 } from '../../../../src/components/payload/HideInDrawer/index.jsx'
@@ -50,6 +51,7 @@ export const importMap = {
   "./src/components/payload/ListCells/index.jsx#RoomTitleCell": RoomTitleCell_95384848cef57d902cd36ebafd9b93e0,
   "./src/components/payload/ListCells/index.jsx#HiddenField": HiddenField_95384848cef57d902cd36ebafd9b93e0,
   "./src/components/payload/ListCells/index.jsx#ImageCountCell": ImageCountCell_95384848cef57d902cd36ebafd9b93e0,
+  "./src/components/payload/ListCells/index.jsx#RowActionsCell": RowActionsCell_95384848cef57d902cd36ebafd9b93e0,
   "./src/components/payload/HideInDrawer/index.jsx#GalleryCategoryField": GalleryCategoryField_3a15863d77786846f06d40b3ca8147a9,
   "./src/components/payload/HideInDrawer/index.jsx#GalleryOrderField": GalleryOrderField_3a15863d77786846f06d40b3ca8147a9,
   "./src/components/payload/HideInDrawer/index.jsx#ShowOnGalleryField": ShowOnGalleryField_3a15863d77786846f06d40b3ca8147a9,

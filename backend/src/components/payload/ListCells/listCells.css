@@ -43,6 +43,86 @@
   text-decoration: underline;
 }
 
+.row-actions-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.row-actions-cell__btn {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.row-actions-cell__btn--view {
+  background: #c4a574;
+}
+
+.row-actions-cell__btn--edit {
+  background: #1a2b4b;
+}
+
+.row-actions-cell__btn--delete {
+  background: #b42318;
+}
+
+.row-actions-confirm {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: rgba(18, 32, 58, 0.5);
+}
+
+.row-actions-confirm__card {
+  width: min(420px, 100%);
+  padding: 1.25rem 1.35rem;
+  border-radius: 12px;
+  background: var(--theme-elevation-0, #fff);
+  color: var(--theme-text, #1a2b4b);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+}
+
+.row-actions-confirm__card p {
+  margin: 0 0 1rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.row-actions-confirm__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.row-actions-confirm__ghost,
+.row-actions-confirm__danger {
+  border: 0;
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.row-actions-confirm__ghost {
+  background: var(--theme-elevation-100, #f3eee6);
+  color: inherit;
+}
+
+.row-actions-confirm__danger {
+  background: #b42318;
+  color: #fff;
+}
+
 .image-count-cell {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;

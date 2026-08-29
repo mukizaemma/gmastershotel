@@ -1,4 +1,5 @@
 import { APIError } from 'payload'
+import { rowActionsField, withRowActions } from '../../../core/fields/rowActions.js'
 import { dayKey } from './availability.js'
 
 export const AvailabilityBlocks = {
@@ -13,7 +14,7 @@ export const AvailabilityBlocks = {
   admin: {
     group: false,
     useAsTitle: 'label',
-    defaultColumns: ['label', 'scope', 'startDate', 'reopenDate', 'active'],
+    defaultColumns: withRowActions(['label', 'scope', 'startDate', 'reopenDate', 'active']),
     description: 'Stop website bookings when the property or a room type is full (groups, OTAs). One range is enough — you can open it again later.',
   },
   hooks: {
@@ -99,5 +100,6 @@ export const AvailabilityBlocks = {
         description: 'Optional public line. If empty, guests see a simple “fully booked until…” message.',
       },
     },
+    rowActionsField,
   ],
 }

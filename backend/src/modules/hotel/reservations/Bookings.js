@@ -3,6 +3,7 @@ import { assertBookingCreateRateLimit } from '../../../core/security/rateLimit.j
 import { findUnavailableStay } from './availability.js'
 import { notifyBookingChange, shouldNotifyBookingChange } from './bookingNotify.js'
 import { calcStayTotal, nightsBetween } from './pricing.js'
+import { rowActionsField, withRowActions } from '../../../core/fields/rowActions.js'
 
 // Receives POST /api/bookings from the frontend's booking flow
 // (see useBookingSubmit.js). Rooms are snapshotted (roomId/name/
@@ -25,7 +26,7 @@ export const Bookings = {
   admin: {
     group: false,
     useAsTitle: 'guestName',
-    defaultColumns: ['guestName', 'confirmationMethod', 'checkIn', 'checkOut', 'status'],
+    defaultColumns: withRowActions(['guestName', 'confirmationMethod', 'checkIn', 'checkOut', 'status']),
   },
   hooks: {
     beforeValidate: [
@@ -365,5 +366,6 @@ export const Bookings = {
         { name: 'body', type: 'textarea', required: true },
       ],
     },
+    rowActionsField,
   ],
 }

@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Eye, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { staffClient } from '../api/staffClient'
 import { useSiteLayout } from '@lib/queries/useSiteLayout'
 import { brandFromCompany } from '@features/hotel/companyBrand'
 import StaffModal from '../components/StaffModal'
+import StaffRowActions from '../components/StaffRowActions'
 import '../staff.css'
 
 function day(value) {
@@ -169,7 +169,6 @@ export default function StaffReservations() {
   }
 
   async function remove(id) {
-    if (!window.confirm('Delete this reservation?')) return
     try {
       await staffClient.delete(`/api/bookings/${id}`)
       toast.success('Reservation deleted.')
@@ -239,7 +238,7 @@ export default function StaffReservations() {
               <th>Check-out</th>
               <th>Days</th>
               <th>Amount</th>
-              <th>Action</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -262,22 +261,18 @@ export default function StaffReservations() {
                 <td>{stayNights(row)}</td>
                 <td>{money(row.total, row.currency)}</td>
                 <td>
-                  <div className="rowActions">
-                    <button
-                      type="button"
-                      className="iconBtn iconView"
-                      onClick={() => {
-                        setView(row)
-                        setDraft('')
-                      }}
-                      aria-label="View"
-                    >
-                      <Eye size={15} />
-                    </button>
-                    <button type="button" className="iconBtn iconDelete" onClick={() => remove(row.id)} aria-label="Delete">
-                      <Trash2 size={15} />
-                    </button>
-                  </div>
+                  <StaffRowActions
+                    onView={() => {
+                      setView(row)
+                      setDraft('')
+                    }}
+                    onEdit={() => {
+                      setView(row)
+                      setDraft('')
+                    }}
+                    onDelete={() => remove(row.id)}
+                    label={row.guestName || 'this reservation'}
+                  />
                 </td>
               </tr>
             ))}
@@ -391,9 +386,7 @@ export default function StaffReservations() {
             <button type="button" className="staffBtn" onClick={() => setStatus(view.id, 'confirmed')}>
               Confirm
             </button>
-            <button type="button" className="staffBtn staffBtnDanger" onClick={() => remove(view.id)}>
-              Delete
-            </button>
+            <StaffRowActions onDelete={() => remove(view.id)} label={view.guestName || 'this reservation'} />
           </div>
         </StaffModal>
       )}

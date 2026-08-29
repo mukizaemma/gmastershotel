@@ -1,5 +1,6 @@
 import { applyAutoSlug } from '../../../core/fields/slug.js'
 import { previewUpload } from '../../../core/fields/pageHero.js'
+import { rowActionsField, withRowActions } from '../../../core/fields/rowActions.js'
 
 export const Experiences = {
   slug: 'experiences',
@@ -13,7 +14,7 @@ export const Experiences = {
   admin: {
     group: false,
     useAsTitle: 'name',
-    defaultColumns: ['image', 'name', 'price'],
+    defaultColumns: withRowActions(['image', 'name', 'price']),
     description: 'Activities on Things to do. Slug is generated from the name.',
   },
   hooks: {
@@ -49,5 +50,6 @@ export const Experiences = {
       type: 'richText',
     },
     previewUpload('image', { admin: { width: '25%' } }),
+    rowActionsField,
   ],
 }

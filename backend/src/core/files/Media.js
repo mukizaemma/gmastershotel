@@ -1,5 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { rowActionsField, withRowActions } from '../fields/rowActions.js'
 import { isUploadedFilename } from './mediaCaption.js'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -14,7 +15,7 @@ export const Media = {
   admin: {
     group: false,
     useAsTitle: 'alt',
-    defaultColumns: ['alt', 'showOnGallery', 'updatedAt'],
+    defaultColumns: withRowActions(['alt', 'showOnGallery', 'updatedAt']),
     description: 'Library of images and videos. Create New accepts several files at once. Gallery category is only for the public Gallery page — not needed when you pick a file for a page field.',
     pagination: {
       defaultLimit: 18,
@@ -131,5 +132,6 @@ export const Media = {
         },
       },
     },
+    rowActionsField,
   ],
 }

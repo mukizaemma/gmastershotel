@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { staffClient } from '../api/staffClient'
+import StaffRowActions from '../components/StaffRowActions'
 import '../staff.css'
 
 function day(value) {
@@ -10,6 +11,7 @@ function day(value) {
 }
 
 export default function StaffDashboard() {
+  const navigate = useNavigate()
   const [bookings, setBookings] = useState([])
 
   useEffect(() => {
@@ -58,6 +60,7 @@ export default function StaffDashboard() {
               <th>Check-in</th>
               <th>Status</th>
               <th>Total</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -70,11 +73,23 @@ export default function StaffDashboard() {
                 <td>
                   {row.currency || 'USD'} {row.total}
                 </td>
+                <td>
+                  <StaffRowActions
+                    onView={() => navigate('/staff/reservations')}
+                    onEdit={() => navigate('/staff/reservations')}
+                    onDelete={async () => {
+                      await staffClient.delete(`/api/bookings/${row.id}`)
+                      setBookings((current) => current.filter((item) => item.id !== row.id))
+                      toast.success('Reservation deleted.')
+                    }}
+                    label={row.guestName || 'this reservation'}
+                  />
+                </td>
               </tr>
             ))}
             {bookings.length === 0 && (
               <tr>
-                <td colSpan={5}>No reservations yet.</td>
+                <td colSpan={6}>No reservations yet.</td>
               </tr>
             )}
           </tbody>

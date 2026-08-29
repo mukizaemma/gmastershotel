@@ -1,4 +1,5 @@
 import { APIError } from 'payload'
+import { rowActionsField, withRowActions } from '../../../core/fields/rowActions.js'
 import { assertPublicFormRateLimit } from '../../../core/security/rateLimit.js'
 
 export const HandoverFeedback = {
@@ -10,7 +11,7 @@ export const HandoverFeedback = {
   admin: {
     group: false,
     useAsTitle: 'section',
-    defaultColumns: ['section', 'name', 'createdAt'],
+    defaultColumns: withRowActions(['section', 'name', 'createdAt']),
     description: 'Notes sent from the /handover guide.',
   },
   hooks: {
@@ -51,5 +52,6 @@ export const HandoverFeedback = {
       ],
     },
     { name: 'message', type: 'textarea', required: true },
+    rowActionsField,
   ],
 }

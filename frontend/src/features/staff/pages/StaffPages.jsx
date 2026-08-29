@@ -10,6 +10,7 @@ import { staffClient, mediaId } from '../api/staffClient'
 import MediaField from '../components/MediaField'
 import MediaGalleryField from '../components/MediaGalleryField'
 import StaffModal from '../components/StaffModal'
+import StaffRowActions from '../components/StaffRowActions'
 import SummernoteField from '../components/SummernoteField'
 import '../staff.css'
 
@@ -461,7 +462,7 @@ export default function StaffPages() {
             <tr>
               <th>Page</th>
               <th>URL</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -470,9 +471,7 @@ export default function StaffPages() {
                 <td>{page.label}</td>
                 <td>{page.path}</td>
                 <td>
-                  <button type="button" className="staffBtn" onClick={() => open(page)}>
-                    Edit
-                  </button>
+                  <StaffRowActions viewHref={page.path} onEdit={() => open(page)} label={page.label} />
                 </td>
               </tr>
             ))}
