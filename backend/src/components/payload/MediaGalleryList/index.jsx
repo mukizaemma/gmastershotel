@@ -13,6 +13,7 @@ import {
   useListQuery,
   useSelection,
 } from '@payloadcms/ui'
+import { displayCaption } from '../../../core/files/mediaCaption.js'
 import './mediaGalleryList.css'
 
 function fileSrc(doc) {
@@ -82,6 +83,7 @@ function MediaGalleryGrid() {
             serverURL,
           })
           const isSelected = Boolean(selected?.get?.(doc.id))
+          const caption = displayCaption(doc.alt, doc.filename)
           const isVideo = String(doc.mimeType || '').startsWith('video/')
 
           function insertThis() {
@@ -114,9 +116,7 @@ function MediaGalleryGrid() {
                   {isVideo ? <span className="media-gallery-grid__badge">Video</span> : null}
                 </Link>
               )}
-              <p className="media-gallery-grid__name" title={doc.alt || doc.filename || ''}>
-                {doc.alt || doc.filename || 'Untitled'}
-              </p>
+              {caption ? <p className="media-gallery-grid__name">{caption}</p> : null}
             </article>
           )
         })}

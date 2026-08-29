@@ -9,6 +9,15 @@
 import { CMS_URL } from '@lib/apiClient'
 import { asPlain } from '@lib/richText'
 
+export function displayCaption(alt, filename) {
+  const text = String(alt || '').trim()
+  if (!text) return ''
+  const file = String(filename || '').trim()
+  if (file && (text === file || text === file.replace(/\.[^.]+$/, ''))) return ''
+  if (/\.(jpe?g|png|gif|webp|avif|svg|mp4|webm|mov|m4v)$/i.test(text)) return ''
+  return text
+}
+
 /**
  * Resolve a Payload upload field (or a plain string path) into a full
  * image URL. Payload uploads come back as `{ url: '/api/media/file/x.jpg' }`

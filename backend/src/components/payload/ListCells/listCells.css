@@ -1,0 +1,49 @@
+.list-thumb-cell {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.list-thumb-cell__img {
+  width: 72px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+  background: var(--theme-elevation-50, #faf7f0);
+}
+
+.list-thumb-cell__empty {
+  font-size: 0.75rem;
+  color: var(--theme-elevation-500, #8a8172);
+}
+
+.room-title-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.room-title-cell__name {
+  font-weight: 700;
+}
+
+.room-title-cell__edit {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #c4a574;
+}
+
+.room-title-cell:hover .room-title-cell__name {
+  text-decoration: underline;
+}
+
+.image-count-cell {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}

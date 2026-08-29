@@ -5,7 +5,7 @@
  */
 import { useQuery } from '@tanstack/react-query'
 import { apiClient } from '@lib/apiClient'
-import { headerUrl, mediaUrl } from '../adapters'
+import { headerUrl, mediaUrl, displayCaption } from '../adapters'
 import { asPlain } from '@lib/richText'
 import { fetchPages } from './usePages'
 
@@ -13,7 +13,7 @@ function adaptMedia(doc) {
   return {
     id: doc.id,
     category: doc.galleryCategory || 'rooms',
-    caption: doc.alt || doc.filename || '',
+    caption: displayCaption(doc.alt, doc.filename),
     aspect: 'square',
     image: mediaUrl(doc),
   }
@@ -23,7 +23,7 @@ function adaptLegacyPhoto(doc) {
   return {
     id: doc.id,
     category: doc.category,
-    caption: doc.caption,
+    caption: displayCaption(doc.caption),
     aspect: doc.aspect || 'square',
     image: mediaUrl(doc.photo),
   }

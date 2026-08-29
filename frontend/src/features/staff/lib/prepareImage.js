@@ -91,7 +91,7 @@ export async function prepareUploadFiles(fileList) {
 export async function uploadMediaFile(client, file, extra = {}) {
   const body = new FormData()
   body.append('file', file)
-  body.append('alt', extra.alt || file.name)
+  body.append('alt', extra.alt || '')
   if (extra.showOnGallery != null) body.append('showOnGallery', extra.showOnGallery ? 'true' : 'false')
   if (extra.galleryOrder != null) body.append('galleryOrder', String(extra.galleryOrder))
   if (extra.galleryCategory) body.append('galleryCategory', extra.galleryCategory)

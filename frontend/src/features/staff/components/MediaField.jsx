@@ -39,7 +39,7 @@ export default function MediaField({
     if (!pending) return
     setBusy(true)
     try {
-      const doc = await uploadMediaFile(staffClient, pending.file, { alt: pending.file.name })
+      const doc = await uploadMediaFile(staffClient, pending.file)
       onChange(doc)
       URL.revokeObjectURL(pending.preview)
       setPending(null)

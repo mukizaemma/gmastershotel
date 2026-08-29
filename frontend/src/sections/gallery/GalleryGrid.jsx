@@ -54,10 +54,10 @@ export default function GalleryGrid() {
                 className={`${styles.tile} ${styles[`aspect${capitalize(img.aspect || 'square')}`]}`}
                 style={{ backgroundImage: `url(${img.image})` }}
                 onClick={() => openLightbox(i)}
-                aria-label={`Open photo: ${img.caption}`}
+                aria-label={img.caption ? `Open photo: ${img.caption}` : 'Open photo'}
               >
                 <span className={styles.tileOverlay} />
-                <span className={styles.tileCaption}>{img.caption}</span>
+                {img.caption ? <span className={styles.tileCaption}>{img.caption}</span> : null}
               </button>
             </Reveal>
           ))}
@@ -135,7 +135,9 @@ function GalleryLightbox({ images, activeIndex, onClose, onNext, onPrev }) {
             style={{ backgroundImage: `url(${img.image})` }}
           />
         ))}
-        <p className={styles.lightboxCaption}>{images[activeIndex].caption}</p>
+        {images[activeIndex].caption ? (
+          <p className={styles.lightboxCaption}>{images[activeIndex].caption}</p>
+        ) : null}
       </div>
 
       <button

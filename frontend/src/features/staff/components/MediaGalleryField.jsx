@@ -47,7 +47,7 @@ export default function MediaGalleryField({
     try {
       const uploaded = []
       for (const item of queue) {
-        uploaded.push(await uploadMediaFile(staffClient, item.file, { alt: item.file.name }))
+        uploaded.push(await uploadMediaFile(staffClient, item.file))
       }
       onChange([...items, ...uploaded].slice(0, max))
       queue.forEach((item) => URL.revokeObjectURL(item.preview))
@@ -101,10 +101,10 @@ export default function MediaGalleryField({
           <strong>Ready to upload ({queue.length})</strong>
           <div className={styles.grid}>
             {queue.map((item, index) => (
-              <article key={`${item.file.name}-${index}`} className={styles.queueItem}>
-                <img src={item.preview} alt={item.file.name} />
+              <article key={index} className={styles.queueItem}>
+                <img src={item.preview} alt="" />
                 <div>
-                  <p>{item.file.name}</p>
+                  <p>Photo {index + 1}</p>
                   <small>
                     {item.resized
                       ? `${formatBytes(item.originalSize)} → ${formatBytes(item.finalSize)} resized`

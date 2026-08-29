@@ -31,6 +31,17 @@ const SPEC_FIELDS = [
   { key: 'breakfast', label: 'Breakfast', hint: 'Included' },
 ]
 
+function photoCount(row) {
+  const ids = new Set()
+  const cover = row.image?.id || row.image
+  if (cover) ids.add(String(cover))
+  for (const item of row.gallery || []) {
+    const id = item?.photo?.id || item?.photo
+    if (id) ids.add(String(id))
+  }
+  return ids.size
+}
+
 export default function StaffRooms() {
   const [rows, setRows] = useState([])
   const [form, setForm] = useState(null)
@@ -134,13 +145,16 @@ export default function StaffRooms() {
             <tr>
               <th></th>
               <th>Name</th>
+              <th>Photos</th>
               <th>Rooms of this type</th>
               <th>Price / night</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
+            {rows.map((row) => {
+              const photos = photoCount(row)
+              return (
               <tr key={row.id}>
                 <td>
                   {mediaUrl(row.image) ? (
@@ -150,6 +164,7 @@ export default function StaffRooms() {
                   )}
                 </td>
                 <td>{row.name}</td>
+                <td>{photos === 1 ? '1 photo' : `${photos} photos`}</td>
                 <td>{row.units || 1}</td>
                 <td>${row.pricePerNight}</td>
                 <td>
@@ -163,7 +178,8 @@ export default function StaffRooms() {
                   </div>
                 </td>
               </tr>
-            ))}
+              )
+            })}
           </tbody>
         </table>
       </div>

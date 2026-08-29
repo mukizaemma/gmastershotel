@@ -53,7 +53,12 @@ export const GalleryPhotos = {
       relationTo: 'media',
       required: true,
       displayPreview: true,
-      admin: { description: 'Create New to upload, or Choose from existing in the Media library.' },
+      admin: {
+        description: 'Create New to upload, or Choose from existing in the Media library.',
+        components: {
+          Cell: './src/components/payload/ListCells/index.jsx#ThumbnailCell',
+        },
+      },
     },
   ],
 }

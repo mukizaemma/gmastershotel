@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { mediaUrl } from '@features/hotel/adapters'
+import { displayCaption, mediaUrl } from '@features/hotel/adapters'
 import { staffClient } from '../api/staffClient'
 import StaffModal from './StaffModal'
 import styles from './MediaField.module.css'
@@ -68,8 +68,10 @@ export default function MediaLibraryPicker({
                 )
               }}
             >
-              <img src={mediaUrl(file)} alt={file.alt || file.filename} />
-              <span>{file.alt || file.filename}</span>
+              <img src={mediaUrl(file)} alt="" />
+              {displayCaption(file.alt, file.filename) ? (
+                <span>{displayCaption(file.alt, file.filename)}</span>
+              ) : null}
             </button>
           )
         })}

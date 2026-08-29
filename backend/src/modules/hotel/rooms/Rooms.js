@@ -1,5 +1,6 @@
 import { applyAutoSlug } from '../../../core/fields/slug.js'
 import { previewUpload } from '../../../core/fields/pageHero.js'
+import { countRoomImages } from './roomImages.js'
 
 export const Rooms = {
   slug: 'rooms',
@@ -9,12 +10,19 @@ export const Rooms = {
   },
   access: {
     read: () => true,
+    create: ({ req }) => Boolean(req.user),
+    update: ({ req }) => Boolean(req.user),
+    delete: ({ req }) => Boolean(req.user),
   },
   admin: {
     group: false,
     useAsTitle: 'name',
-    defaultColumns: ['image', 'name', 'units', 'pricePerNight'],
-    description: 'Prefer the staff desk for adding rooms. Slug is generated from the name.',
+    defaultColumns: ['image', 'name', 'imageCount', 'units', 'pricePerNight'],
+    description: 'Click a room name or Edit to change it. Slug is generated from the name.',
+  },
+  forceSelect: {
+    image: true,
+    gallery: true,
   },
   hooks: {
     beforeValidate: [applyAutoSlug],
@@ -24,7 +32,14 @@ export const Rooms = {
           const photo = typeof data.image === 'object' ? data.image.id : data.image
           if (photo) data.gallery = [{ photo }]
         }
+        if (data) data.imageCount = countRoomImages(data)
         return data
+      },
+    ],
+    afterRead: [
+      ({ doc }) => {
+        if (doc && Array.isArray(doc.gallery)) doc.imageCount = countRoomImages(doc)
+        return doc
       },
     ],
   },
@@ -33,7 +48,24 @@ export const Rooms = {
       name: 'name',
       type: 'text',
       required: true,
-      admin: { width: '25%' },
+      admin: {
+        width: '25%',
+        components: {
+          Cell: './src/components/payload/ListCells/index.jsx#RoomTitleCell',
+        },
+      },
+    },
+    {
+      name: 'imageCount',
+      type: 'number',
+      label: 'Images',
+      admin: {
+        readOnly: true,
+        components: {
+          Field: './src/components/payload/ListCells/index.jsx#HiddenField',
+          Cell: './src/components/payload/ListCells/index.jsx#ImageCountCell',
+        },
+      },
     },
     {
       name: 'pricePerNight',

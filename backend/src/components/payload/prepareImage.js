@@ -87,10 +87,19 @@ export async function prepareUploadFiles(fileList) {
   return Promise.all(Array.from(fileList || []).map((file) => prepareUploadFile(file)))
 }
 
-export async function uploadPreparedFile(file) {
+export async function uploadPreparedFile(file, fields = {}) {
+  const galleryCategory = fields.galleryCategory || 'none'
   const body = new FormData()
   body.append('file', file)
-  body.append('_payload', JSON.stringify({ alt: file.name.replace(/\.[^.]+$/, '') }))
+  body.append(
+    '_payload',
+    JSON.stringify({
+      alt: fields.alt || '',
+      galleryCategory,
+      galleryOrder: Number(fields.galleryOrder) || 0,
+      showOnGallery: galleryCategory !== 'none',
+    }),
+  )
   const res = await fetch('/api/media?depth=0', {
     method: 'POST',
     credentials: 'include',

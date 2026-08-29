@@ -1,6 +1,7 @@
 import { APIError } from 'payload'
 import { assertBookingCreateRateLimit } from '../../../core/security/rateLimit.js'
 import { findUnavailableStay } from './availability.js'
+import { notifyBookingChange, shouldNotifyBookingChange } from './bookingNotify.js'
 import { calcStayTotal, nightsBetween } from './pricing.js'
 
 // Receives POST /api/bookings from the frontend's booking flow
@@ -131,6 +132,16 @@ export const Bookings = {
           }))
         }
         return data
+      },
+    ],
+    afterChange: [
+      async ({ doc, previousDoc, operation, req }) => {
+        if (operation === 'update' && !shouldNotifyBookingChange(previousDoc, doc)) return
+        try {
+          await notifyBookingChange({ payload: req.payload, doc, operation })
+        } catch (error) {
+          req.payload.logger?.error?.(error)
+        }
       },
     ],
   },

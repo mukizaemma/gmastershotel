@@ -9,7 +9,13 @@ export function mediaUpload(name, extra = {}) {
     type: 'upload',
     relationTo: 'media',
     displayPreview: true,
-    admin: { ...mediaPickerAdmin, ...adminExtra },
+    admin: {
+      description: 'Create New to upload, or Choose from existing to pick from the Media library.',
+      components: {
+        Cell: './src/components/payload/ListCells/index.jsx#ThumbnailCell',
+      },
+      ...adminExtra,
+    },
     ...rest,
   }
 }

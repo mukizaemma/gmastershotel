@@ -355,6 +355,22 @@ body.ireme-login .ireme-admin-footer {
   display: none !important;
 }
 
+/* Never show the uploaded filename next to a thumbnail or in file details. */
+.file__filename,
+.file-field__filename,
+.file-selections__fileName,
+.upload-relationship-details__filename,
+.folder-file-card__name,
+.file-meta__url,
+.table .cell-type-upload .file,
+.table .cell-type-upload .file-meta,
+.table .cell-type-upload .file-details,
+.table .cell-type-upload .upload-relationship-details__details,
+.collection-list .file__filename,
+.collection-list .relationship-file__filename {
+  display: none !important;
+}
+
 .hero-image-upload .upload-relationship-details__thumbnail,
 .hero-image-upload .upload-relationship-details__thumbnail img,
 .hero-image-upload .thumbnail {

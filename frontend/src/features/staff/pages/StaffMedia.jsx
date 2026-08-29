@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { mediaUrl } from '@features/hotel/adapters'
+import { displayCaption, mediaUrl } from '@features/hotel/adapters'
 import { GALLERY_CATEGORIES } from '@features/hotel/gallery/categories'
 import { staffClient } from '../api/staffClient'
 import { formatBytes, prepareUploadFiles, uploadMediaFile } from '../lib/prepareImage'
@@ -69,9 +69,8 @@ export default function StaffMedia() {
     setBusy(true)
     try {
       for (const item of queue) {
-        const doc = await uploadMediaFile(staffClient, item.file, { alt: item.file.name })
+        const doc = await uploadMediaFile(staffClient, item.file)
         await staffClient.patch(`/api/media/${doc.id}`, {
-          alt: item.file.name,
           showOnGallery,
           galleryCategory,
         })
@@ -130,10 +129,10 @@ export default function StaffMedia() {
           <strong>Ready to upload ({queue.length})</strong>
           <div className={fieldStyles.queue} style={{ marginTop: '0.85rem' }}>
             {queue.map((item, index) => (
-              <article key={`${item.file.name}-${index}`} className={fieldStyles.queueItem}>
-                <img src={item.preview} alt={item.file.name} />
+              <article key={index} className={fieldStyles.queueItem}>
+                <img src={item.preview} alt="" />
                 <div>
-                  <p>{item.file.name}</p>
+                  <p>Photo {index + 1}</p>
                   <small>
                     {item.resized
                       ? `${formatBytes(item.originalSize)} → ${formatBytes(item.finalSize)} resized`
@@ -157,9 +156,9 @@ export default function StaffMedia() {
       <div className={`staffCard ${fieldStyles.grid}`} style={{ padding: '1rem' }}>
         {docs.map((file) => (
           <article key={file.id} className={fieldStyles.queueItem}>
-            <img src={mediaUrl(file)} alt={file.alt || file.filename} />
+            <img src={mediaUrl(file)} alt="" />
             <div>
-              <p>{file.alt || file.filename}</p>
+              {displayCaption(file.alt, file.filename) ? <p>{displayCaption(file.alt, file.filename)}</p> : null}
               <small>{file.showOnGallery ? 'On website gallery' : 'Library only'}</small>
             </div>
           </article>

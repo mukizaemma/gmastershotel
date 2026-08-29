@@ -31,7 +31,13 @@ export const BarRestaurantPage = {
               contains: 'video/',
             },
           },
-          admin: { width: '50%', description: 'Choose an existing video or upload a new one.' },
+          admin: {
+            width: '50%',
+            description: 'Choose an existing video or upload a new one.',
+            components: {
+              Cell: './src/components/payload/ListCells/index.jsx#ThumbnailCell',
+            },
+          },
         },
       ],
     },

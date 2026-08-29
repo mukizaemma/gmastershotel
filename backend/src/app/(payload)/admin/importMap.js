@@ -1,8 +1,13 @@
 import { HeroImageField as HeroImageField_bf473ff9e1dc0c6a8c976a456469f590 } from '../../../../src/components/payload/HeroImageField/index.jsx'
+import { ThumbnailCell as ThumbnailCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
+import { RoomTitleCell as RoomTitleCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
+import { HiddenField as HiddenField_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
+import { ImageCountCell as ImageCountCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
 import { GalleryCategoryField as GalleryCategoryField_3a15863d77786846f06d40b3ca8147a9 } from '../../../../src/components/payload/HideInDrawer/index.jsx'
 import { GalleryOrderField as GalleryOrderField_3a15863d77786846f06d40b3ca8147a9 } from '../../../../src/components/payload/HideInDrawer/index.jsx'
 import { ShowOnGalleryField as ShowOnGalleryField_3a15863d77786846f06d40b3ca8147a9 } from '../../../../src/components/payload/HideInDrawer/index.jsx'
 import { MediaGalleryList as MediaGalleryList_263939c508f47d345ff92ebcc5c9643e } from '../../../../src/components/payload/MediaGalleryList/index.jsx'
+import { MediaEditView as MediaEditView_7c4e1a2b9f0d48c1a6e3b5d8c2f1a0e4 } from '../../../../src/components/payload/MediaBulkCreate/index.jsx'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -41,10 +46,15 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 /** @type import('payload').ImportMap */
 export const importMap = {
   "./src/components/payload/HeroImageField/index.jsx#HeroImageField": HeroImageField_bf473ff9e1dc0c6a8c976a456469f590,
+  "./src/components/payload/ListCells/index.jsx#ThumbnailCell": ThumbnailCell_95384848cef57d902cd36ebafd9b93e0,
+  "./src/components/payload/ListCells/index.jsx#RoomTitleCell": RoomTitleCell_95384848cef57d902cd36ebafd9b93e0,
+  "./src/components/payload/ListCells/index.jsx#HiddenField": HiddenField_95384848cef57d902cd36ebafd9b93e0,
+  "./src/components/payload/ListCells/index.jsx#ImageCountCell": ImageCountCell_95384848cef57d902cd36ebafd9b93e0,
   "./src/components/payload/HideInDrawer/index.jsx#GalleryCategoryField": GalleryCategoryField_3a15863d77786846f06d40b3ca8147a9,
   "./src/components/payload/HideInDrawer/index.jsx#GalleryOrderField": GalleryOrderField_3a15863d77786846f06d40b3ca8147a9,
   "./src/components/payload/HideInDrawer/index.jsx#ShowOnGalleryField": ShowOnGalleryField_3a15863d77786846f06d40b3ca8147a9,
   "./src/components/payload/MediaGalleryList/index.jsx#MediaGalleryList": MediaGalleryList_263939c508f47d345ff92ebcc5c9643e,
+  "./src/components/payload/MediaBulkCreate/index.jsx#MediaEditView": MediaEditView_7c4e1a2b9f0d48c1a6e3b5d8c2f1a0e4,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,

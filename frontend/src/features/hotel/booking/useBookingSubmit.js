@@ -4,9 +4,8 @@
  * Two things happen for every booking, in order:
  *   1. The reservation is written to Payload — POST /api/bookings.
  *      This is the source of truth; nothing else matters if this fails.
- *   2. The guest is handed a receipt — either a pre-filled WhatsApp
- *      message to the hotel, or an EmailJS email (same service/template
- *      envs ContactForm already uses).
+ *   2. The guest is handed a receipt — a pre-filled WhatsApp message
+ *      to the hotel, or an email sent by the CMS via Resend (not EmailJS).
  *
  * Split into standalone pieces (createBookingRequest / sendReceipt)
  * rather than one monolithic submit(), because online payment methods
@@ -29,14 +28,8 @@
  */
 import { useState } from 'react';
 import axios from 'axios';
-import emailjs from '@emailjs/browser';
 import { CMS_URL } from '@lib/apiClient';
 import { useSiteLayout } from '@lib/queries/useSiteLayout';
-
-const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-const EMAIL_CONFIGURED = Boolean(SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY);
 
 export function buildSummaryText({ rooms, experiences, stay, nights, guest, total }) {
   const roomLines = rooms
@@ -108,37 +101,21 @@ export async function createBookingRequest({ rooms, experiences, stay, guest, de
 }
 
 /**
- * Sends the guest a receipt via WhatsApp deep-link or EmailJS.
- * Returns true if it actually sent, false if it silently couldn't
- * (missing hotel WhatsApp number, EmailJS not configured, EmailJS
- * failure) — the booking is already saved either way, so this is
- * never treated as a submission failure, just a "no receipt" note.
+ * Guest-facing follow-up after the reservation is saved.
+ * Email receipts are sent by the CMS (Resend) on booking create/update —
+ * do not also fire EmailJS here or the guest gets two copies.
+ * WhatsApp still opens a pre-filled chat with the hotel.
  */
 export async function sendReceipt({ company, confirmationMethod, summaryText, guest }) {
   if (confirmationMethod === 'whatsapp') {
-    const hotelWhatsApp = (company?.phone || '').replace(/[^\d]/g, '');
+    const hotelWhatsApp = (company?.whatsapp || company?.phone || '').replace(/[^\d]/g, '');
     if (!hotelWhatsApp) return false;
     const url = `https://wa.me/${hotelWhatsApp}?text=${encodeURIComponent(summaryText)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     return true;
   }
 
-  if (!EMAIL_CONFIGURED) return false;
-  try {
-    await emailjs.send(
-      SERVICE_ID,
-      TEMPLATE_ID,
-      {
-        from_name: `${guest.firstName} ${guest.lastName}`,
-        from_email: guest.email,
-        message: summaryText,
-      },
-      { publicKey: PUBLIC_KEY },
-    );
-    return true;
-  } catch {
-    return false;
-  }
+  return Boolean(guest?.email);
 }
 
 // 'idle' | 'submitting' | 'success' | 'success-no-receipt' | 'error' | 'not-configured'

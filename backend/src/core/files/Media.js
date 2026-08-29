@@ -1,5 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { isUploadedFilename } from './mediaCaption.js'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -12,9 +13,9 @@ export const Media = {
   defaultSort: '-updatedAt',
   admin: {
     group: false,
-    useAsTitle: 'filename',
-    defaultColumns: ['filename', 'alt', 'showOnGallery', 'updatedAt'],
-    description: 'Library of images and videos. Gallery category is only for the public Gallery page — not needed when you pick a file for a page field.',
+    useAsTitle: 'alt',
+    defaultColumns: ['alt', 'showOnGallery', 'updatedAt'],
+    description: 'Library of images and videos. Create New accepts several files at once. Gallery category is only for the public Gallery page — not needed when you pick a file for a page field.',
     pagination: {
       defaultLimit: 18,
       limits: [18, 36, 54, 90],
@@ -23,6 +24,11 @@ export const Media = {
       views: {
         list: {
           Component: './src/components/payload/MediaGalleryList/index.jsx#MediaGalleryList',
+        },
+        edit: {
+          default: {
+            Component: './src/components/payload/MediaBulkCreate/index.jsx#MediaEditView',
+          },
         },
       },
     },
@@ -60,7 +66,14 @@ export const Media = {
         if (data.galleryCategory != null) {
           data.showOnGallery = data.galleryCategory !== 'none'
         }
+        if (isUploadedFilename(data.alt, data.filename)) data.alt = ''
         return data
+      },
+    ],
+    afterRead: [
+      ({ doc }) => {
+        if (doc && isUploadedFilename(doc.alt, doc.filename)) doc.alt = ''
+        return doc
       },
     ],
   },
@@ -69,7 +82,11 @@ export const Media = {
       name: 'alt',
       type: 'text',
       required: false,
-      admin: { width: '25%' },
+      label: 'Caption',
+      admin: {
+        width: '25%',
+        description: 'Optional. Shown on the public gallery — not the uploaded file name.',
+      },
     },
     {
       name: 'galleryCategory',

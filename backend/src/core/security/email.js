@@ -1,8 +1,18 @@
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import { resendAdapter } from '@payloadcms/email-resend'
 
 export function createEmailAdapter() {
-  const fromAddress = process.env.SMTP_FROM || 'noreply@localhost'
-  const fromName = process.env.SMTP_FROM_NAME || 'Hotel'
+  const fromAddress =
+    process.env.RESEND_FROM || process.env.SMTP_FROM || 'noreply@gmastershotel.com'
+  const fromName = process.env.RESEND_FROM_NAME || process.env.SMTP_FROM_NAME || 'G Masters Hotel'
+
+  if (process.env.RESEND_API_KEY) {
+    return resendAdapter({
+      defaultFromAddress: fromAddress,
+      defaultFromName: fromName,
+      apiKey: process.env.RESEND_API_KEY,
+    })
+  }
 
   if (process.env.SMTP_HOST) {
     return nodemailerAdapter({
@@ -20,8 +30,7 @@ export function createEmailAdapter() {
     })
   }
 
-  // Local/dev: Ethereal inbox. Forgot-password still works; the preview
-  // URL is printed in the backend terminal.
+  // Local/dev without Resend: Ethereal inbox. Preview URL prints in the terminal.
   return nodemailerAdapter({
     defaultFromAddress: fromAddress,
     defaultFromName: fromName,

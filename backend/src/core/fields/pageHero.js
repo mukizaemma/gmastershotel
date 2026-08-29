@@ -74,6 +74,7 @@ export function previewUpload(name, extra = {}) {
       description: 'Thumbnail preview — Replace or Remove under the image.',
       components: {
         Field: './src/components/payload/HeroImageField/index.jsx#HeroImageField',
+        Cell: './src/components/payload/ListCells/index.jsx#ThumbnailCell',
       },
       ...adminExtra,
     },

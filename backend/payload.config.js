@@ -30,6 +30,14 @@ const dirname = path.dirname(filename)
 const mongoUri = process.env.MONGODB_URI || process.env.DATABASE_URI
 const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5174'
 const serverUrl = process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3001'
+const allowedOrigins = [...new Set([
+  frontendUrl,
+  serverUrl,
+  'https://gmastershotel.com',
+  'https://www.gmastershotel.com',
+  'https://demov2.iremetech.com',
+  'https://www.demov2.iremetech.com',
+].filter(Boolean))]
 
 export default buildConfig({
   secret: process.env.PAYLOAD_SECRET,
@@ -67,8 +75,8 @@ export default buildConfig({
     SiteAudit,
     UserGuide,
   ],
-  cors: [frontendUrl, serverUrl].filter(Boolean),
-  csrf: [frontendUrl, serverUrl].filter(Boolean),
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
   graphQL: {
     disable: true,
   },
