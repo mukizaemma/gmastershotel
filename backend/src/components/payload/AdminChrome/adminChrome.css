@@ -389,6 +389,11 @@ body.ireme-login .ireme-admin-footer {
   display: none !important;
 }
 
+.drawer.doc-drawer .drawer__content {
+  width: min(960px, calc(100vw - 2.5rem)) !important;
+  max-width: 960px;
+}
+
 @media (max-width: 720px) {
   .render-fields > .field-type-text,
   .render-fields > .field-type-number,

@@ -16,7 +16,7 @@ export const PUBLIC_NAV = [
 export const PUBLIC_CTA = { label: 'Book Now', path: '/book' }
 
 export const LOCATION_HIGHLIGHTS = [
-  'Serviced apartment stay by Lake Kivu in Karongi',
-  'Comfortable rooms for short visits and longer stays',
-  'About a three-hour drive from Kigali',
+  'Prime Kagugu location near embassies and international offices',
+  'Air-conditioned rooms, bar, restaurant, and coffee',
+  'Quiet streets ideal for evening walks',
 ]

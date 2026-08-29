@@ -536,19 +536,50 @@ label.staffBtn {
   color: #6f675c;
 }
 
+.amenityGroup {
+  display: contents;
+}
+
 .amenityGroupTitle {
-  margin: 0 0 0.35rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
+  grid-column: 1 / -1;
+  margin: 0.7rem 0 0;
+  padding: 0.4rem 0 0.3rem;
+  border-bottom: 1px solid #eee6d8;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #8a8172;
+  color: #1a2b4b;
+}
+
+.amenityGroup:first-child .amenityGroupTitle {
+  margin-top: 0;
 }
 
 .featureGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.35rem 0.6rem;
-  font-weight: 400;
+  column-gap: 1rem;
+  row-gap: 0.4rem;
+}
+
+.amenityItem {
+  display: grid;
+  grid-template-columns: 1.15rem minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.55rem;
+  min-height: 1.7rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #1a2b4b;
+}
+
+.amenityItem input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0.15rem 0 0;
+  accent-color: #c4a574;
 }
 
 .amenityAdd {

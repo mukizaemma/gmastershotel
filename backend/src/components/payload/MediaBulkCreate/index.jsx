@@ -12,6 +12,7 @@ import {
   useEditDepth,
 } from '@payloadcms/ui'
 import { toast } from 'sonner'
+import { notifyAdminDocSaved } from '../AdminDocDrawer/index.jsx'
 import { formatBytes, prepareUploadFiles, uploadPreparedFile } from '../prepareImage.js'
 import './mediaBulkCreate.css'
 
@@ -27,6 +28,7 @@ const CATEGORIES = [
 
 function MediaBulkCreate() {
   const router = useRouter()
+  const inDrawer = useEditDepth() > 1
   const inputRef = useRef(null)
   const urlInputRef = useRef(null)
   const {
@@ -121,6 +123,10 @@ function MediaBulkCreate() {
           : `${queue.length} file${queue.length === 1 ? '' : 's'} saved.`,
       )
       queue.forEach((item) => URL.revokeObjectURL(item.preview))
+      if (inDrawer) {
+        notifyAdminDocSaved()
+        return
+      }
       router.push(listUrl)
       router.refresh()
     } catch {
@@ -132,12 +138,14 @@ function MediaBulkCreate() {
 
   return (
     <div className="media-bulk-create">
-      <SetStepNav
-        nav={[
-          { label: 'Media Gallery', url: listUrl },
-          { label: 'Create New' },
-        ]}
-      />
+      {inDrawer ? null : (
+        <SetStepNav
+          nav={[
+            { label: 'Media Gallery', url: listUrl },
+            { label: 'Create New' },
+          ]}
+        />
+      )}
       <Gutter>
         <div className="media-bulk-create__header">
           <h2>Creating new {queue.length === 1 ? 'file' : 'files'}</h2>
@@ -299,11 +307,8 @@ function MediaBulkCreate() {
 export function MediaEditView(props) {
   const pathname = usePathname() || ''
   const inDrawer = useEditDepth() > 1
-  const isCreate = /\/collections\/media\/create\/?$/.test(pathname)
+  const isCreate = !props.id && (/\/collections\/media\/create\/?$/.test(pathname) || inDrawer)
 
-  if (!isCreate || inDrawer) {
-    return <DefaultEditView {...props} />
-  }
-
-  return <MediaBulkCreate />
+  if (isCreate) return <MediaBulkCreate />
+  return <DefaultEditView {...props} />
 }

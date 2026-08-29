@@ -65,7 +65,7 @@ export default function StaffAccount() {
         </div>
         <div className="formActions">
           <button type="submit" className="staffBtn">
-            Save account
+            Save changes
           </button>
         </div>
       </form>

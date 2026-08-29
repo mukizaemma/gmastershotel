@@ -219,7 +219,7 @@ export default function StaffSettings() {
         </div>
         <div className="formActions">
           <button type="submit" className="staffBtn">
-            Save settings
+            Save changes
           </button>
         </div>
       </form>

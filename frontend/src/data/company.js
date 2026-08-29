@@ -9,16 +9,16 @@
 
 export const company = {
   name: 'Gmasters Boutique Hotel',
-  tagline: 'Comfortable rooms, honest food, and Lake Kivu right outside.',
+  tagline: 'Comfortable rooms and honest food in Kagugu, Kigali.',
 
   // TODO: confirm/replace with the real phone and email
   phone: '+250 700 000 000',
-  email: 'stay@grandvillaapartment.rw',
+  email: 'stay@gmastershotel.rw',
 
-  address: 'Karongi, Western Province, Rwanda',
-  distanceFromKigali: '~3h drive from Kigali',
+  address: 'Kagugu, Kigali, Rwanda',
+  distanceFromKigali: 'In Kigali — Kagugu area',
   // TODO: swap for the real Google Maps place link once the property has a confirmed pin
-  mapUrl: 'https://www.google.com/maps/search/?api=1&query=Karongi%2C+Rwanda',
+  mapUrl: 'https://www.google.com/maps/search/?api=1&query=Kagugu%2C+Kigali%2C+Rwanda',
 
   socials: {
     instagram: '',

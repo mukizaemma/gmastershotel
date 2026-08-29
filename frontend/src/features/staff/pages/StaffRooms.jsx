@@ -241,7 +241,7 @@ export default function StaffRooms() {
                 Cancel
               </button>
               <button type="submit" className="staffBtn">
-                Save
+                {form.id ? 'Save changes' : 'Save'}
               </button>
             </div>
           </form>

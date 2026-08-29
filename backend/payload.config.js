@@ -23,6 +23,7 @@ import { SiteAudit } from './src/core/settings/SiteAudit.js'
 import { UserGuide } from './src/core/settings/UserGuide.js'
 import { HandoverFeedback } from './src/modules/hotel/feedback/HandoverFeedback.js'
 import { createEmailAdapter } from './src/core/security/email.js'
+import { attachSaveAndReturn } from './src/core/fields/saveAndReturn.js'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -67,14 +68,8 @@ export default buildConfig({
       providers: ['./src/components/payload/AdminChrome/index.jsx#AdminChrome'],
     },
   },
-  collections: [Users, Media, Rooms, GalleryPhotos, Bookings, AvailabilityBlocks, Experiences, Amenities, MenuItems, HandoverFeedback],
-  globals: [
-    Company,
-    Navigation,
-    Pages,
-    SiteAudit,
-    UserGuide,
-  ],
+  collections: [Users, Media, Rooms, GalleryPhotos, Bookings, AvailabilityBlocks, Experiences, Amenities, MenuItems, HandoverFeedback].map(attachSaveAndReturn),
+  globals: [Company, Navigation, Pages, SiteAudit, UserGuide].map(attachSaveAndReturn),
   cors: allowedOrigins,
   csrf: allowedOrigins,
   graphQL: {

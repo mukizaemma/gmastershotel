@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from '@payloadcms/ui'
+import { DOC_SAVED_EVENT } from '../AdminDocDrawer/index.jsx'
 import './bookingsDashboard.css'
 
 function day(value) {
@@ -88,6 +89,10 @@ export function BookingsDashboard() {
 
   useEffect(() => {
     load().catch(() => setError('Could not load reservations.'))
+    function onSaved() {
+      load().catch(() => {})
+    }
+    window.addEventListener(DOC_SAVED_EVENT, onSaved)
     api('/api/users/me')
       .then((data) => {
         const user = data.user || data
@@ -100,6 +105,7 @@ export function BookingsDashboard() {
         if (data?.name) setHotelName(String(data.name).trim())
       })
       .catch(() => {})
+    return () => window.removeEventListener(DOC_SAVED_EVENT, onSaved)
   }, [])
 
   const filtered = useMemo(() => {

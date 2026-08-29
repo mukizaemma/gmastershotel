@@ -1,10 +1,11 @@
 'use client'
 
 import React from 'react'
-import { CheckboxField, NumberField, SelectField, useEditDepth } from '@payloadcms/ui'
+import { CheckboxField, NumberField, SelectField, useListDrawerContext } from '@payloadcms/ui'
 
 function pickingIntoAForm() {
-  return useEditDepth() > 1
+  const { isInDrawer } = useListDrawerContext()
+  return Boolean(isInDrawer)
 }
 
 export function GalleryCategoryField(props) {

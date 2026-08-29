@@ -10,10 +10,12 @@ export default function CardGrid({
   columns,
   moreLabel = 'View more',
   moreTo,
+  showAll = false,
 }) {
   const [open, setOpen] = useState(false)
-  const visible = moreTo || !open ? items.slice(0, initialCount) : items
-  const showMore = items.length > initialCount && (Boolean(moreTo) || !open)
+  const cap = showAll ? items.length : initialCount
+  const visible = moreTo || !open ? items.slice(0, cap) : items
+  const showMore = !showAll && items.length > cap && (Boolean(moreTo) || !open)
 
   return (
     <>

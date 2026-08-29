@@ -913,7 +913,7 @@ export default function StaffPages() {
                 Cancel
               </button>
               <button type="submit" className="staffBtn">
-                Save
+                Save changes
               </button>
             </div>
           </form>

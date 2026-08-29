@@ -12,8 +12,7 @@ export default function RoomsList() {
       <div className="container">
         <CardGrid
           items={rooms}
-          initialCount={3}
-          moreLabel="View more rooms"
+          showAll
           renderCard={(room) => <RoomCard key={room.id} room={room} />}
         />
       </div>

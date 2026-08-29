@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect } from 'react'
+import { AdminDocDrawer } from '../AdminDocDrawer/index.jsx'
 import './adminChrome.css'
 
 const HOME_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:5174'
@@ -55,6 +56,7 @@ export function AdminChrome({ children }) {
   return (
     <>
       {children}
+      <AdminDocDrawer />
       <footer className="ireme-admin-footer">
         Developed by{' '}
         <a href="https://iremetech.com" target="_blank" rel="noopener noreferrer">

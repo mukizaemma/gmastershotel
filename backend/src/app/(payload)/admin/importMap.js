@@ -42,6 +42,7 @@ import { Logo as Logo_488727a850f8c6507cb9b7eb1c994931 } from '../../../../src/c
 import { BookingsDashboard as BookingsDashboard_4afd284454fd02b9df4b626f403be295 } from '../../../../src/components/payload/BookingsDashboard/index.jsx'
 import { HotelNav as HotelNav_edccf7f6154303a7d721ff88f9d6cbf9 } from '../../../../src/components/payload/HotelNav/index.jsx'
 import { AdminChrome as AdminChrome_1bb7541897221f6df3117d692d7af992 } from '../../../../src/components/payload/AdminChrome/index.jsx'
+import { SaveAndReturnButton as SaveAndReturnButton_13970a7fb2fa2ff86d0b3653700bd30f } from '../../../../src/components/payload/SaveAndReturn/index.jsx'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -90,5 +91,6 @@ export const importMap = {
   "./src/components/payload/BookingsDashboard/index.jsx#BookingsDashboard": BookingsDashboard_4afd284454fd02b9df4b626f403be295,
   "./src/components/payload/HotelNav/index.jsx#HotelNav": HotelNav_edccf7f6154303a7d721ff88f9d6cbf9,
   "./src/components/payload/AdminChrome/index.jsx#AdminChrome": AdminChrome_1bb7541897221f6df3117d692d7af992,
+  "./src/components/payload/SaveAndReturn/index.jsx#SaveAndReturnButton": SaveAndReturnButton_13970a7fb2fa2ff86d0b3653700bd30f,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

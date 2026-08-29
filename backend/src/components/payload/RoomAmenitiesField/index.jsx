@@ -55,43 +55,41 @@ export function RoomAmenitiesField({ field, path, readOnly }) {
         A custom amenity stays on the list for other rooms once you save.
       </p>
 
-      {ROOM_AMENITY_GROUPS.map((group) => (
-        <section key={group.id} className="room-amenities-field__group">
-          <h3>{group.label}</h3>
-          <div className="room-amenities-field__grid">
+      <div className="room-amenities-field__grid">
+        {ROOM_AMENITY_GROUPS.map((group) => (
+          <section key={group.id} className="room-amenities-field__group">
+            <h3>{group.label}</h3>
             {group.items.map((item) => (
-              <label key={item.value}>
+              <label key={item.value} className="room-amenities-field__item">
                 <input
                   type="checkbox"
                   checked={selected.includes(item.value)}
                   disabled={readOnly}
                   onChange={(event) => setValue(toggleValue(selected, item.value, event.target.checked))}
                 />
-                {item.label}
+                <span>{item.label}</span>
               </label>
             ))}
-          </div>
-        </section>
-      ))}
+          </section>
+        ))}
 
-      {extras.length > 0 && (
-        <section className="room-amenities-field__group">
-          <h3>Added amenities</h3>
-          <div className="room-amenities-field__grid">
+        {extras.length > 0 && (
+          <section className="room-amenities-field__group">
+            <h3>Added amenities</h3>
             {extras.map((key) => (
-              <label key={key}>
+              <label key={key} className="room-amenities-field__item">
                 <input
                   type="checkbox"
                   checked={selected.includes(key)}
                   disabled={readOnly}
                   onChange={(event) => setValue(toggleValue(selected, key, event.target.checked))}
                 />
-                {featureLabel(key)}
+                <span>{featureLabel(key)}</span>
               </label>
             ))}
-          </div>
-        </section>
-      )}
+          </section>
+        )}
+      </div>
 
       {!readOnly && (
         <div className="room-amenities-field__add">

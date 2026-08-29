@@ -143,7 +143,7 @@ export const Company = {
             {
               name: 'seoKeywords',
               type: 'text',
-              admin: { width: '25%', description: 'Comma-separated keywords, e.g. Karongi apartment, Lake Kivu stay' },
+              admin: { width: '25%', description: 'Comma-separated keywords, e.g. Kagugu hotel, Kigali stay' },
             },
             {
               name: 'seoDescription',
