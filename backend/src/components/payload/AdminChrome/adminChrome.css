@@ -266,6 +266,13 @@ body.ireme-login .ireme-admin-footer {
   width: var(--field-width, 100%);
 }
 
+.field-type-group .render-fields,
+.field-type-row .render-fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
 .render-fields > .field-type-upload,
 .render-fields > .field-type--upload {
   flex: 0 0 var(--field-width, 50%);

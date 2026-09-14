@@ -1,7 +1,7 @@
 import { applyAutoSlug } from '../../../core/fields/slug.js'
 import { previewUpload } from '../../../core/fields/pageHero.js'
 import { rowActionsField, withRowActions } from '../../../core/fields/rowActions.js'
-import { populateRoomCover, syncRoomCover } from './roomImages.js'
+import { populateRoomCover, mediaId, mediaUrlFrom, syncRoomCover } from './roomImages.js'
 
 export const Rooms = {
   slug: 'rooms',
@@ -18,16 +18,39 @@ export const Rooms = {
   admin: {
     group: false,
     useAsTitle: 'name',
-    defaultColumns: withRowActions(['image', 'name', 'imageCount', 'units', 'pricePerNight']),
+    defaultColumns: withRowActions(['coverUrl', 'name', 'imageCount', 'units', 'pricePerNight']),
     description: 'Click a room name or Edit to change it. Slug is generated from the name.',
   },
   forceSelect: {
     image: true,
     gallery: true,
+    coverUrl: true,
   },
   hooks: {
     beforeValidate: [applyAutoSlug],
-    beforeChange: [({ data, originalDoc }) => syncRoomCover(data, originalDoc)],
+    beforeChange: [
+      async ({ data, req }) => {
+        syncRoomCover(data)
+        const id = mediaId(data?.image)
+        if (!id) {
+          if (data) data.coverUrl = ''
+          return data
+        }
+        try {
+          const media = await req.payload.findByID({
+            collection: 'media',
+            id,
+            depth: 0,
+            disableErrors: true,
+            overrideAccess: true,
+          })
+          data.coverUrl = mediaUrlFrom(media) || ''
+        } catch {
+          data.coverUrl = data.coverUrl || ''
+        }
+        return data
+      },
+    ],
     afterRead: [
       async ({ doc, req, context }) => {
         context.roomCoverCache = context.roomCoverCache || new Map()
@@ -95,36 +118,87 @@ export const Rooms = {
     {
       name: 'specs',
       type: 'group',
+      label: 'At a glance',
+      admin: {
+        description: 'Short facts shown on the room page. Use everyday wording; leave a box blank if it does not apply.',
+      },
       fields: [
-        { name: 'size', type: 'text', admin: { width: '25%' } },
-        { name: 'bed', type: 'text', admin: { width: '25%' } },
-        { name: 'occupancy', type: 'text', admin: { width: '25%' } },
-        { name: 'view', type: 'text', admin: { width: '25%' } },
-        { name: 'smoking', type: 'text', admin: { width: '25%' } },
-        { name: 'breakfast', type: 'text', admin: { width: '25%' } },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'size',
+              type: 'text',
+              label: 'Room size',
+              admin: { width: '33%', placeholder: 'e.g. 28 m²' },
+            },
+            {
+              name: 'bed',
+              type: 'text',
+              label: 'Bed type',
+              admin: { width: '33%', placeholder: 'e.g. King bed, or Twin beds' },
+            },
+            {
+              name: 'occupancy',
+              type: 'text',
+              label: 'Sleeps',
+              admin: { width: '34%', placeholder: 'e.g. 2 adults' },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'view',
+              type: 'text',
+              label: 'View from the room',
+              admin: { width: '33%', placeholder: 'e.g. Garden, lake, or city' },
+            },
+            {
+              name: 'smoking',
+              type: 'text',
+              label: 'Smoking',
+              admin: { width: '33%', placeholder: 'e.g. No smoking' },
+            },
+            {
+              name: 'breakfast',
+              type: 'text',
+              label: 'Breakfast',
+              admin: { width: '34%', placeholder: 'e.g. Included, or extra' },
+            },
+          ],
+        },
       ],
     },
     {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-      displayPreview: true,
+      name: 'coverUrl',
+      type: 'text',
+      label: 'Cover',
       admin: {
-        width: '25%',
-        description: 'Cover photo. The first Room photo is used if this is empty.',
+        readOnly: true,
+        description: 'Taken from Cover photo. Shown in this table so you can check it matches the room type.',
         components: {
           Field: './src/components/payload/ListCells/index.jsx#HiddenField',
-          Cell: './src/components/payload/ListCells/index.jsx#ThumbnailCell',
+          Cell: './src/components/payload/ListCells/index.jsx#CoverUrlCell',
         },
       },
     },
+    previewUpload('image', {
+      label: 'Cover photo',
+      admin: {
+        width: '50%',
+        description: 'This is the photo in the rooms table and the first photo guests see.',
+      },
+    }),
     {
       name: 'gallery',
       type: 'array',
+      labels: { singular: 'Photo', plural: 'Gallery' },
       maxRows: 12,
       admin: {
         width: '100%',
-        description: 'First photo is the cover in the rooms list. Add several at once — files over 700KB are resized first.',
+        description: 'Extra room photos. Add, remove, or reorder them. Files over 700KB are resized first.',
         components: {
           Field: './src/components/payload/MediaGridField/index.jsx#MediaGridField',
         },

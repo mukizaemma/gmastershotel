@@ -1,13 +1,13 @@
 'use client'
 
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { FieldLabel, useField, useForm, useListDrawer } from '@payloadcms/ui'
+import { FieldLabel, useField, useListDrawer } from '@payloadcms/ui'
 import { prepareUploadFiles, uploadPreparedFile } from '../prepareImage.js'
 import './mediaGridField.css'
 
 function mediaId(value) {
   if (!value) return ''
-  if (typeof value === 'object') return value.id || value._id || ''
+  if (typeof value === 'object') return String(value.id || value._id || '')
   return String(value)
 }
 
@@ -17,7 +17,8 @@ function mediaSrc(doc) {
 }
 
 function imageKey(field) {
-  const upload = (field?.fields || []).find((item) => item.type === 'upload' || item.name === 'photo' || item.name === 'image')
+  const fields = field?.fields || []
+  const upload = fields.find((item) => item.type === 'upload' || item.name === 'photo' || item.name === 'image')
   return upload?.name || 'photo'
 }
 
@@ -40,11 +41,18 @@ function asDocs(selected) {
   return docs.filter((doc) => mediaId(doc))
 }
 
+function storePreview(map, doc) {
+  if (!doc || typeof doc !== 'object') return
+  const src = mediaSrc(doc)
+  if (!src) return
+  const id = mediaId(doc)
+  if (id) map[id] = doc
+}
+
 export function MediaGridField({ field, path, readOnly }) {
   const { value, setValue } = useField({ path })
-  const { removeFieldRow } = useForm()
   const key = useMemo(() => imageKey(field), [field])
-  const rows = (Array.isArray(value) ? value : []).filter((row) => mediaId(row?.[key]))
+  const rows = Array.isArray(value) ? value : []
   const rowIds = rows.map((row) => mediaId(row?.[key])).join('|')
   const max = field?.maxRows || 24
   const [previews, setPreviews] = useState({})
@@ -87,9 +95,7 @@ export function MediaGridField({ field, path, readOnly }) {
         if (cancelled) return
         setPreviews((current) => {
           const next = { ...current }
-          for (const doc of docs) {
-            if (doc?.id) next[doc.id] = doc
-          }
+          for (const doc of docs) storePreview(next, doc?.doc || doc)
           return next
         })
       })
@@ -103,12 +109,13 @@ export function MediaGridField({ field, path, readOnly }) {
   function remember(docs) {
     setPreviews((current) => {
       const next = { ...current }
-      for (const doc of docs) {
-        const id = mediaId(doc)
-        if (id && typeof doc === 'object' && mediaSrc(doc)) next[id] = doc
-      }
+      for (const doc of docs) storePreview(next, doc)
       return next
     })
+  }
+
+  function write(next) {
+    setValue(next)
   }
 
   function addDocs(docs) {
@@ -122,7 +129,7 @@ export function MediaGridField({ field, path, readOnly }) {
       if (next.some((row) => mediaId(row?.[key]) === id)) continue
       next.push({ id: crypto.randomUUID(), [key]: id })
     }
-    setValue(next)
+    write(next)
   }
 
   async function pickFiles(event) {
@@ -156,25 +163,23 @@ export function MediaGridField({ field, path, readOnly }) {
   }
 
   function removeAt(index) {
-    const row = rows[index]
-    const source = Array.isArray(value) ? value : []
-    const rowIndex = source.findIndex(
-      (item) =>
-        item === row ||
-        (row?.id && item?.id === row.id) ||
-        mediaId(item?.[key]) === mediaId(row?.[key]),
-    )
-    const actual = rowIndex >= 0 ? rowIndex : index
-    removeFieldRow({ path, rowIndex: actual })
-    const next = source.filter((_, i) => i !== actual)
-    setValue(next)
+    write(rows.filter((_, i) => i !== index))
+  }
+
+  function move(index, dir) {
+    const to = index + dir
+    if (to < 0 || to >= rows.length) return
+    const next = [...rows]
+    const [item] = next.splice(index, 1)
+    next.splice(to, 0, item)
+    write(next)
   }
 
   return (
     <div className="media-grid-field">
       <FieldLabel label={field?.label || field?.labels?.plural || 'Photos'} path={path} />
       <p className="media-grid-field__hint">
-        Choose several photos at once — they upload together. Files over 700KB are resized first.
+        Add extra photos, drag them with the arrows, or remove any you do not want. Files over 700KB are resized first.
       </p>
 
       {rows.length > 0 && (
@@ -183,20 +188,25 @@ export function MediaGridField({ field, path, readOnly }) {
             const id = mediaId(row?.[key])
             const src = mediaSrc(previews[id]) || mediaSrc(row?.[key])
             return (
-              <article key={id || index}>
-                {src ? <img src={src} alt="" /> : <div className="media-grid-field__empty">{busy ? '…' : 'Loading'}</div>}
+              <article key={row?.id || id || index}>
+                {src ? <img src={src} alt="" /> : <div className="media-grid-field__empty">{busy ? 'Uploading…' : 'Loading photo…'}</div>}
                 {!readOnly && (
-                  <button
-                    type="button"
-                    className="media-grid-field__remove"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      event.stopPropagation()
-                      removeAt(index)
-                    }}
-                  >
-                    Remove
-                  </button>
+                  <div className="media-grid-field__row-actions">
+                    <button type="button" disabled={index === 0} onClick={() => move(index, -1)} aria-label="Move earlier">
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      disabled={index === rows.length - 1}
+                      onClick={() => move(index, 1)}
+                      aria-label="Move later"
+                    >
+                      →
+                    </button>
+                    <button type="button" className="media-grid-field__remove" onClick={() => removeAt(index)}>
+                      Remove
+                    </button>
+                  </div>
                 )}
               </article>
             )

@@ -1,5 +1,6 @@
 import { HeroImageField as HeroImageField_bf473ff9e1dc0c6a8c976a456469f590 } from '../../../../src/components/payload/HeroImageField/index.jsx'
 import { ThumbnailCell as ThumbnailCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
+import { CoverUrlCell as CoverUrlCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
 import { RoomTitleCell as RoomTitleCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
 import { HiddenField as HiddenField_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
 import { ImageCountCell as ImageCountCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
@@ -49,6 +50,7 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 export const importMap = {
   "./src/components/payload/HeroImageField/index.jsx#HeroImageField": HeroImageField_bf473ff9e1dc0c6a8c976a456469f590,
   "./src/components/payload/ListCells/index.jsx#ThumbnailCell": ThumbnailCell_95384848cef57d902cd36ebafd9b93e0,
+  "./src/components/payload/ListCells/index.jsx#CoverUrlCell": CoverUrlCell_95384848cef57d902cd36ebafd9b93e0,
   "./src/components/payload/ListCells/index.jsx#RoomTitleCell": RoomTitleCell_95384848cef57d902cd36ebafd9b93e0,
   "./src/components/payload/ListCells/index.jsx#HiddenField": HiddenField_95384848cef57d902cd36ebafd9b93e0,
   "./src/components/payload/ListCells/index.jsx#ImageCountCell": ImageCountCell_95384848cef57d902cd36ebafd9b93e0,

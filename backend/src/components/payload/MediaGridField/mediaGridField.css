@@ -16,8 +16,8 @@
 }
 
 .media-grid-field__grid article {
-  background: #fff;
-  border: 1px solid #e8dfd0;
+  background: var(--theme-elevation-50, #fff);
+  border: 1px solid var(--theme-elevation-150, #e8dfd0);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -52,8 +52,20 @@
 }
 
 .media-grid-field__grid button {
-  margin: 0.45rem;
-  width: calc(100% - 0.9rem);
+  margin: 0;
+  width: auto;
+  flex: 1;
+}
+
+.media-grid-field__row-actions {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.45rem;
+}
+
+.media-grid-field__row-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 .media-grid-field__remove {

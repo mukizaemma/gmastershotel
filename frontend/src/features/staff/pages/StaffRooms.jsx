@@ -24,12 +24,12 @@ const empty = {
 }
 
 const SPEC_FIELDS = [
-  { key: 'size', label: 'Size', hint: 'e.g. 28 m²' },
-  { key: 'bed', label: 'Bed', hint: 'King / Twin' },
-  { key: 'occupancy', label: 'Guests', hint: '2 adults' },
-  { key: 'view', label: 'View', hint: 'City / Garden' },
-  { key: 'smoking', label: 'Smoking', hint: 'No' },
-  { key: 'breakfast', label: 'Breakfast', hint: 'Included' },
+  { key: 'size', label: 'Room size', hint: 'e.g. 28 m²' },
+  { key: 'bed', label: 'Bed type', hint: 'e.g. King bed, or Twin beds' },
+  { key: 'occupancy', label: 'Sleeps', hint: 'e.g. 2 adults' },
+  { key: 'view', label: 'View from the room', hint: 'e.g. Garden, lake, or city' },
+  { key: 'smoking', label: 'Smoking', hint: 'e.g. No smoking' },
+  { key: 'breakfast', label: 'Breakfast', hint: 'e.g. Included, or extra' },
 ]
 
 function photoCount(row) {

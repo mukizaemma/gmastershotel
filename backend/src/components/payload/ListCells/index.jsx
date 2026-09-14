@@ -56,16 +56,44 @@ function docHref(collectionSlug, id, config) {
   })
 }
 
+export function CoverUrlCell({ cellData, rowData }) {
+  const src =
+    (typeof cellData === 'string' && cellData.includes('/') && cellData) ||
+    (typeof rowData?.coverUrl === 'string' && rowData.coverUrl) ||
+    mediaUrlFrom(rowData?.image) ||
+    mediaUrlFrom(rowData?.gallery?.[0]?.photo) ||
+    ''
+
+  if (!src) {
+    return <span className="list-thumb-cell__empty">No photo</span>
+  }
+
+  return (
+    <span className="list-thumb-cell">
+      <img src={src} alt="" className="list-thumb-cell__img" />
+    </span>
+  )
+}
+
 export function ThumbnailCell({ cellData, rowData, collectionSlug }) {
   const { config } = useConfig()
   const origin = config?.serverURL || ''
+  const storedCover = typeof rowData?.coverUrl === 'string' ? rowData.coverUrl : ''
   const source = cellData || coverMedia(rowData)
   const [src, setSrc] = useState(
-    () => absMediaUrl(thumbSrc(source), origin) || thumbCache.get(`${origin}|${mediaId(source)}`) || '',
+    () =>
+      storedCover ||
+      absMediaUrl(thumbSrc(source), origin) ||
+      thumbCache.get(`${origin}|${mediaId(source)}`) ||
+      '',
   )
   const href = docHref(collectionSlug, rowData?.id, config)
 
   useEffect(() => {
+    if (storedCover) {
+      setSrc(storedCover)
+      return undefined
+    }
     const nextSource = cellData || coverMedia(rowData)
     const immediate = absMediaUrl(thumbSrc(nextSource), origin)
     if (immediate) {
@@ -87,7 +115,7 @@ export function ThumbnailCell({ cellData, rowData, collectionSlug }) {
     return () => {
       cancelled = true
     }
-  }, [cellData, collectionSlug, origin, rowData])
+  }, [cellData, collectionSlug, origin, rowData, storedCover])
 
   const preview = src ? (
     <img src={src} alt="" className="list-thumb-cell__img" />

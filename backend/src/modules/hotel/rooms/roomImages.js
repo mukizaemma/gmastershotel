@@ -9,7 +9,7 @@ export function galleryPhotoIds(row) {
 }
 
 export function coverMedia(row) {
-  return row?.image || row?.gallery?.[0]?.photo || row?.gallery?.[0]?.image || ''
+  return row?.image || ''
 }
 
 export function mediaUrlFrom(value) {
@@ -21,15 +21,17 @@ export async function populateRoomCover(doc, req, cache) {
   if (!doc) return doc
   const store = cache || new Map()
   doc.imageCount = countRoomImages(doc)
-  if (mediaUrlFrom(doc.image) || mediaUrlFrom(doc.gallery?.[0]?.photo)) {
-    if (!mediaUrlFrom(doc.image) && mediaUrlFrom(doc.gallery?.[0]?.photo)) {
-      doc.image = doc.gallery[0].photo
-    }
+
+  const id = mediaId(doc.image)
+  if (!id) {
+    doc.coverUrl = ''
     return doc
   }
-
-  const id = mediaId(coverMedia(doc))
-  if (!id || !req?.payload) return doc
+  if (mediaUrlFrom(doc.image)) {
+    doc.coverUrl = mediaUrlFrom(doc.image)
+    return doc
+  }
+  if (!req?.payload) return doc
 
   if (!store.has(id)) {
     store.set(
@@ -47,7 +49,10 @@ export async function populateRoomCover(doc, req, cache) {
   }
 
   const media = await store.get(id)
-  if (media && mediaUrlFrom(media)) doc.image = media
+  if (media && mediaUrlFrom(media)) {
+    doc.image = media
+    doc.coverUrl = mediaUrlFrom(media)
+  }
   return doc
 }
 
@@ -66,32 +71,11 @@ export function countRoomImages(row) {
   return ids.size
 }
 
-export function syncRoomCover(data, originalDoc) {
+export function syncRoomCover(data) {
   if (!data) return data
-
-  const galleryProvided = Object.prototype.hasOwnProperty.call(data, 'gallery')
-  const gallery = galleryProvided ? data.gallery : originalDoc?.gallery
-  const image = Object.prototype.hasOwnProperty.call(data, 'image') ? data.image : originalDoc?.image
-  const photos = galleryPhotoIds({ gallery })
-  const cover = mediaId(image)
-  const previous = mediaId(originalDoc?.image)
-
-  if (galleryProvided && photos.length === 0) {
-    data.image = null
+  if (Object.prototype.hasOwnProperty.call(data, 'gallery') && !Array.isArray(data.gallery)) {
     data.gallery = []
-  } else if (cover && cover !== previous) {
-    data.image = cover
-    data.gallery = [cover, ...photos.filter((id) => id !== cover)].map((photo) => ({ photo }))
-  } else if (photos.length) {
-    data.image = photos[0]
-    data.gallery = photos.map((photo) => ({ photo }))
-  } else if (cover) {
-    data.image = cover
-    data.gallery = [{ photo: cover }]
-  } else {
-    data.image = null
   }
-
   data.imageCount = countRoomImages(data)
   return data
 }
