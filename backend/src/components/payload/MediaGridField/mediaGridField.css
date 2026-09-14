@@ -43,14 +43,21 @@
 .media-grid-field__actions label {
   border: 1px solid #d8cdbe;
   background: #fff;
+  color: #1a2b4b;
   border-radius: 6px;
   padding: 0.4rem 0.7rem;
   font-size: 0.78rem;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .media-grid-field__grid button {
   margin: 0.45rem;
+  width: calc(100% - 0.9rem);
+}
+
+.media-grid-field__remove {
+  color: #b42318 !important;
 }
 
 .media-grid-field__actions {

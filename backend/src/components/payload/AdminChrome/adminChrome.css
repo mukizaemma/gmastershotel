@@ -362,7 +362,7 @@ body.ireme-login .ireme-admin-footer {
 .upload-relationship-details__filename,
 .folder-file-card__name,
 .file-meta__url,
-.table .cell-type-upload .file,
+.table .cell-type-upload .file__filename,
 .table .cell-type-upload .file-meta,
 .table .cell-type-upload .file-details,
 .table .cell-type-upload .upload-relationship-details__details,

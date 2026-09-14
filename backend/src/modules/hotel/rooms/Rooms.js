@@ -1,7 +1,7 @@
 import { applyAutoSlug } from '../../../core/fields/slug.js'
 import { previewUpload } from '../../../core/fields/pageHero.js'
 import { rowActionsField, withRowActions } from '../../../core/fields/rowActions.js'
-import { countRoomImages, syncRoomCover } from './roomImages.js'
+import { populateRoomCover, syncRoomCover } from './roomImages.js'
 
 export const Rooms = {
   slug: 'rooms',
@@ -29,9 +29,9 @@ export const Rooms = {
     beforeValidate: [applyAutoSlug],
     beforeChange: [({ data, originalDoc }) => syncRoomCover(data, originalDoc)],
     afterRead: [
-      ({ doc }) => {
-        if (doc) doc.imageCount = countRoomImages(doc)
-        return doc
+      async ({ doc, req, context }) => {
+        context.roomCoverCache = context.roomCoverCache || new Map()
+        return populateRoomCover(doc, req, context.roomCoverCache)
       },
     ],
   },

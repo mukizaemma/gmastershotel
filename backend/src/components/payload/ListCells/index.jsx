@@ -6,25 +6,43 @@ import { Link, useConfig } from '@payloadcms/ui'
 import { useRouter } from 'next/navigation.js'
 import { toast } from 'sonner'
 import { formatAdminURL } from 'payload/shared'
-import { countRoomImages, coverMedia, mediaId } from '../../../modules/hotel/rooms/roomImages.js'
+import { absMediaUrl, countRoomImages, coverMedia, mediaId, mediaUrlFrom } from '../../../modules/hotel/rooms/roomImages.js'
 import './listCells.css'
 
 const thumbCache = new Map()
 
 function thumbSrc(value) {
-  if (!value || typeof value !== 'object') return ''
-  return value.thumbnailURL || value.sizes?.thumbnail?.url || value.url || ''
+  return mediaUrlFrom(value)
 }
 
-function loadThumb(id) {
+function loadThumb(id, origin) {
   if (!id) return Promise.resolve('')
-  if (thumbCache.has(id)) return Promise.resolve(thumbCache.get(id))
+  const cacheKey = `${origin}|${id}`
+  if (thumbCache.has(cacheKey)) return Promise.resolve(thumbCache.get(cacheKey))
   return fetch(`/api/media/${id}?depth=0`, { credentials: 'include' })
     .then((res) => (res.ok ? res.json() : null))
     .then((doc) => {
-      const src = thumbSrc(doc)
-      if (src) thumbCache.set(id, src)
+      const src = absMediaUrl(thumbSrc(doc?.doc || doc), origin)
+      if (src) thumbCache.set(cacheKey, src)
       return src
+    })
+    .catch(() => '')
+}
+
+function loadRoomCover(roomId, origin) {
+  if (!roomId) return Promise.resolve('')
+  const cacheKey = `room|${origin}|${roomId}`
+  if (thumbCache.has(cacheKey)) return Promise.resolve(thumbCache.get(cacheKey))
+  return fetch(`/api/rooms/${roomId}?depth=1`, { credentials: 'include' })
+    .then((res) => (res.ok ? res.json() : null))
+    .then((doc) => {
+      const room = doc?.doc || doc
+      const direct = absMediaUrl(thumbSrc(room?.image) || thumbSrc(room?.gallery?.[0]?.photo), origin)
+      if (direct) {
+        thumbCache.set(cacheKey, direct)
+        return direct
+      }
+      return loadThumb(mediaId(coverMedia(room)), origin)
     })
     .catch(() => '')
 }
@@ -40,30 +58,36 @@ function docHref(collectionSlug, id, config) {
 
 export function ThumbnailCell({ cellData, rowData, collectionSlug }) {
   const { config } = useConfig()
+  const origin = config?.serverURL || ''
   const source = cellData || coverMedia(rowData)
-  const [src, setSrc] = useState(() => thumbSrc(source) || thumbCache.get(mediaId(source)) || '')
+  const [src, setSrc] = useState(
+    () => absMediaUrl(thumbSrc(source), origin) || thumbCache.get(`${origin}|${mediaId(source)}`) || '',
+  )
   const href = docHref(collectionSlug, rowData?.id, config)
 
   useEffect(() => {
     const nextSource = cellData || coverMedia(rowData)
-    const immediate = thumbSrc(nextSource)
+    const immediate = absMediaUrl(thumbSrc(nextSource), origin)
     if (immediate) {
       setSrc(immediate)
       return undefined
     }
-    const id = mediaId(nextSource)
-    if (!id) {
-      setSrc('')
-      return undefined
-    }
+
     let cancelled = false
-    loadThumb(id).then((next) => {
+    const id = mediaId(nextSource)
+    const request = id
+      ? loadThumb(id, origin)
+      : collectionSlug === 'rooms' && rowData?.id
+        ? loadRoomCover(rowData.id, origin)
+        : Promise.resolve('')
+
+    request.then((next) => {
       if (!cancelled) setSrc(next)
     })
     return () => {
       cancelled = true
     }
-  }, [cellData, rowData])
+  }, [cellData, collectionSlug, origin, rowData])
 
   const preview = src ? (
     <img src={src} alt="" className="list-thumb-cell__img" />

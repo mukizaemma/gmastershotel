@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { FieldLabel, useField, useListDrawer } from '@payloadcms/ui'
+import { FieldLabel, useField, useForm, useListDrawer } from '@payloadcms/ui'
 import { prepareUploadFiles, uploadPreparedFile } from '../prepareImage.js'
 import './mediaGridField.css'
 
@@ -42,6 +42,7 @@ function asDocs(selected) {
 
 export function MediaGridField({ field, path, readOnly }) {
   const { value, setValue } = useField({ path })
+  const { removeFieldRow } = useForm()
   const key = useMemo(() => imageKey(field), [field])
   const rows = (Array.isArray(value) ? value : []).filter((row) => mediaId(row?.[key]))
   const rowIds = rows.map((row) => mediaId(row?.[key])).join('|')
@@ -155,7 +156,18 @@ export function MediaGridField({ field, path, readOnly }) {
   }
 
   function removeAt(index) {
-    setValue(rows.filter((_, i) => i !== index))
+    const row = rows[index]
+    const source = Array.isArray(value) ? value : []
+    const rowIndex = source.findIndex(
+      (item) =>
+        item === row ||
+        (row?.id && item?.id === row.id) ||
+        mediaId(item?.[key]) === mediaId(row?.[key]),
+    )
+    const actual = rowIndex >= 0 ? rowIndex : index
+    removeFieldRow({ path, rowIndex: actual })
+    const next = source.filter((_, i) => i !== actual)
+    setValue(next)
   }
 
   return (
@@ -174,7 +186,15 @@ export function MediaGridField({ field, path, readOnly }) {
               <article key={id || index}>
                 {src ? <img src={src} alt="" /> : <div className="media-grid-field__empty">{busy ? '…' : 'Loading'}</div>}
                 {!readOnly && (
-                  <button type="button" onClick={() => removeAt(index)}>
+                  <button
+                    type="button"
+                    className="media-grid-field__remove"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      event.stopPropagation()
+                      removeAt(index)
+                    }}
+                  >
                     Remove
                   </button>
                 )}
