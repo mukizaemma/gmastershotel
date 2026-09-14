@@ -51,8 +51,8 @@ export function adaptRoom(doc) {
     descriptionHtml: doc.description,
     specs: doc.specs || {},
     features: doc.features || [],
-    image: mediaUrl(doc.image),
-    gallery: (doc.gallery || []).map((g) => mediaUrl(g.photo)),
+    gallery: (doc.gallery || []).map((g) => mediaUrl(g.photo)).filter(Boolean),
+    image: mediaUrl(doc.image) || mediaUrl(doc.gallery?.[0]?.photo),
   }
 }
 

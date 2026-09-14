@@ -1,7 +1,7 @@
 import { applyAutoSlug } from '../../../core/fields/slug.js'
 import { previewUpload } from '../../../core/fields/pageHero.js'
 import { rowActionsField, withRowActions } from '../../../core/fields/rowActions.js'
-import { countRoomImages } from './roomImages.js'
+import { countRoomImages, syncRoomCover } from './roomImages.js'
 
 export const Rooms = {
   slug: 'rooms',
@@ -27,19 +27,10 @@ export const Rooms = {
   },
   hooks: {
     beforeValidate: [applyAutoSlug],
-    beforeChange: [
-      ({ data }) => {
-        if (data?.image && (!data.gallery || data.gallery.length === 0)) {
-          const photo = typeof data.image === 'object' ? data.image.id : data.image
-          if (photo) data.gallery = [{ photo }]
-        }
-        if (data) data.imageCount = countRoomImages(data)
-        return data
-      },
-    ],
+    beforeChange: [({ data, originalDoc }) => syncRoomCover(data, originalDoc)],
     afterRead: [
       ({ doc }) => {
-        if (doc && Array.isArray(doc.gallery)) doc.imageCount = countRoomImages(doc)
+        if (doc) doc.imageCount = countRoomImages(doc)
         return doc
       },
     ],
@@ -113,14 +104,27 @@ export const Rooms = {
         { name: 'breakfast', type: 'text', admin: { width: '25%' } },
       ],
     },
-    previewUpload('image', { admin: { width: '25%' } }),
+    {
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+      displayPreview: true,
+      admin: {
+        width: '25%',
+        description: 'Cover photo. The first Room photo is used if this is empty.',
+        components: {
+          Field: './src/components/payload/ListCells/index.jsx#HiddenField',
+          Cell: './src/components/payload/ListCells/index.jsx#ThumbnailCell',
+        },
+      },
+    },
     {
       name: 'gallery',
       type: 'array',
       maxRows: 12,
       admin: {
         width: '100%',
-        description: 'Room photos in a grid. Add several at once — files over 700KB are resized first.',
+        description: 'First photo is the cover in the rooms list. Add several at once — files over 700KB are resized first.',
         components: {
           Field: './src/components/payload/MediaGridField/index.jsx#MediaGridField',
         },

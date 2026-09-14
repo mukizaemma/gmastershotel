@@ -16,6 +16,21 @@ function mediaSrc(doc) {
   return doc.thumbnailURL || doc.sizes?.thumbnail?.url || doc.url || ''
 }
 
+function pickedDoc(selected) {
+  if (!selected) return null
+  if (selected.doc || selected.value) return selected.doc || selected.value
+  if (Array.isArray(selected)) return selected[selected.length - 1] || null
+  if (typeof selected.forEach === 'function') {
+    let last = null
+    selected.forEach((isOn, id) => {
+      if (typeof isOn === 'object' && mediaId(isOn)) last = isOn
+      else if (isOn === true) last = { id: mediaId(id) }
+    })
+    return last
+  }
+  return typeof selected === 'object' || typeof selected === 'string' ? selected : null
+}
+
 export function HeroImageField({ field, path, readOnly }) {
   const { value, setValue } = useField({ path })
   const [doc, setDoc] = useState(typeof value === 'object' ? value : null)
@@ -75,8 +90,8 @@ export function HeroImageField({ field, path, readOnly }) {
   }
 
   function applyDoc(next) {
-    if (!next) return
-    setDoc(next)
+    if (!mediaId(next)) return
+    setDoc(typeof next === 'object' ? next : { id: next })
     setValue(next.id || next)
     closeDrawer()
   }
@@ -125,14 +140,10 @@ export function HeroImageField({ field, path, readOnly }) {
         allowCreate={false}
         enableRowSelections
         onSelect={(args) => {
-          applyDoc(args?.doc || args?.value || args)
+          applyDoc(pickedDoc(args))
         }}
         onBulkSelect={(selected) => {
-          let last = null
-          selected?.forEach((isOn, id) => {
-            if (isOn) last = id
-          })
-          if (last) applyDoc({ id: last })
+          applyDoc(pickedDoc(selected))
         }}
       />
     </div>

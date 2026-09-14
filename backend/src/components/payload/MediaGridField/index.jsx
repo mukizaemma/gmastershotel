@@ -26,10 +26,15 @@ function asDocs(selected) {
   if (Array.isArray(selected)) {
     return selected.map((item) => (typeof item === 'object' ? item : { id: mediaId(item) })).filter((doc) => mediaId(doc))
   }
+  if (selected.doc || selected.value) {
+    const doc = selected.doc || selected.value
+    return mediaId(doc) ? [typeof doc === 'object' ? doc : { id: mediaId(doc) }] : []
+  }
   const docs = []
   if (typeof selected.forEach === 'function') {
     selected.forEach((isOn, id) => {
-      if (isOn) docs.push({ id: mediaId(id) })
+      if (typeof isOn === 'object' && mediaId(isOn)) docs.push(isOn)
+      else if (isOn === true) docs.push({ id: mediaId(id) })
     })
   }
   return docs.filter((doc) => mediaId(doc))
@@ -114,7 +119,7 @@ export function MediaGridField({ field, path, readOnly }) {
       const id = mediaId(doc)
       if (!id || next.length >= max) continue
       if (next.some((row) => mediaId(row?.[key]) === id)) continue
-      next.push({ [key]: id })
+      next.push({ id: crypto.randomUUID(), [key]: id })
     }
     setValue(next)
   }
@@ -204,7 +209,7 @@ export function MediaGridField({ field, path, readOnly }) {
         allowCreate={false}
         enableRowSelections
         onSelect={(args) => {
-          addDocs([args?.doc || args?.value || args])
+          addDocs(asDocs(args))
           closeDrawer()
         }}
         onBulkSelect={(selected) => {

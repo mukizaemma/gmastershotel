@@ -154,11 +154,12 @@ export default function StaffRooms() {
           <tbody>
             {rows.map((row) => {
               const photos = photoCount(row)
+              const thumb = mediaUrl(row.image) || mediaUrl(row.gallery?.[0]?.photo)
               return (
               <tr key={row.id}>
                 <td>
-                  {mediaUrl(row.image) ? (
-                    <img src={mediaUrl(row.image)} alt="" className="staffThumb" />
+                  {thumb ? (
+                    <img src={thumb} alt="" className="staffThumb" />
                   ) : (
                     <span className="staffThumbEmpty" />
                   )}

@@ -1,17 +1,32 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link, useConfig } from '@payloadcms/ui'
 import { useRouter } from 'next/navigation.js'
 import { toast } from 'sonner'
 import { formatAdminURL } from 'payload/shared'
-import { countRoomImages } from '../../../modules/hotel/rooms/roomImages.js'
+import { countRoomImages, coverMedia, mediaId } from '../../../modules/hotel/rooms/roomImages.js'
 import './listCells.css'
+
+const thumbCache = new Map()
 
 function thumbSrc(value) {
   if (!value || typeof value !== 'object') return ''
   return value.thumbnailURL || value.sizes?.thumbnail?.url || value.url || ''
+}
+
+function loadThumb(id) {
+  if (!id) return Promise.resolve('')
+  if (thumbCache.has(id)) return Promise.resolve(thumbCache.get(id))
+  return fetch(`/api/media/${id}?depth=0`, { credentials: 'include' })
+    .then((res) => (res.ok ? res.json() : null))
+    .then((doc) => {
+      const src = thumbSrc(doc)
+      if (src) thumbCache.set(id, src)
+      return src
+    })
+    .catch(() => '')
 }
 
 function docHref(collectionSlug, id, config) {
@@ -25,8 +40,30 @@ function docHref(collectionSlug, id, config) {
 
 export function ThumbnailCell({ cellData, rowData, collectionSlug }) {
   const { config } = useConfig()
-  const src = thumbSrc(cellData)
+  const source = cellData || coverMedia(rowData)
+  const [src, setSrc] = useState(() => thumbSrc(source) || thumbCache.get(mediaId(source)) || '')
   const href = docHref(collectionSlug, rowData?.id, config)
+
+  useEffect(() => {
+    const nextSource = cellData || coverMedia(rowData)
+    const immediate = thumbSrc(nextSource)
+    if (immediate) {
+      setSrc(immediate)
+      return undefined
+    }
+    const id = mediaId(nextSource)
+    if (!id) {
+      setSrc('')
+      return undefined
+    }
+    let cancelled = false
+    loadThumb(id).then((next) => {
+      if (!cancelled) setSrc(next)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [cellData, rowData])
 
   const preview = src ? (
     <img src={src} alt="" className="list-thumb-cell__img" />
