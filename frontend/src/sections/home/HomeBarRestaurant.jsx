@@ -50,7 +50,7 @@ export default function HomeBarRestaurant() {
 
         <Reveal className={styles.actions} delay={120}>
           <Link to={spotlight.cta.path || '/bar-restaurant'} className={styles.cta}>
-            {spotlight.cta.label || 'See breakfast & dining'}
+            {spotlight.cta.label || 'See how we cook for you'}
           </Link>
         </Reveal>
       </div>

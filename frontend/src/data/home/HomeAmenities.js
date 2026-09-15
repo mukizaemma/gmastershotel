@@ -24,7 +24,7 @@ export const homeAmenities = [
     title: 'Breakfast & dining',
     id: 'bar-restaurant',
     icon: 'bar-restaurant',
-    description: 'Breakfast for guests, dishes cooked to order, and a buffet planned for nearby offices.',
+    description: 'Food and drinks at the hotel, meals cooked to order, and delivery across Kigali.',
   },
   {
     id: 'front-desk',

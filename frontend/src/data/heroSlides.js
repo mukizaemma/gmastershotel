@@ -28,9 +28,9 @@ export const heroSlides = [
   {
     id: 'bar-restaurant',
     kicker: 'Dining',
-    title: 'Breakfast, then the dish you have in mind',
+    title: 'Eat here, or we will cook and bring it to you',
     description:
-      'Guests enjoy breakfast. Our chefs can cook any dish you choose. A neighbourhood buffet is on the way.',
+      'Food and drinks at the hotel. We cook for groups staying with us, and we can deliver anywhere in Kigali.',
     // TODO: replace with real bar/restaurant photo
     image: '/images/home/hero-bar-restaurant.jpg',
     placeholderGradient:

@@ -17,6 +17,6 @@ export const PUBLIC_CTA = { label: 'Book Now', path: '/book' }
 
 export const LOCATION_HIGHLIGHTS = [
   'Prime Kagugu location near embassies and international offices',
-  'Air-conditioned rooms, breakfast, and dishes cooked to order',
+  'Air-conditioned rooms, meals cooked to order, and delivery in Kigali',
   'Quiet streets ideal for evening walks',
 ]

@@ -1,26 +1,27 @@
+import { Coffee, UtensilsCrossed, Moon } from 'lucide-react'
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, X, Coffee, ChefHat, Building2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useInView } from '@hooks/useInView'
 import Reveal from '@components/ui/Reveal'
 import { useBarRestaurantPage } from '@lib/queries/useBarRestaurantPage'
 import { DEFAULT_DINING } from '@features/hotel/restaurantSpotlight'
 import styles from './BarRestaurantDining.module.css'
 
-const OFFERS = [
+const MEALS = [
   {
     icon: Coffee,
-    title: 'Breakfast for our guests',
-    text: 'Stay with us as a bed and breakfast. Mornings start with a proper breakfast, cooked here for hotel guests.',
+    title: 'Breakfast',
+    text: 'Start the day with a proper breakfast. Tell us what you like — eggs, fruit, local plates, or something from home — and we cook it for you.',
   },
   {
-    icon: ChefHat,
-    title: 'Any dish you choose',
-    text: 'Professional chefs can prepare the meal you want — from local plates to a favourite from home. Just tell the front desk.',
+    icon: UtensilsCrossed,
+    title: 'Lunch',
+    text: 'Come back from meetings or a day out and sit down to lunch. Choose the dishes you want; our chefs prepare them here.',
   },
   {
-    icon: Building2,
-    title: 'Buffet for nearby offices',
-    text: 'We are planning a buffet so people working around us can find nice food close by during the day.',
+    icon: Moon,
+    title: 'Dinner',
+    text: 'Evenings are covered too. Ask for the dinner you have in mind, for one guest or for a group staying with us.',
   },
 ]
 
@@ -41,7 +42,7 @@ export default function BarRestaurantDining() {
         </div>
 
         <ul className={styles.offers}>
-          {OFFERS.map((item, index) => {
+          {MEALS.map((item, index) => {
             const Icon = item.icon
             return (
               <Reveal as="li" key={item.title} className={styles.offer} delay={index * 80}>
@@ -57,7 +58,7 @@ export default function BarRestaurantDining() {
 
         {photos.length > 0 ? (
           <>
-            <p className={styles.galleryLabel}>Breakfast and dishes from our kitchen</p>
+            <p className={styles.galleryLabel}>From our kitchen</p>
             <div className={styles.gallery}>
               {photos.map((photo, index) => (
                 <Reveal as="figure" key={photo.id || photo.image} className={styles.photo} delay={(index % 8) * 50}>
@@ -74,7 +75,7 @@ export default function BarRestaurantDining() {
             </div>
           </>
         ) : (
-          <p className={styles.empty}>Photos of breakfast and dishes will appear here as we add them.</p>
+          <p className={styles.empty}>Food photos will appear here as we add them from the kitchen.</p>
         )}
       </div>
 

@@ -48,27 +48,23 @@ function photoFromUpload(image, caption, id) {
 }
 
 function diningPhotos(page, mediaDocs) {
-  const fromCms = (page.dining?.images || [])
+  const fromDining = (page.dining?.images || [])
     .map((item, index) => photoFromUpload(item.image, item.caption, item.id || `dining-${index}`))
     .filter(Boolean)
-  if (fromCms.length) return fromCms
+  if (fromDining.length) return fromDining
+
+  const fromHome = (page.homeSpotlight?.images || [])
+    .map((item, index) => photoFromUpload(item.image, '', item.id || `home-dining-${index}`))
+    .filter(Boolean)
+  if (fromHome.length) return fromHome
 
   return (mediaDocs || [])
     .map((doc) => photoFromUpload(doc, doc.alt || doc.caption, doc.id))
     .filter(Boolean)
 }
 
-function adaptHours(hours) {
-  const rows = (hours || []).filter((item) => item.label)
-  if (!rows.length || rows.some((item) => /restaurant/i.test(item.label))) {
-    return DEFAULT_DINING_HOURS
-  }
-  return rows.map((item) => ({
-    id: item.id,
-    icon: item.icon,
-    label: item.label,
-    hours: item.hours,
-  }))
+function adaptHours() {
+  return DEFAULT_DINING_HOURS
 }
 
 function adaptPanels(panels) {
@@ -86,7 +82,9 @@ function adaptPanels(panels) {
 async function fetchBarRestaurantPage() {
   const [pages, mediaDocs] = await Promise.all([fetchPages(), fetchDiningMedia()])
   const page = pages.barRestaurant || {}
-  const diningSource = page.dining || page.menu || {}
+  const diningSource = page.dining || {}
+  const photos = diningPhotos(page, mediaDocs)
+  const homeImages = (page.homeSpotlight?.images || []).map((item) => mediaUrl(item.image)).filter(Boolean)
 
   return {
     hero: {
@@ -94,7 +92,7 @@ async function fetchBarRestaurantPage() {
       headline: pickCopy(page.hero?.headline, DEFAULT_DINING_HERO.headline),
       intro: pickCopy(asPlain(page.hero?.intro), DEFAULT_DINING_HERO.intro),
       cta: {
-        label: pickCopy(page.hero?.cta?.label, 'Ask about dining'),
+        label: pickCopy(page.hero?.cta?.label, 'Ask us to cook'),
         path: page.hero?.cta?.path || '/contact',
       },
       videoUrl: mediaUrl(page.hero?.videoUrl),
@@ -105,32 +103,22 @@ async function fetchBarRestaurantPage() {
       eyebrow: pickCopy(page.homeSpotlight?.eyebrow, DEFAULT_HOME_SPOTLIGHT.eyebrow),
       headline: pickCopy(page.homeSpotlight?.headline, DEFAULT_HOME_SPOTLIGHT.headline),
       intro: pickCopy(page.homeSpotlight?.intro, DEFAULT_HOME_SPOTLIGHT.intro),
-      features: (() => {
-        const cmsFeatures = (page.homeSpotlight?.features || []).filter((item) => item.title)
-        const generic = cmsFeatures.every((item) => ['Food', 'Drinks', 'Coffee'].includes(item.title))
-        if (!cmsFeatures.length || generic) return DEFAULT_RESTAURANT_FEATURES
-        return cmsFeatures.map((item) => ({
-          id: item.id,
-          icon: item.icon,
-          title: item.title,
-          text: item.text,
-        }))
-      })(),
-      images: (page.homeSpotlight?.images || []).map((item) => mediaUrl(item.image)).filter(Boolean),
+      features: DEFAULT_RESTAURANT_FEATURES,
+      images: homeImages.length ? homeImages : photos.map((photo) => photo.image).slice(0, 4),
       cta: {
         label: pickCopy(page.homeSpotlight?.cta?.label, DEFAULT_HOME_SPOTLIGHT.ctaLabel),
         path: page.homeSpotlight?.cta?.path || '/bar-restaurant',
       },
     },
 
-    hours: adaptHours(page.hours),
+    hours: adaptHours(),
     panels: adaptPanels(page.panels),
 
     dining: {
       eyebrow: pickCopy(diningSource.eyebrow, DEFAULT_DINING.eyebrow),
       headline: pickCopy(diningSource.headline, DEFAULT_DINING.headline),
       intro: pickCopy(diningSource.intro, DEFAULT_DINING.intro),
-      photos: diningPhotos(page, mediaDocs),
+      photos,
     },
 
     video: {
@@ -151,7 +139,7 @@ async function fetchBarRestaurantPage() {
 
 export function useBarRestaurantPage() {
   return useQuery({
-    queryKey: ['bar-restaurant-page'],
+    queryKey: ['bar-restaurant-page', 'meals-gallery-v2'],
     queryFn: fetchBarRestaurantPage,
     staleTime: 5 * 60 * 1000,
   })

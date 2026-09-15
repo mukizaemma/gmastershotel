@@ -1,12 +1,14 @@
-import { Coffee, UtensilsCrossed, ChefHat, Building2 } from 'lucide-react'
+import { Coffee, UtensilsCrossed, ChefHat } from 'lucide-react'
 import { useBarRestaurantPage } from '@lib/queries/useBarRestaurantPage'
 import Reveal from '@components/ui/Reveal'
 import styles from './BarRestaurantHours.module.css'
 
 const ICONS = {
   breakfast: Coffee,
+  lunch: UtensilsCrossed,
+  dinner: ChefHat,
   custom: ChefHat,
-  buffet: Building2,
+  buffet: UtensilsCrossed,
   'restaurant-bar': UtensilsCrossed,
 }
 
@@ -19,7 +21,7 @@ export default function BarRestaurantHours() {
     <div className={styles.strip}>
       <div className={`container ${styles.row}`}>
         {hours.map((item, index) => {
-          const Icon = ICONS[item.icon] || Coffee
+          const Icon = ICONS[item.icon] || UtensilsCrossed
           return (
             <Reveal key={item.id || item.label} className={styles.item} delay={index * 80}>
               <Icon size={16} />

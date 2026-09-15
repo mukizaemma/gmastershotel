@@ -9,10 +9,10 @@
  */
 
 export const homeBarRestaurant = {
-  eyebrow: 'Dining',
-  headline: 'Breakfast, then the dish you have in mind',
-  body: 'Guests enjoy breakfast as part of a bed-and-breakfast stay. Our chefs can prepare any dish you choose, and a buffet for nearby offices is coming soon.',
-  cta: { label: 'See breakfast & dining', path: '/bar-restaurant' },
+  eyebrow: 'Food & drinks',
+  headline: 'Eat here, or we will cook and bring it to you',
+  body: 'Guests find food and drinks at the hotel. We also cook for groups staying with us, and we can cook and deliver anywhere in Kigali.',
+  cta: { label: 'See how we cook for you', path: '/bar-restaurant' },
   highlights: [
     {
       id: 'sundowners',

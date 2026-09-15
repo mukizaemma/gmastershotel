@@ -32,9 +32,9 @@ export const heroSlides = [
   {
     id: 'bar-restaurant',
     eyebrow: 'Dining',
-    headline: 'Breakfast, then the dish you have in mind',
+    headline: 'Eat here, or we will cook and bring it to you',
     subline:
-      'Guests enjoy breakfast. Our chefs can cook any dish you choose. A neighbourhood buffet is on the way.',
+      'Food and drinks at the hotel. We cook for groups staying with us, and we can deliver anywhere in Kigali.',
     image: '/images/home/Villa-Hotel-and-Restaurant.jpg',
     placeholderGradient:
       'linear-gradient(180deg, #3A2A2E 0%, #2C1F22 60%, #1E1517 100%)',

@@ -802,8 +802,9 @@ export default function StaffPages() {
                     <div className="full">
                       <strong>Dining story &amp; photos</strong>
                       <p className="staffLead">
-                        There is no public menu. Guests see breakfast, cooked-to-order dishes, and
-                        these photos. Menu items in the sidebar can wait until the buffet opens.
+                        There is no public menu and no table to reserve. Guests see breakfast, lunch,
+                        and dinner cooked to order, plus food photos. We also cook for groups and can
+                        deliver in Kigali.
                       </p>
                     </div>
                     <label className="staffField col-3">
@@ -875,9 +876,10 @@ export default function StaffPages() {
                               setForm({ ...form, homeFeatures })
                             }}
                           >
+                            <option value="food">Food and drinks</option>
+                            <option value="groups">Groups</option>
+                            <option value="delivery">Delivery</option>
                             <option value="coffee">Breakfast / coffee</option>
-                            <option value="drinks">Chef / cooked to order</option>
-                            <option value="food">Food</option>
                             <option value="buffet">Buffet / offices</option>
                           </select>
                         </label>

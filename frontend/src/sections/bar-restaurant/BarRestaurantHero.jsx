@@ -12,7 +12,7 @@ export default function BarRestaurantHero() {
       title={headline}
       text={intro}
       primaryTo={cta?.path || '/contact'}
-      primaryLabel={cta?.label || 'Ask about dining'}
+      primaryLabel={cta?.label || 'Ask us to cook'}
       secondaryTo="/book"
       secondaryLabel="Book a stay"
     />
