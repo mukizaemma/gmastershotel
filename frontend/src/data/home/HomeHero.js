@@ -31,10 +31,10 @@ export const heroSlides = [
   },
   {
     id: 'bar-restaurant',
-    eyebrow: 'Bar & Restaurant',
-    headline: 'Good food, better view',
+    eyebrow: 'Dining',
+    headline: 'Breakfast, then the dish you have in mind',
     subline:
-      'Local dishes and cold drinks, served looking out over the water.',
+      'Guests enjoy breakfast. Our chefs can cook any dish you choose. A neighbourhood buffet is on the way.',
     image: '/images/home/Villa-Hotel-and-Restaurant.jpg',
     placeholderGradient:
       'linear-gradient(180deg, #3A2A2E 0%, #2C1F22 60%, #1E1517 100%)',

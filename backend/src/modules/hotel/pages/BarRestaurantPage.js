@@ -8,7 +8,7 @@ import {
 
 export const BarRestaurantPage = {
   slug: 'bar-restaurant-page',
-  label: 'Restaurant page',
+  label: 'Dining page',
   admin: { group: false },
   access: {
     read: () => true,
@@ -54,17 +54,18 @@ export const BarRestaurantPage = {
             description: 'Headline, highlights, and photos shown on the public home page.',
           },
           fields: [
-            { name: 'eyebrow', type: 'text', defaultValue: 'Restaurant', admin: { width: '25%' } },
+            { name: 'eyebrow', type: 'text', defaultValue: 'Dining', admin: { width: '25%' } },
             {
               name: 'headline',
               type: 'text',
-              defaultValue: 'Taste, sip & relax',
+              defaultValue: 'Breakfast, then the dish you have in mind',
               admin: { width: '75%', className: 'hero-headline' },
             },
             {
               name: 'intro',
               type: 'textarea',
-              defaultValue: 'Savor delicious food, drinks, and coffee.',
+              defaultValue:
+                'Guests enjoy breakfast as part of a bed-and-breakfast stay. Our chefs can prepare any dish you choose, and a buffet for nearby offices is coming soon.',
               admin: { width: '100%' },
             },
             {
@@ -76,12 +77,13 @@ export const BarRestaurantPage = {
                 {
                   name: 'icon',
                   type: 'select',
-                  defaultValue: 'food',
+                  defaultValue: 'coffee',
                   admin: { width: '25%' },
                   options: [
+                    { label: 'Breakfast / coffee', value: 'coffee' },
+                    { label: 'Chef / cooked to order', value: 'drinks' },
                     { label: 'Food', value: 'food' },
-                    { label: 'Drinks', value: 'drinks' },
-                    { label: 'Coffee', value: 'coffee' },
+                    { label: 'Buffet / offices', value: 'buffet' },
                   ],
                 },
                 { name: 'title', type: 'text', required: true, admin: { width: '75%' } },
@@ -94,7 +96,7 @@ export const BarRestaurantPage = {
               maxRows: 4,
               labels: { singular: 'Photo', plural: 'Photos' },
               admin: {
-                description: 'Up to four photos on the home restaurant section. Add several at once.',
+                description: 'Up to four photos on the home dining section. Add several at once.',
                 components: {
                   Field: './src/components/payload/MediaGridField/index.jsx#MediaGridField',
                 },
@@ -107,7 +109,12 @@ export const BarRestaurantPage = {
               label: 'Button',
               admin: { width: '50%', className: 'hero-cta-card' },
               fields: [
-                { name: 'label', type: 'text', defaultValue: 'View menu', admin: { width: '50%' } },
+                {
+                  name: 'label',
+                  type: 'text',
+                  defaultValue: 'See breakfast & dining',
+                  admin: { width: '50%' },
+                },
                 { name: 'path', type: 'text', defaultValue: '/bar-restaurant', admin: { width: '50%' } },
               ],
             },
@@ -118,6 +125,9 @@ export const BarRestaurantPage = {
     {
       name: 'hours',
       type: 'array',
+      admin: {
+        description: 'Leave empty to show breakfast, dishes to order, and buffet coming soon.',
+      },
       fields: [
         {
           name: 'icon',
@@ -125,6 +135,8 @@ export const BarRestaurantPage = {
           admin: { width: '25%' },
           options: [
             { label: 'Breakfast', value: 'breakfast' },
+            { label: 'Dishes to order', value: 'custom' },
+            { label: 'Buffet', value: 'buffet' },
             { label: 'Restaurant & Bar', value: 'restaurant-bar' },
           ],
         },
@@ -135,27 +147,50 @@ export const BarRestaurantPage = {
     {
       name: 'panels',
       type: 'array',
-      minRows: 1,
       fields: [
         { name: 'title', type: 'text', required: true, admin: { width: '50%' } },
         { name: 'description', type: 'richText' },
         previewUpload('backgroundImage', { admin: { width: '50%' } }),
       ],
-      admin: { description: 'The stacked parallax panels' },
+      admin: {
+        description: 'Optional extra story panels. Leave empty — the dining gallery covers this.',
+      },
     },
     {
-      name: 'menu',
+      name: 'dining',
       type: 'group',
       admin: {
-        description: 'Section title only. Dishes are edited under Menu items in the sidebar.',
+        description:
+          'Public dining story and food photos. There is no guest-facing menu yet. Menu items in the sidebar can wait until the buffet opens.',
       },
       fields: [
-        { name: 'eyebrow', type: 'text', defaultValue: 'The menu', admin: { width: '25%' } },
+        { name: 'eyebrow', type: 'text', defaultValue: 'Bed & breakfast', admin: { width: '25%' } },
         {
           name: 'headline',
           type: 'text',
-          defaultValue: 'Eat and drink with us',
+          defaultValue: 'Guests eat well. Tell us what you would like.',
           admin: { width: '75%' },
+        },
+        {
+          name: 'intro',
+          type: 'textarea',
+          defaultValue:
+            'We are not a full restaurant yet. Hotel guests enjoy breakfast, and our chefs can cook any dish you have in mind. A buffet for nearby offices and workers is on the way.',
+        },
+        {
+          name: 'images',
+          type: 'array',
+          labels: { singular: 'Photo', plural: 'Photos' },
+          admin: {
+            description: 'Breakfast and dish photos. Add several at once. These appear on the dining page.',
+            components: {
+              Field: './src/components/payload/MediaGridField/index.jsx#MediaGridField',
+            },
+          },
+          fields: [
+            previewUpload('image'),
+            { name: 'caption', type: 'text', admin: { width: '50%' } },
+          ],
         },
       ],
     },
@@ -173,8 +208,13 @@ export const BarRestaurantPage = {
       name: 'cta',
       type: 'group',
       fields: [
-        { name: 'headline', type: 'text', defaultValue: 'Ready to reserve your table?', admin: { width: '50%' } },
-        { name: 'buttonLabel', type: 'text', defaultValue: 'Reserve a Table', admin: { width: '25%' } },
+        {
+          name: 'headline',
+          type: 'text',
+          defaultValue: 'Tell us what you would like to eat',
+          admin: { width: '50%' },
+        },
+        { name: 'buttonLabel', type: 'text', defaultValue: 'Contact us', admin: { width: '25%' } },
         { name: 'buttonPath', type: 'text', defaultValue: '/contact', admin: { width: '25%' } },
         { name: 'body', type: 'richText' },
       ],

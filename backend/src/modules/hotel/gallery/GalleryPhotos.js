@@ -24,7 +24,7 @@ export const GalleryPhotos = {
       options: [
         { label: 'None — do not show', value: 'none' },
         { label: 'Rooms', value: 'rooms' },
-        { label: 'Bar & Restaurant', value: 'bar-restaurant' },
+        { label: 'Breakfast & dining', value: 'bar-restaurant' },
         { label: 'Property & views', value: 'lake-grounds' },
         { label: 'Amenities', value: 'amenities' },
       ],

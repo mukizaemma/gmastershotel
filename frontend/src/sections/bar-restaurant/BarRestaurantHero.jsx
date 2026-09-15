@@ -8,11 +8,11 @@ export default function BarRestaurantHero() {
   return (
     <PageHero
       image={backgroundImage}
-      eyebrow={eyebrow || 'Dining'}
-      title={headline || 'Restaurant & bar'}
-      text={intro || 'Unhurried plates and a glass after a day by the lake.'}
+      eyebrow={eyebrow}
+      title={headline}
+      text={intro}
       primaryTo={cta?.path || '/contact'}
-      primaryLabel={cta?.label || 'Reserve a table'}
+      primaryLabel={cta?.label || 'Ask about dining'}
       secondaryTo="/book"
       secondaryLabel="Book a stay"
     />

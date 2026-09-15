@@ -9,10 +9,11 @@
  */
 
 export const barRestaurantHero = {
-  eyebrow: 'Bar & Restaurant',
-  headline: 'You came to the right place',
-  intro: 'Leave everything behind. Good food, good drinks, and a view worth staying for.',
-  cta: { label: 'Reserve a Table', path: '/contact' },
+  eyebrow: 'Bed & breakfast',
+  headline: 'Breakfast for guests. Dishes cooked to order.',
+  intro:
+    'We do not run a restaurant menu yet. Stay with us and enjoy breakfast, or ask our professional chefs to prepare any dish you like. A buffet for nearby offices is on the way.',
+  cta: { label: 'Ask about dining', path: '/contact' },
   // TODO: replace with real slow-motion video (people toasting/cheersing)
   videoUrl: '/images/bar-restaurant/hero-video.mp4',
   // TODO: replace with a real photo — used as poster + fallback if no video

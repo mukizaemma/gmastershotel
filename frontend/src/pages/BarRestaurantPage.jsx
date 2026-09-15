@@ -3,12 +3,12 @@ import PageLoader from '@components/ui/PageLoader'
 import BarRestaurantHero from '@sections/bar-restaurant/BarRestaurantHero'
 import BarRestaurantHours from '@sections/bar-restaurant/BarRestaurantHours'
 import BarRestaurantPanels from '@sections/bar-restaurant/BarRestaurantPanels'
-import BarRestaurantMenu from '@sections/bar-restaurant/BarRestaurantMenu'
+import BarRestaurantDining from '@sections/bar-restaurant/BarRestaurantDining'
 import BarRestaurantVideo from '@sections/bar-restaurant/BarRestaurantVideo'
 import BarRestaurantCTA from '@sections/bar-restaurant/BarRestaurantCTA'
 
 export default function BarRestaurantPage() {
-  const { isLoading, isError } = useBarRestaurantPage()
+  const { data, isLoading, isError } = useBarRestaurantPage()
 
   if (isLoading) return <PageLoader />
   if (isError) {
@@ -19,13 +19,15 @@ export default function BarRestaurantPage() {
     )
   }
 
+  const showVideo = Boolean(data?.video?.videoUrl || data?.video?.backgroundImage)
+
   return (
     <>
       <BarRestaurantHero />
       <BarRestaurantHours />
       <BarRestaurantPanels />
-      <BarRestaurantMenu />
-      <BarRestaurantVideo />
+      <BarRestaurantDining />
+      {showVideo ? <BarRestaurantVideo /> : null}
       <BarRestaurantCTA />
     </>
   )

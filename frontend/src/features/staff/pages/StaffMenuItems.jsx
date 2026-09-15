@@ -110,8 +110,7 @@ export default function StaffMenuItems() {
     <div className="staffPage">
       <h1>Menu items</h1>
       <p className="staffLead">
-        Dishes and drinks shown on the public restaurant page. Guests can add items and send the order
-        on WhatsApp.
+        Dishes saved for the future office buffet. They are not listed on the public dining page yet.
       </p>
       <div className="staffToolbar">
         <button type="button" className="staffBtn" onClick={() => setForm({ ...empty, dietary: [] })}>

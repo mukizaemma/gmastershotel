@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { asHtml, htmlToLexical } from '@lib/richText'
 import { DEFAULT_HOME_FEATURES } from '@features/hotel/homeFeatures'
-import { DEFAULT_RESTAURANT_FEATURES } from '@features/hotel/restaurantSpotlight'
+import { DEFAULT_HOME_SPOTLIGHT, DEFAULT_RESTAURANT_FEATURES } from '@features/hotel/restaurantSpotlight'
 import { LOCATION_HIGHLIGHTS } from '@features/hotel/brand'
 import { staffClient, mediaId } from '../api/staffClient'
 import MediaField from '../components/MediaField'
@@ -28,7 +28,7 @@ const FEATURE_ICON_OPTIONS = [
 const PAGES = [
   { slug: 'about-page', label: 'About', path: '/about' },
   { slug: 'rooms-page', label: 'Accommodation', path: '/accommodation' },
-  { slug: 'bar-restaurant-page', label: 'Bar & Restaurant', path: '/bar-restaurant' },
+  { slug: 'bar-restaurant-page', label: 'Dining', path: '/bar-restaurant' },
   { slug: 'things-to-do-page', label: 'Things to do', path: '/things-to-do' },
   { slug: 'gallery-page', label: 'Gallery', path: '/gallery' },
   { slug: 'contact-page', label: 'Contact us', path: '/contact' },
@@ -194,6 +194,7 @@ function readPage(slug, page) {
 
   const hero = page.hero || {}
   const home = page.homeSpotlight || {}
+  const dining = page.dining || page.menu || {}
   return {
     eyebrow: hero.eyebrow || '',
     headline: hero.headline || '',
@@ -205,9 +206,9 @@ function readPage(slug, page) {
     secondaryPath: hero.secondaryCta?.path || '',
     responseNote: page.responseNote || '',
     frontDeskNote: page.frontDeskNote || '',
-    homeEyebrow: home.eyebrow || 'Restaurant',
-    homeHeadline: home.headline || 'Taste, sip & relax',
-    homeIntro: home.intro || 'Savor delicious food, drinks, and coffee.',
+    homeEyebrow: home.eyebrow || DEFAULT_HOME_SPOTLIGHT.eyebrow,
+    homeHeadline: home.headline || DEFAULT_HOME_SPOTLIGHT.headline,
+    homeIntro: home.intro || DEFAULT_HOME_SPOTLIGHT.intro,
     homeFeatures: ((home.features || []).length ? home.features : DEFAULT_RESTAURANT_FEATURES).map(
       (item) => ({
         icon: item.icon || 'food',
@@ -216,8 +217,12 @@ function readPage(slug, page) {
       }),
     ),
     homeImages: (home.images || []).map((item) => item.image || ''),
-    homeCtaLabel: home.cta?.label || 'View menu',
+    homeCtaLabel: home.cta?.label || DEFAULT_HOME_SPOTLIGHT.ctaLabel,
     homeCtaPath: home.cta?.path || '/bar-restaurant',
+    diningEyebrow: dining.eyebrow || '',
+    diningHeadline: dining.headline || '',
+    diningIntro: dining.intro || '',
+    diningImages: (dining.images || []).map((item) => item.image || ''),
   }
 }
 
@@ -328,6 +333,13 @@ function writePage(slug, current, form) {
       })),
       images: (form.homeImages || []).map((image) => ({ image: mediaId(image) || undefined })),
       cta: { label: form.homeCtaLabel, path: form.homeCtaPath },
+    }
+    next.dining = {
+      ...(current.dining || {}),
+      eyebrow: form.diningEyebrow,
+      headline: form.diningHeadline,
+      intro: form.diningIntro,
+      images: (form.diningImages || []).map((image) => ({ image: mediaId(image) || undefined })),
     }
   }
 
@@ -655,10 +667,9 @@ export default function StaffPages() {
                 </label>
 
                 <div className="full">
-                  <strong>Bar &amp; Restaurant</strong>
+                  <strong>Dining</strong>
                   <p className="staffLead">
-                    The home restaurant photos, highlights, and button are edited on the Bar &amp;
-                    Restaurant page.
+                    The home dining photos, highlights, and button are edited on the Dining page.
                   </p>
                 </div>
 
@@ -789,11 +800,40 @@ export default function StaffPages() {
                 {form.slug === 'bar-restaurant-page' && (
                   <>
                     <div className="full">
-                      <strong>Restaurant menu</strong>
+                      <strong>Dining story &amp; photos</strong>
                       <p className="staffLead">
-                        Dishes and drinks are edited under Menu items in the sidebar, not on this page.
+                        There is no public menu. Guests see breakfast, cooked-to-order dishes, and
+                        these photos. Menu items in the sidebar can wait until the buffet opens.
                       </p>
                     </div>
+                    <label className="staffField col-3">
+                      Dining eyebrow
+                      <input
+                        value={form.diningEyebrow}
+                        onChange={(e) => setForm({ ...form, diningEyebrow: e.target.value })}
+                      />
+                    </label>
+                    <label className="staffField col-9">
+                      Dining headline
+                      <input
+                        value={form.diningHeadline}
+                        onChange={(e) => setForm({ ...form, diningHeadline: e.target.value })}
+                      />
+                    </label>
+                    <label className="staffField full">
+                      Dining intro
+                      <textarea
+                        rows={3}
+                        value={form.diningIntro}
+                        onChange={(e) => setForm({ ...form, diningIntro: e.target.value })}
+                      />
+                    </label>
+                    <MediaGalleryField
+                      label="Breakfast and dish photos"
+                      values={form.diningImages}
+                      onChange={(diningImages) => setForm({ ...form, diningImages })}
+                      max={24}
+                    />
                     <div className="full">
                       <strong>Home page section</strong>
                       <p className="staffLead">
@@ -835,9 +875,10 @@ export default function StaffPages() {
                               setForm({ ...form, homeFeatures })
                             }}
                           >
+                            <option value="coffee">Breakfast / coffee</option>
+                            <option value="drinks">Chef / cooked to order</option>
                             <option value="food">Food</option>
-                            <option value="drinks">Drinks</option>
-                            <option value="coffee">Coffee</option>
+                            <option value="buffet">Buffet / offices</option>
                           </select>
                         </label>
                         <label className="staffField col-9">

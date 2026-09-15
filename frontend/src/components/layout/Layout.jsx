@@ -9,7 +9,7 @@ import styles from './Layout.module.css'
 
 const PAGE_LABELS = {
   '/accommodation': 'Accommodation',
-  '/bar-restaurant': 'Bar & Restaurant',
+  '/bar-restaurant': 'Dining',
   '/things-to-do': 'Things to do',
   '/gallery': 'Gallery',
   '/about': 'About',

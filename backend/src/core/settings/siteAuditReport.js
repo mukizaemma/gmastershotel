@@ -74,7 +74,7 @@ const PAGES = [
   { key: 'home', slug: 'home-page', label: 'Home', staff: '/staff/pages?open=home-page', admin: '/admin/globals/pages', cta: 'Edit home' },
   { key: 'about', slug: 'about-page', label: 'About', staff: '/staff/pages?open=about-page', admin: '/admin/globals/pages', cta: 'Edit about' },
   { key: 'rooms', slug: 'rooms-page', label: 'Accommodation', staff: '/staff/pages?open=rooms-page', admin: '/admin/globals/pages', cta: 'Edit accommodation page' },
-  { key: 'barRestaurant', slug: 'bar-restaurant-page', label: 'Bar & Restaurant', staff: '/staff/pages?open=bar-restaurant-page', admin: '/admin/globals/pages', cta: 'Edit bar & restaurant' },
+  { key: 'barRestaurant', slug: 'bar-restaurant-page', label: 'Dining', staff: '/staff/pages?open=bar-restaurant-page', admin: '/admin/globals/pages', cta: 'Edit dining page' },
   { key: 'thingsToDo', slug: 'things-to-do-page', label: 'Things to do', staff: '/staff/pages?open=things-to-do-page', admin: '/admin/globals/pages', cta: 'Edit things to do' },
   { key: 'gallery', slug: 'gallery-page', label: 'Gallery page', staff: '/staff/pages?open=gallery-page', admin: '/admin/globals/pages', cta: 'Edit gallery page' },
   { key: 'contact', slug: 'contact-page', label: 'Contact', staff: '/staff/pages?open=contact-page', admin: '/admin/globals/pages', cta: 'Edit contact' },
@@ -290,7 +290,7 @@ export async function buildSiteAuditReport(payload) {
       publishedMenu.length >= 4,
       { staff: '/staff/menu', admin: '/admin/collections/menu-items', cta: 'Add menu items' },
       publishedMenu.length >= 4
-        ? `${publishedMenu.length} on the restaurant page`
+        ? `${publishedMenu.length} saved for later (not on the public dining page yet)`
         : `${publishedMenu.length} published — add dishes with photo, price, and ingredients`,
     ),
     ...publishedMenu.map((row) =>

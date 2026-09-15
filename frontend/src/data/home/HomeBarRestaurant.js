@@ -9,10 +9,10 @@
  */
 
 export const homeBarRestaurant = {
-  eyebrow: 'Bar & Restaurant',
-  headline: 'Evenings worth staying in for',
-  body: 'From morning coffee on the terrace to a slow dinner by the water, our bar & restaurant is built around Lake Kivu — not just next to it.',
-  cta: { label: 'Explore Bar & Restaurant', path: '/bar-restaurant' },
+  eyebrow: 'Dining',
+  headline: 'Breakfast, then the dish you have in mind',
+  body: 'Guests enjoy breakfast as part of a bed-and-breakfast stay. Our chefs can prepare any dish you choose, and a buffet for nearby offices is coming soon.',
+  cta: { label: 'See breakfast & dining', path: '/bar-restaurant' },
   highlights: [
     {
       id: 'sundowners',

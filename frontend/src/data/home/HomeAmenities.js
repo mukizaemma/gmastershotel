@@ -21,10 +21,10 @@ export const homeAmenities = [
     description: 'Secure on-site parking for guests arriving by car.',
   },
   {
+    title: 'Breakfast & dining',
     id: 'bar-restaurant',
     icon: 'bar-restaurant',
-    title: 'Bar & Restaurant',
-    description: 'On-site dining and drinks, with a view over the water.',
+    description: 'Breakfast for guests, dishes cooked to order, and a buffet planned for nearby offices.',
   },
   {
     id: 'front-desk',

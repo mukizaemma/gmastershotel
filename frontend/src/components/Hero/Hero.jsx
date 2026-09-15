@@ -152,7 +152,7 @@ export default function Hero() {
         <div className={styles.navLinks}>
           <a href="#home">Home</a>
           <a href="#rooms">Rooms</a>
-          <a href="#bar-restaurant">Bar &amp; Restaurant</a>
+          <a href="#bar-restaurant">Dining</a>
           <a href="#gallery">Gallery</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>

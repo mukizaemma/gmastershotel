@@ -9,7 +9,7 @@
 export const primaryNav = [
   { label: 'Home', path: '/' },
   { label: 'Rooms', path: '/rooms' },
-  { label: 'Bar & Restaurant', path: '/bar-restaurant' },
+  { label: 'Dining', path: '/bar-restaurant' },
   { label: 'Gallery', path: '/gallery' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },

@@ -32,7 +32,7 @@ const NAV = [
   { to: '/staff/accommodation', label: 'Rooms', icon: BedDouble },
   { to: '/staff/reservations', label: 'Bookings', icon: CalendarCheck },
   { to: '/staff/availability', label: 'Availability', icon: CalendarOff },
-  { to: '/staff/pages?open=bar-restaurant-page', label: 'Restaurant page', icon: Coffee },
+  { to: '/staff/pages?open=bar-restaurant-page', label: 'Dining page', icon: Coffee },
   { to: '/staff/menu', label: 'Menu items', icon: UtensilsCrossed },
   { to: '/staff/things-to-do', label: 'Things to do', icon: Sparkles },
   { to: '/staff/amenities', label: 'Amenities', icon: Bell },

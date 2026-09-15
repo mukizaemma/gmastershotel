@@ -7,7 +7,7 @@ export const HANDOVER_TABS = [
   { id: 'rooms', label: 'Rooms' },
   { id: 'amenities', label: 'Hotel facilities' },
   { id: 'activities', label: 'Things to do' },
-  { id: 'menu', label: 'Restaurant menu' },
+  { id: 'menu', label: 'Dining photos' },
   { id: 'gallery', label: 'Photos' },
   { id: 'bookings', label: 'Bookings' },
   { id: 'reviews', label: 'Guest reviews' },
@@ -30,9 +30,9 @@ export const HANDOVER_SECTIONS = {
         heading: 'Main features',
         body: 'These are the core pieces live on the demo:',
         features: [
-          { title: 'Public website', text: 'Home, accommodation, room pages, restaurant, things to do, gallery, about, contact, booking, reviews, and policy.' },
+          { title: 'Public website', text: 'Home, accommodation, room pages, dining, things to do, gallery, about, contact, booking, reviews, and policy.' },
           { title: 'Online booking', text: 'Guests pick a room, choose dates on the stay calendar, and send a reservation request.' },
-          { title: 'Staff desk', text: 'Your team updates hotel details, pages, rooms, photos, menu, activities, and bookings from one place.' },
+          { title: 'Staff desk', text: 'Your team updates hotel details, pages, rooms, photos, dining, activities, and bookings from one place.' },
           { title: 'Availability control', text: 'Close nights for the hotel or selected rooms when you cannot take bookings.' },
           { title: 'Contact & enquiries', text: 'General messages and room booking requests from the contact form.' },
           { title: 'Site audit', text: 'A live readiness score that shows what content is still missing before launch.' },
@@ -168,16 +168,16 @@ export const HANDOVER_SECTIONS = {
     ],
   },
   menu: {
-    title: 'Restaurant menu',
-    lead: 'Dishes are edited under **Menu items**. The Bar & Restaurant page holds the section heading and copy.',
+    title: 'Breakfast & dining photos',
+    lead: 'There is no public restaurant menu yet. Guests see breakfast, cooked-to-order dishes, and a photo gallery on the **Dining** page.',
     blocks: [
       {
         heading: 'Where to edit',
-        body: 'Staff desk → **Menu items**.',
+        body: 'Staff desk → **Dining page**.',
         steps: [
-          'Click **Add item**.',
-          'Enter name, price, category, and photo.',
-          '**Save**. Guests see the menu on Bar & Restaurant.',
+          'Open **Dining page**.',
+          'Add breakfast and dish photos under **Breakfast and dish photos**.',
+          '**Save**. Guests see the gallery on Dining — not a menu.',
         ],
       },
     ],
@@ -192,7 +192,7 @@ export const HANDOVER_SECTIONS = {
         steps: [
           'Upload photos once.',
           'Reuse them on pages, rooms, and amenities via **From library**.',
-          'To show a photo on the public gallery, set its **Gallery category** (Rooms, Bar & Restaurant, and so on).',
+          'To show a photo on the public gallery, set its **Gallery category** (Rooms, Breakfast & dining, and so on).',
         ],
       },
     ],

@@ -103,7 +103,7 @@ export const Media = {
       options: [
         { label: 'None — do not show on gallery', value: 'none' },
         { label: 'Rooms', value: 'rooms' },
-        { label: 'Bar & Restaurant', value: 'bar-restaurant' },
+        { label: 'Breakfast & dining', value: 'bar-restaurant' },
         { label: 'Property & views', value: 'lake-grounds' },
         { label: 'Amenities', value: 'amenities' },
       ],

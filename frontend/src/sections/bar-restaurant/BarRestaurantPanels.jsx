@@ -9,7 +9,10 @@ function Panel({ panel }) {
     <section
       ref={ref}
       className={styles.panel}
-      style={{ backgroundImage: `url(${panel.backgroundImage})` }}
+      style={{
+        backgroundColor: '#12203a',
+        backgroundImage: panel.backgroundImage ? `url(${panel.backgroundImage})` : undefined,
+      }}
     >
       <div className={styles.tint} />
       <div className={`container ${styles.inner}`}>
@@ -30,6 +33,7 @@ function Panel({ panel }) {
 export default function BarRestaurantPanels() {
   const { data } = useBarRestaurantPage();
   const { panels: barRestaurantPanels } = data;
+  if (!barRestaurantPanels?.length) return null;
 
   return (
     <div>

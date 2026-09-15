@@ -27,10 +27,10 @@ export const heroSlides = [
   },
   {
     id: 'bar-restaurant',
-    kicker: 'Bar & Restaurant',
-    title: 'Good food, better view',
+    kicker: 'Dining',
+    title: 'Breakfast, then the dish you have in mind',
     description:
-      'Local dishes and cold drinks, served looking out over the water.',
+      'Guests enjoy breakfast. Our chefs can cook any dish you choose. A neighbourhood buffet is on the way.',
     // TODO: replace with real bar/restaurant photo
     image: '/images/home/hero-bar-restaurant.jpg',
     placeholderGradient:

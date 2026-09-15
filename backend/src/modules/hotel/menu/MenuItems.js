@@ -26,7 +26,7 @@ export const MenuItems = {
     group: false,
     useAsTitle: 'name',
     defaultColumns: withRowActions(['image', 'name', 'category', 'price', 'available']),
-    description: 'Dishes and drinks on the Bar & Restaurant page. Guests can send an order on WhatsApp.',
+    description: 'Optional dish list for when the office buffet opens. These items are not shown on the public dining page yet.',
   },
   hooks: {
     beforeValidate: [applyAutoSlug],
