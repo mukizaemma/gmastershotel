@@ -1,15 +1,15 @@
-import { HeroImageField as HeroImageField_bf473ff9e1dc0c6a8c976a456469f590 } from '../../../../src/components/payload/HeroImageField/index.jsx'
 import { ThumbnailCell as ThumbnailCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
-import { CoverUrlCell as CoverUrlCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
-import { RoomTitleCell as RoomTitleCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
+import { HeroImageField as HeroImageField_bf473ff9e1dc0c6a8c976a456469f590 } from '../../../../src/components/payload/HeroImageField/index.jsx'
 import { HiddenField as HiddenField_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
-import { ImageCountCell as ImageCountCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
 import { RowActionsCell as RowActionsCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
+import { SaveAndReturnButton as SaveAndReturnButton_13970a7fb2fa2ff86d0b3653700bd30f } from '../../../../src/components/payload/SaveAndReturn/index.jsx'
 import { GalleryCategoryField as GalleryCategoryField_3a15863d77786846f06d40b3ca8147a9 } from '../../../../src/components/payload/HideInDrawer/index.jsx'
 import { GalleryOrderField as GalleryOrderField_3a15863d77786846f06d40b3ca8147a9 } from '../../../../src/components/payload/HideInDrawer/index.jsx'
 import { ShowOnGalleryField as ShowOnGalleryField_3a15863d77786846f06d40b3ca8147a9 } from '../../../../src/components/payload/HideInDrawer/index.jsx'
+import { MediaEditView as MediaEditView_192c86388a19f526297e669e4ca18721 } from '../../../../src/components/payload/MediaBulkCreate/index.jsx'
 import { MediaGalleryList as MediaGalleryList_263939c508f47d345ff92ebcc5c9643e } from '../../../../src/components/payload/MediaGalleryList/index.jsx'
-import { MediaEditView as MediaEditView_7c4e1a2b9f0d48c1a6e3b5d8c2f1a0e4 } from '../../../../src/components/payload/MediaBulkCreate/index.jsx'
+import { RoomTitleCell as RoomTitleCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
+import { ImageCountCell as ImageCountCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -33,6 +33,7 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { CoverUrlCell as CoverUrlCell_95384848cef57d902cd36ebafd9b93e0 } from '../../../../src/components/payload/ListCells/index.jsx'
 import { MediaGridField as MediaGridField_ae311ede6eb04cfedc5f0215f3e9edd6 } from '../../../../src/components/payload/MediaGridField/index.jsx'
 import { RoomAmenitiesField as RoomAmenitiesField_85f8e57e9b4da229ddaea1ce2926c9f8 } from '../../../../src/components/payload/RoomAmenitiesField/index.jsx'
 import { AdminAccountsNote as AdminAccountsNote_86da0fc67887adcd3d742d8bec098bf9 } from '../../../../src/components/payload/AdminAccountsNote/index.jsx'
@@ -43,23 +44,22 @@ import { Logo as Logo_488727a850f8c6507cb9b7eb1c994931 } from '../../../../src/c
 import { BookingsDashboard as BookingsDashboard_4afd284454fd02b9df4b626f403be295 } from '../../../../src/components/payload/BookingsDashboard/index.jsx'
 import { HotelNav as HotelNav_edccf7f6154303a7d721ff88f9d6cbf9 } from '../../../../src/components/payload/HotelNav/index.jsx'
 import { AdminChrome as AdminChrome_1bb7541897221f6df3117d692d7af992 } from '../../../../src/components/payload/AdminChrome/index.jsx'
-import { SaveAndReturnButton as SaveAndReturnButton_13970a7fb2fa2ff86d0b3653700bd30f } from '../../../../src/components/payload/SaveAndReturn/index.jsx'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
-  "./src/components/payload/HeroImageField/index.jsx#HeroImageField": HeroImageField_bf473ff9e1dc0c6a8c976a456469f590,
   "./src/components/payload/ListCells/index.jsx#ThumbnailCell": ThumbnailCell_95384848cef57d902cd36ebafd9b93e0,
-  "./src/components/payload/ListCells/index.jsx#CoverUrlCell": CoverUrlCell_95384848cef57d902cd36ebafd9b93e0,
-  "./src/components/payload/ListCells/index.jsx#RoomTitleCell": RoomTitleCell_95384848cef57d902cd36ebafd9b93e0,
+  "./src/components/payload/HeroImageField/index.jsx#HeroImageField": HeroImageField_bf473ff9e1dc0c6a8c976a456469f590,
   "./src/components/payload/ListCells/index.jsx#HiddenField": HiddenField_95384848cef57d902cd36ebafd9b93e0,
-  "./src/components/payload/ListCells/index.jsx#ImageCountCell": ImageCountCell_95384848cef57d902cd36ebafd9b93e0,
   "./src/components/payload/ListCells/index.jsx#RowActionsCell": RowActionsCell_95384848cef57d902cd36ebafd9b93e0,
+  "./src/components/payload/SaveAndReturn/index.jsx#SaveAndReturnButton": SaveAndReturnButton_13970a7fb2fa2ff86d0b3653700bd30f,
   "./src/components/payload/HideInDrawer/index.jsx#GalleryCategoryField": GalleryCategoryField_3a15863d77786846f06d40b3ca8147a9,
   "./src/components/payload/HideInDrawer/index.jsx#GalleryOrderField": GalleryOrderField_3a15863d77786846f06d40b3ca8147a9,
   "./src/components/payload/HideInDrawer/index.jsx#ShowOnGalleryField": ShowOnGalleryField_3a15863d77786846f06d40b3ca8147a9,
+  "./src/components/payload/MediaBulkCreate/index.jsx#MediaEditView": MediaEditView_192c86388a19f526297e669e4ca18721,
   "./src/components/payload/MediaGalleryList/index.jsx#MediaGalleryList": MediaGalleryList_263939c508f47d345ff92ebcc5c9643e,
-  "./src/components/payload/MediaBulkCreate/index.jsx#MediaEditView": MediaEditView_7c4e1a2b9f0d48c1a6e3b5d8c2f1a0e4,
+  "./src/components/payload/ListCells/index.jsx#RoomTitleCell": RoomTitleCell_95384848cef57d902cd36ebafd9b93e0,
+  "./src/components/payload/ListCells/index.jsx#ImageCountCell": ImageCountCell_95384848cef57d902cd36ebafd9b93e0,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -83,6 +83,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "./src/components/payload/ListCells/index.jsx#CoverUrlCell": CoverUrlCell_95384848cef57d902cd36ebafd9b93e0,
   "./src/components/payload/MediaGridField/index.jsx#MediaGridField": MediaGridField_ae311ede6eb04cfedc5f0215f3e9edd6,
   "./src/components/payload/RoomAmenitiesField/index.jsx#RoomAmenitiesField": RoomAmenitiesField_85f8e57e9b4da229ddaea1ce2926c9f8,
   "./src/components/payload/AdminAccountsNote/index.jsx#AdminAccountsNote": AdminAccountsNote_86da0fc67887adcd3d742d8bec098bf9,
@@ -93,6 +94,5 @@ export const importMap = {
   "./src/components/payload/BookingsDashboard/index.jsx#BookingsDashboard": BookingsDashboard_4afd284454fd02b9df4b626f403be295,
   "./src/components/payload/HotelNav/index.jsx#HotelNav": HotelNav_edccf7f6154303a7d721ff88f9d6cbf9,
   "./src/components/payload/AdminChrome/index.jsx#AdminChrome": AdminChrome_1bb7541897221f6df3117d692d7af992,
-  "./src/components/payload/SaveAndReturn/index.jsx#SaveAndReturnButton": SaveAndReturnButton_13970a7fb2fa2ff86d0b3653700bd30f,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

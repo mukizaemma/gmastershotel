@@ -11,15 +11,36 @@ function mediaId(value) {
   return String(value)
 }
 
-function mediaSrc(doc) {
-  if (!doc || typeof doc !== 'object') return ''
-  return doc.thumbnailURL || doc.sizes?.thumbnail?.url || doc.url || ''
+function unwrapDoc(payload) {
+  if (!payload) return null
+  if (payload.doc && (payload.doc.id || payload.doc.url || payload.doc.filename)) return payload.doc
+  if (payload.id || payload.url || payload.filename) return payload
+  return payload.docs?.[0] || null
 }
 
-function imageKey(field) {
+function fileUrl(doc) {
+  if (!doc || typeof doc !== 'object') return ''
+  const raw = doc.url || doc.sizes?.card?.url || doc.thumbnailURL || doc.sizes?.thumbnail?.url || ''
+  if (raw) {
+    if (/^(https?:|blob:|data:)/i.test(raw)) return raw
+    if (raw.startsWith('/')) {
+      return typeof window !== 'undefined' ? `${window.location.origin}${raw}` : raw
+    }
+    return `/api/media/file/${raw}`
+  }
+  if (doc.filename) {
+    return `/api/media/file/${encodeURIComponent(doc.filename)}`
+  }
+  return ''
+}
+
+function imageKey(field, rows) {
   const fields = field?.fields || []
   const upload = fields.find((item) => item.type === 'upload' || item.name === 'photo' || item.name === 'image')
-  return upload?.name || 'photo'
+  if (upload?.name) return upload.name
+  const sample = (rows || []).find(Boolean)
+  if (sample && sample.photo != null) return 'photo'
+  return 'image'
 }
 
 function asDocs(selected) {
@@ -41,22 +62,12 @@ function asDocs(selected) {
   return docs.filter((doc) => mediaId(doc))
 }
 
-function storePreview(map, doc) {
-  if (!doc || typeof doc !== 'object') return
-  const src = mediaSrc(doc)
-  if (!src) return
-  const id = mediaId(doc)
-  if (id) map[id] = doc
-}
-
 export function MediaGridField({ field, path, readOnly }) {
   const { value, setValue } = useField({ path })
-  const key = useMemo(() => imageKey(field), [field])
   const rows = Array.isArray(value) ? value : []
-  const rowIds = rows.map((row) => mediaId(row?.[key])).join('|')
+  const key = useMemo(() => imageKey(field, rows), [field, rows])
   const max = field?.maxRows || 24
   const [previews, setPreviews] = useState({})
-  const previewsRef = useRef(previews)
   const [busy, setBusy] = useState(false)
   const [note, setNote] = useState('')
   const fileRef = useRef(null)
@@ -65,37 +76,36 @@ export function MediaGridField({ field, path, readOnly }) {
     uploads: true,
   })
 
-  previewsRef.current = previews
+  const rowIds = rows.map((row) => mediaId(row?.[key])).join('|')
 
   useEffect(() => {
-    const missing = []
-    const fromValue = {}
-    for (const row of rows) {
-      const photo = row?.[key]
-      const id = mediaId(photo)
-      if (!id) continue
-      if (typeof photo === 'object' && mediaSrc(photo) && !previewsRef.current[id]) {
-        fromValue[id] = photo
-      } else if (!previewsRef.current[id] && !fromValue[id]) {
-        missing.push(id)
-      }
-    }
-    if (Object.keys(fromValue).length) {
-      setPreviews((current) => ({ ...current, ...fromValue }))
-    }
+    const missing = rows
+      .map((row) => {
+        const photo = row?.[key]
+        const id = mediaId(photo)
+        if (!id) return ''
+        if (fileUrl(photo) || fileUrl(previews[id])) return ''
+        return id
+      })
+      .filter(Boolean)
     if (!missing.length) return undefined
 
     let cancelled = false
     Promise.all(
       missing.map((id) =>
-        fetch(`/api/media/${id}?depth=0`, { credentials: 'include' }).then((res) => (res.ok ? res.json() : null)),
+        fetch(`/api/media/${id}?depth=1`, { credentials: 'include' }).then((res) => (res.ok ? res.json() : null)),
       ),
     )
       .then((docs) => {
         if (cancelled) return
         setPreviews((current) => {
           const next = { ...current }
-          for (const doc of docs) storePreview(next, doc?.doc || doc)
+          for (const doc of docs) {
+            const item = unwrapDoc(doc)
+            const id = mediaId(item)
+            const src = fileUrl(item)
+            if (id && src) next[id] = src
+          }
           return next
         })
       })
@@ -109,13 +119,13 @@ export function MediaGridField({ field, path, readOnly }) {
   function remember(docs) {
     setPreviews((current) => {
       const next = { ...current }
-      for (const doc of docs) storePreview(next, doc)
+      for (const doc of docs) {
+        const id = mediaId(doc)
+        const src = doc.preview || fileUrl(doc)
+        if (id && src) next[id] = src
+      }
       return next
     })
-  }
-
-  function write(next) {
-    setValue(next)
   }
 
   function addDocs(docs) {
@@ -127,9 +137,9 @@ export function MediaGridField({ field, path, readOnly }) {
       const id = mediaId(doc)
       if (!id || next.length >= max) continue
       if (next.some((row) => mediaId(row?.[key]) === id)) continue
-      next.push({ id: crypto.randomUUID(), [key]: id })
+      next.push({ [key]: id })
     }
-    write(next)
+    setValue(next)
   }
 
   async function pickFiles(event) {
@@ -145,16 +155,11 @@ export function MediaGridField({ field, path, readOnly }) {
       const uploaded = []
       for (const [index, item] of prepared.entries()) {
         setNote(`Uploading ${index + 1} of ${prepared.length}…`)
-        uploaded.push(await uploadPreparedFile(item.file))
-        URL.revokeObjectURL(item.preview)
+        const doc = unwrapDoc(await uploadPreparedFile(item.file)) || {}
+        uploaded.push({ ...doc, preview: item.preview })
       }
       addDocs(uploaded)
-      const resized = prepared.filter((item) => item.resized).length
-      setNote(
-        resized
-          ? `${uploaded.length} photo${uploaded.length === 1 ? '' : 's'} added (${resized} resized).`
-          : `${uploaded.length} photo${uploaded.length === 1 ? '' : 's'} added.`,
-      )
+      setNote(`${uploaded.length} photo${uploaded.length === 1 ? '' : 's'} added.`)
     } catch {
       window.alert('Could not upload these images. Try again, or pick them from the library.')
     } finally {
@@ -163,7 +168,7 @@ export function MediaGridField({ field, path, readOnly }) {
   }
 
   function removeAt(index) {
-    write(rows.filter((_, i) => i !== index))
+    setValue(rows.filter((_, i) => i !== index))
   }
 
   function move(index, dir) {
@@ -172,24 +177,43 @@ export function MediaGridField({ field, path, readOnly }) {
     const next = [...rows]
     const [item] = next.splice(index, 1)
     next.splice(to, 0, item)
-    write(next)
+    setValue(next)
+  }
+
+  function tileSrc(row) {
+    const photo = row?.[key]
+    const id = mediaId(photo)
+    return previews[id] || fileUrl(photo) || (id ? `/api/media/file/${id}` : '')
   }
 
   return (
     <div className="media-grid-field">
       <FieldLabel label={field?.label || field?.labels?.plural || 'Photos'} path={path} />
       <p className="media-grid-field__hint">
-        Add extra photos, drag them with the arrows, or remove any you do not want. Files over 700KB are resized first.
+        Choose several photos at once — they upload together. Use Remove to drop a photo. Files over 700KB are resized first.
       </p>
 
       {rows.length > 0 && (
         <div className="media-grid-field__grid">
           {rows.map((row, index) => {
-            const id = mediaId(row?.[key])
-            const src = mediaSrc(previews[id]) || mediaSrc(row?.[key])
+            const src = tileSrc(row)
             return (
-              <article key={row?.id || id || index}>
-                {src ? <img src={src} alt="" /> : <div className="media-grid-field__empty">{busy ? 'Uploading…' : 'Loading photo…'}</div>}
+              <article key={mediaId(row?.[key]) || row?.id || index}>
+                {src ? (
+                  <img
+                    src={src}
+                    alt=""
+                    onError={(event) => {
+                      const photo = row?.[key]
+                      const fallback = fileUrl(photo)
+                      if (fallback && event.currentTarget.src !== fallback) {
+                        event.currentTarget.src = fallback
+                      }
+                    }}
+                  />
+                ) : (
+                  <div className="media-grid-field__empty">{busy ? 'Uploading…' : 'No preview'}</div>
+                )}
                 {!readOnly && (
                   <div className="media-grid-field__row-actions">
                     <button type="button" disabled={index === 0} onClick={() => move(index, -1)} aria-label="Move earlier">

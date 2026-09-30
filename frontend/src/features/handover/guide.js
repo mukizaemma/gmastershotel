@@ -1,24 +1,33 @@
 export const HANDOVER_TABS = [
   { id: 'overview', label: 'What was delivered' },
-  { id: 'access', label: 'Demo & sign in' },
+  { id: 'access', label: 'Register & sign in' },
   { id: 'manage', label: 'Manage content' },
   { id: 'settings', label: 'Hotel details' },
   { id: 'pages', label: 'Website pages' },
   { id: 'rooms', label: 'Rooms' },
   { id: 'amenities', label: 'Hotel facilities' },
   { id: 'activities', label: 'Things to do' },
-  { id: 'menu', label: 'Dining photos' },
+  { id: 'menu', label: 'Dining & menu' },
   { id: 'gallery', label: 'Photos' },
   { id: 'bookings', label: 'Bookings' },
+  { id: 'availability', label: 'Availability' },
   { id: 'reviews', label: 'Guest reviews' },
+  { id: 'hosting', label: 'Hosting' },
   { id: 'audit', label: 'Site audit' },
   { id: 'feedback', label: 'Send a note' },
 ]
 
-/** Staff desk login only — never expose a separate super-admin door here. */
-export const HANDOVER_CREDENTIALS = {
-  email: 'admin@gmastershotel.com',
-  password: 'Gmasters@202!',
+/** Public hosting facts. Support amount matches the staff desk (500,000 RWF). No bank details here. */
+export const HANDOVER_HOSTING = {
+  registrar: 'namecheap.com',
+  registrarUrl: 'https://www.namecheap.com',
+  server: 'DigitalOcean Linux server',
+  serverUrl: 'https://www.digitalocean.com',
+  hostingUsd: 80,
+  supportRwf: '500,000',
+  renewal: '1 August each year',
+  support:
+    'Support covers updating the website content you send, keeping the site up and running, and following up on hosting renewals.',
 }
 
 export const HANDOVER_SECTIONS = {
@@ -46,22 +55,18 @@ export const HANDOVER_SECTIONS = {
     ],
   },
   access: {
-    title: 'Demo & sign in',
-    lead: 'Use the links below to open the **demo website** and the **Staff desk**. Sign in only at the Staff desk — that is where you manage content.',
+    title: 'Register & sign in',
+    lead: 'Create your own account with **Register**. Ireme Tech then assigns **admin access**. Passwords are never listed on this public page.',
     blocks: [
       {
-        heading: 'How to sign in',
-        body: 'Open the **Staff desk** login URL, enter the email and password shown above, then use the left menu.',
+        heading: 'How access works',
+        body: 'Registration creates the account only. You cannot open the **Staff desk** until Ireme Tech sets that user as an administrator.',
         steps: [
-          'Open **Staff desk** from the box above (or the Login URL).',
-          'Sign in with the **login email** and **password**.',
-          'Choose a section on the left (Pages, Rooms, Photos, and so on).',
-          'Edit, then **Save**. The public demo updates from that content.',
+          'Choose **Register** and enter your name, email, and a private password.',
+          'Contact **Ireme Tech** at info@iremetech.com and ask them to assign admin access to that email.',
+          'After they confirm, open **Staff desk** and sign in with the email and password you chose.',
+          'Use **Forgot password** on the login screen if you need a reset link sent to that email.',
         ],
-      },
-      {
-        heading: 'If you forget the password',
-        body: 'On the Staff desk login screen use **Forgot password**. A reset link is emailed to the login address above. After approval and go-live, change the password in **My account** so it is private to your team.',
       },
     ],
   },
@@ -78,7 +83,8 @@ export const HANDOVER_SECTIONS = {
           { title: 'Rooms', text: 'Room types, prices, photos, descriptions, and in-room amenities.' },
           { title: 'Menu & activities', text: 'Restaurant dishes and “Things to do” listings.' },
           { title: 'Photos', text: 'Upload once in Media Gallery, reuse on pages and rooms, mark files for the public gallery.' },
-          { title: 'Bookings', text: 'View reservations, reply to guests, and close dates under Availability.' },
+          { title: 'Bookings', text: 'View reservations, update them, and close dates under Availability.' },
+          { title: 'Hosting', text: 'Domain, server, annual hosting, and support invoices.' },
         ],
       },
     ],
@@ -98,6 +104,12 @@ export const HANDOVER_SECTIONS = {
           'Under **Guest reviews**, paste Google and TripAdvisor write / read links.',
           '**Save**.',
         ],
+        crud: [
+          { action: 'Create', text: 'The hotel record already exists. Fill any empty field — name, logo, phone, email, address, social link, or review link.' },
+          { action: 'View', text: 'Open **Site setting** to read the details currently shown on the website.' },
+          { action: 'Update', text: 'Change a field and press **Save**. The header, footer, and contact page pick up the new details.' },
+          { action: 'Delete', text: 'Clear a field you no longer want shown, then **Save**. The property record itself stays in place.' },
+        ],
       },
     ],
   },
@@ -114,6 +126,12 @@ export const HANDOVER_SECTIONS = {
           'Open the tab for the page you want (Home, About, Accommodation, and so on).',
           'Edit the **headline**, **intro**, and any extra sections.',
           '**Save**.',
+        ],
+        crud: [
+          { action: 'Create', text: 'Inside a page tab, use **Add slide**, **Add feature**, **Add stay point**, or **Add highlight** where that page has a list.' },
+          { action: 'View', text: 'Open **Pages**, then the tab for Home, About, Accommodation, Dining, or another page, and read the live copy.' },
+          { action: 'Update', text: 'Edit the **headline**, **intro**, or a block, then **Save changes**.' },
+          { action: 'Delete', text: 'Remove an extra slide, feature, or highlight with its remove control, then save. The page tab itself stays.' },
         ],
       },
     ],
@@ -133,6 +151,12 @@ export const HANDOVER_SECTIONS = {
           'Tick in-room amenities that apply.',
           '**Save**.',
         ],
+        crud: [
+          { action: 'Create', text: 'Click **Add room**, fill the name, nightly rate, description, photos, and amenities, then **Save**.' },
+          { action: 'View', text: 'The rooms list shows every room type. **Edit** opens the full record.' },
+          { action: 'Update', text: 'Click **Edit**, change the fields, then **Save changes**. The public room page updates from that record.' },
+          { action: 'Delete', text: 'Use the trash icon on the row and confirm. That room type leaves the website.' },
+        ],
       },
     ],
   },
@@ -147,6 +171,12 @@ export const HANDOVER_SECTIONS = {
           'Click **Add amenity**.',
           'Enter a name, short description, and photo.',
           '**Save**. Aim for at least three facilities.',
+        ],
+        crud: [
+          { action: 'Create', text: 'Click **Add amenity**, enter the name, short description, and photo, then **Save**.' },
+          { action: 'View', text: 'The amenities list is every facility currently offered to guests.' },
+          { action: 'Update', text: 'Click **Edit**, change the text or photo, then **Save changes**.' },
+          { action: 'Delete', text: 'Use the trash icon and confirm. The facility is removed from the website.' },
         ],
       },
     ],
@@ -164,20 +194,42 @@ export const HANDOVER_SECTIONS = {
           'Leave **Price** blank if you do not want a price shown.',
           '**Save**.',
         ],
+        crud: [
+          { action: 'Create', text: 'Click **Add activity**, enter the name, description, photo, and an optional price, then **Save**.' },
+          { action: 'View', text: 'The list is what guests see under Things to do.' },
+          { action: 'Update', text: 'Click **Edit**, change the fields, then **Save changes**.' },
+          { action: 'Delete', text: 'Use the trash icon and confirm to remove that activity.' },
+        ],
       },
     ],
   },
   menu: {
-    title: 'Breakfast & dining photos',
-    lead: 'There is no public restaurant menu yet. Guests see breakfast, cooked-to-order dishes, and a photo gallery on the **Dining** page.',
+    title: 'Dining & menu',
+    lead: 'The **Dining page** holds the page copy and dish photos. **Menu items** are the dishes guests can browse.',
     blocks: [
       {
-        heading: 'Where to edit',
+        heading: 'Dining page',
         body: 'Staff desk → **Dining page**.',
         steps: [
           'Open **Dining page**.',
-          'Add breakfast and dish photos under **Breakfast and dish photos**.',
-          '**Save**. Guests see the gallery on Dining — not a menu.',
+          'Edit the headline, intro, and breakfast or dish photos.',
+          '**Save**.',
+        ],
+        crud: [
+          { action: 'Create', text: 'Add a photo or text block on the dining page, then **Save**.' },
+          { action: 'View', text: 'Open **Dining page** to read the copy guests see.' },
+          { action: 'Update', text: 'Change the text or replace a photo, then **Save**.' },
+          { action: 'Delete', text: 'Remove a photo or extra block, then **Save**. The dining page itself stays.' },
+        ],
+      },
+      {
+        heading: 'Menu items',
+        body: 'Staff desk → **Menu items**.',
+        crud: [
+          { action: 'Create', text: 'Click **Add menu item**, enter the name, description, price, and photo, then **Save**.' },
+          { action: 'View', text: 'The menu list is every dish currently stored.' },
+          { action: 'Update', text: 'Click **Edit**, change the dish, then **Save changes**.' },
+          { action: 'Delete', text: 'Use the trash icon and confirm to remove that dish.' },
         ],
       },
     ],
@@ -194,6 +246,12 @@ export const HANDOVER_SECTIONS = {
           'Reuse them on pages, rooms, and amenities via **From library**.',
           'To show a photo on the public gallery, set its **Gallery category** (Rooms, Breakfast & dining, and so on).',
         ],
+        crud: [
+          { action: 'Create', text: 'In **Media Gallery**, choose files and **Upload**. On **Site Gallery**, use **Add images** or pick from the library.' },
+          { action: 'View', text: '**Media Gallery** is the full library. **Site Gallery** is only what the public Gallery page shows.' },
+          { action: 'Update', text: 'Change a caption or gallery category, or reorder photos on **Site Gallery**.' },
+          { action: 'Delete', text: 'On **Site Gallery**, **Remove** hides a photo from the public gallery. The file stays in **Media Gallery**.' },
+        ],
       },
     ],
   },
@@ -209,6 +267,28 @@ export const HANDOVER_SECTIONS = {
           'Reply by WhatsApp or email.',
           'Use **Availability** to close the hotel or selected rooms for date ranges.',
         ],
+        crud: [
+          { action: 'Create', text: 'Guests create a booking from the website. It appears under **Reservations**.' },
+          { action: 'View', text: 'Open a row to read dates, room, guest, and special requests.' },
+          { action: 'Update', text: 'Edit the reservation details or status, then save. Reply to the guest by WhatsApp or email.' },
+          { action: 'Delete', text: 'Use the trash icon and confirm to remove a reservation you do not want to keep.' },
+        ],
+      },
+    ],
+  },
+  availability: {
+    title: 'Availability',
+    lead: 'Close nights when the hotel or a room cannot take bookings. Open them again when you are ready.',
+    blocks: [
+      {
+        heading: 'Where to edit',
+        body: 'Staff desk → **Availability**.',
+        crud: [
+          { action: 'Create', text: 'Click **Close dates**, choose the whole property or selected rooms, set the dates, and save.' },
+          { action: 'View', text: 'The table lists every closed range and whether it is still closed.' },
+          { action: 'Update', text: 'Click **Open again** on a closed range when those nights can be booked.' },
+          { action: 'Delete', text: 'Use the trash icon to remove a closed-date record.' },
+        ],
       },
     ],
   },
@@ -222,6 +302,38 @@ export const HANDOVER_SECTIONS = {
         steps: [
           'Paste write-a-review and read-reviews links.',
           '**Save**. The public Reviews page and footer use those URLs.',
+        ],
+        crud: [
+          { action: 'Create', text: 'Paste a Google or TripAdvisor link into an empty review field.' },
+          { action: 'View', text: 'Open **Site setting** → Guest reviews to see the links in use.' },
+          { action: 'Update', text: 'Replace a link and **Save**.' },
+          { action: 'Delete', text: 'Clear a link and **Save** to hide that button on the website.' },
+        ],
+      },
+    ],
+  },
+  hosting: {
+    title: 'Hosting',
+    lead: 'Annual hosting is **$80**. Annual support is **500,000 RWF**, the amount set in the staff desk. The domain is registered at **namecheap.com** and the site runs on a **DigitalOcean Linux server**.',
+    blocks: [
+      {
+        heading: 'What you are paying for',
+        body: 'Hosting renews on **1 August** each year. Support covers updating the website content you send, keeping the site up and running, and following up on hosting renewals.',
+        features: [
+          { title: 'Domain registration', text: 'namecheap.com' },
+          { title: 'Hosting server', text: 'DigitalOcean Linux server' },
+          { title: 'Annual hosting', text: '$80' },
+          { title: 'Annual support', text: '500,000 RWF, as set in the staff desk' },
+        ],
+      },
+      {
+        heading: 'Where to see invoices',
+        body: 'After Ireme Tech assigns admin access, open Staff desk → **Hosting**.',
+        crud: [
+          { action: 'Create', text: 'The next annual invoice is created for you when the current one is paid. You do not add invoices by hand.' },
+          { action: 'View', text: 'Open **Hosting** to read the domain, server, fees, status, and each year’s invoice.' },
+          { action: 'Update', text: 'Enter the current dollar rate and **Save rate**. The next invoice total becomes $80 times that rate, plus 500,000 RWF support. Print or download any invoice.' },
+          { action: 'Delete', text: 'Invoices are kept as the annual record. They are not deleted from this page.' },
         ],
       },
     ],

@@ -30,6 +30,7 @@ const StaffGallery      = lazy(() => import('@features/staff/pages/StaffGallery'
 const StaffPages        = lazy(() => import('@features/staff/pages/StaffPages'))
 const StaffMedia        = lazy(() => import('@features/staff/pages/StaffMedia'))
 const StaffSettings     = lazy(() => import('@features/staff/pages/StaffSettings'))
+const StaffHosting      = lazy(() => import('@features/staff/pages/StaffHosting'))
 const StaffAmenities    = lazy(() => import('@features/staff/pages/StaffAmenities'))
 const StaffMenuItems    = lazy(() => import('@features/staff/pages/StaffMenuItems'))
 const StaffAudit        = lazy(() => import('@features/staff/pages/StaffAudit'))
@@ -70,6 +71,7 @@ const router = createBrowserRouter([
           { path: 'media', element: <Wrap Component={StaffMedia} /> },
           { path: 'pages', element: <Wrap Component={StaffPages} /> },
           { path: 'settings', element: <Wrap Component={StaffSettings} /> },
+          { path: 'hosting', element: <Wrap Component={StaffHosting} /> },
           { path: 'amenities', element: <Wrap Component={StaffAmenities} /> },
           { path: 'menu', element: <Wrap Component={StaffMenuItems} /> },
           { path: 'audit', element: <Wrap Component={StaffAudit} /> },

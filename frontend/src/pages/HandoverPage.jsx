@@ -5,7 +5,7 @@ import { CMS_URL } from '@lib/apiClient'
 import { brandFromCompany } from '@features/hotel/companyBrand'
 import { useSiteLayout } from '@lib/queries/useSiteLayout'
 import SiteAuditBoard from '@features/handover/SiteAuditBoard'
-import { HANDOVER_CREDENTIALS, HANDOVER_SECTIONS, HANDOVER_TABS } from '@features/handover/guide'
+import { HANDOVER_SECTIONS, HANDOVER_TABS } from '@features/handover/guide'
 import styles from './HandoverPage.module.css'
 
 const SECTIONS = HANDOVER_TABS.map((tab) => tab.id)
@@ -19,7 +19,9 @@ const MANAGE_LINKS = [
   'menu',
   'gallery',
   'bookings',
+  'availability',
   'reviews',
+  'hosting',
 ]
 
 function tabFromHash() {
@@ -61,7 +63,10 @@ export default function HandoverPage() {
   const [report, setReport] = useState(null)
   const [origin, setOrigin] = useState('')
   const [form, setForm] = useState({ name: '', email: '', section: 'overview', message: '' })
+  const [account, setAccount] = useState({ name: '', email: '', password: '', confirm: '' })
+  const [registered, setRegistered] = useState(false)
   const [busy, setBusy] = useState(false)
+  const [registerBusy, setRegisterBusy] = useState(false)
   const { data: layout } = useSiteLayout()
   const brand = brandFromCompany(layout?.company)
 
@@ -91,16 +96,50 @@ export default function HandoverPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  function openRegister() {
+    openTab('access')
+    window.setTimeout(() => {
+      document.getElementById('register')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 60)
+  }
+
   const credentials = useMemo(
     () => [
       { label: 'Demo website', value: demoUrl, href: '/', copy: demoUrl, accent: true },
-      { label: 'Login URL (Staff desk)', value: loginUrl, href: '/staff', copy: loginUrl, accent: true },
-      { label: 'Login email', value: HANDOVER_CREDENTIALS.email, copy: HANDOVER_CREDENTIALS.email },
-      { label: 'Password', value: HANDOVER_CREDENTIALS.password, copy: HANDOVER_CREDENTIALS.password },
+      { label: 'Staff desk', value: loginUrl, href: '/staff', copy: loginUrl, accent: true },
       { label: 'This guide', value: shareUrl, href: shareUrl, copy: shareUrl },
     ],
     [demoUrl, loginUrl, shareUrl],
   )
+
+  async function registerAccount(event) {
+    event.preventDefault()
+    if (account.password !== account.confirm) {
+      toast.error('The two passwords do not match.')
+      return
+    }
+    setRegisterBusy(true)
+    try {
+      const res = await fetch(`${CMS_URL}/api/staff-register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: account.name,
+          email: account.email,
+          password: account.password,
+        }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(data.error || 'Could not register.')
+      setRegistered(true)
+      setAccount({ name: '', email: '', password: '', confirm: '' })
+      toast.success('Account created. Contact Ireme Tech for admin access.')
+    } catch (err) {
+      toast.error(err.message || 'Could not register.')
+    } finally {
+      setRegisterBusy(false)
+    }
+  }
 
   async function sendFeedback(event) {
     event.preventDefault()
@@ -136,7 +175,9 @@ export default function HandoverPage() {
             Copy guide link
           </button>
           <a href="/">View demo</a>
-          <a href="/staff">Staff login</a>
+          <button type="button" className={styles.register} onClick={openRegister}>
+            Register
+          </button>
         </div>
       </header>
 
@@ -155,9 +196,9 @@ export default function HandoverPage() {
             <a className={styles.heroPrimary} href="/">
               Open demo website
             </a>
-            <a className={styles.heroSecondary} href="/staff">
-              Open Staff desk login
-            </a>
+            <button type="button" className={styles.heroSecondary} onClick={openRegister}>
+              Register for admin access
+            </button>
             {report ? (
               <button type="button" className={styles.heroAudit} onClick={() => openTab('audit')}>
                 Site audit · <strong>{report.score}%</strong>
@@ -215,17 +256,79 @@ export default function HandoverPage() {
                   </div>
                 </div>
               ))}
-              {tab === 'access' ? (
-                <p className={styles.warn}>
-                  Share this guide only with your team. Change the password in <mark className={styles.term}>My account</mark>{' '}
-                  after go-live if you want it private.
-                </p>
-              ) : (
-                <p className={styles.warn}>
-                  Sign in only at the <mark className={styles.term}>Staff desk</mark>. Use it to manage all website content.
-                </p>
-              )}
+              <p className={styles.warn}>
+                This page does not show a login email or password. Register, then contact{' '}
+                <mark className={styles.term}>Ireme Tech</mark> to assign admin access before you sign in at the Staff desk.
+              </p>
             </div>
+          )}
+
+          {tab === 'access' && (
+            <section id="register" className={styles.block}>
+              <h2>
+                <span className={styles.h2Mark} aria-hidden="true" />
+                Register
+              </h2>
+              <p>
+                <Rich text="Create your account here. **Ireme Tech** must assign that user to admin access before the Staff desk will let you in. Write to info@iremetech.com after you register." />
+              </p>
+              {registered ? (
+                <aside className={styles.callout}>
+                  <strong>Contact Ireme Tech</strong>
+                  <p>
+                    Your account is saved and waiting. Email{' '}
+                    <a href="mailto:info@iremetech.com">info@iremetech.com</a> and ask them to assign admin access to
+                    the address you used. You cannot sign in until they do.
+                  </p>
+                </aside>
+              ) : (
+                <form className={styles.form} onSubmit={registerAccount}>
+                  <label>
+                    Name
+                    <input
+                      value={account.name}
+                      onChange={(e) => setAccount({ ...account, name: e.target.value })}
+                      required
+                    />
+                  </label>
+                  <label>
+                    Email
+                    <input
+                      type="email"
+                      value={account.email}
+                      onChange={(e) => setAccount({ ...account, email: e.target.value })}
+                      required
+                      autoComplete="email"
+                    />
+                  </label>
+                  <label>
+                    Password
+                    <input
+                      type="password"
+                      value={account.password}
+                      onChange={(e) => setAccount({ ...account, password: e.target.value })}
+                      minLength={8}
+                      required
+                      autoComplete="new-password"
+                    />
+                  </label>
+                  <label>
+                    Confirm password
+                    <input
+                      type="password"
+                      value={account.confirm}
+                      onChange={(e) => setAccount({ ...account, confirm: e.target.value })}
+                      minLength={8}
+                      required
+                      autoComplete="new-password"
+                    />
+                  </label>
+                  <button type="submit" disabled={registerBusy}>
+                    {registerBusy ? 'Creating account…' : 'Register'}
+                  </button>
+                </form>
+              )}
+            </section>
           )}
 
           {section.blocks.map((block) => (
@@ -283,6 +386,19 @@ export default function HandoverPage() {
                     </li>
                   ))}
                 </ol>
+              ) : null}
+
+              {block.crud?.length ? (
+                <dl className={styles.crud}>
+                  {block.crud.map((row) => (
+                    <div key={row.action}>
+                      <dt>{row.action}</dt>
+                      <dd>
+                        <Rich text={row.text} />
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
               ) : null}
             </section>
           ))}

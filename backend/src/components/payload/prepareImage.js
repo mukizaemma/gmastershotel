@@ -100,7 +100,7 @@ export async function uploadPreparedFile(file, fields = {}) {
       showOnGallery: galleryCategory !== 'none',
     }),
   )
-  const res = await fetch('/api/media?depth=0', {
+  const res = await fetch('/api/media?depth=1', {
     method: 'POST',
     credentials: 'include',
     body,

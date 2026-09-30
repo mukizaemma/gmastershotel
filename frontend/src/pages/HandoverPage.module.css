@@ -93,6 +93,14 @@
   background: #fff;
 }
 
+.topLinks .register {
+  background: #1a2b4b;
+  color: #fff;
+  border-color: #1a2b4b;
+  font-weight: 700;
+  text-decoration: none;
+}
+
 .heroStrip {
   border-bottom: 1px solid #eadfcd;
   background:
@@ -422,6 +430,38 @@
   background: rgba(196, 165, 116, 0.08);
 }
 
+.crud {
+  margin: 1rem 0 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.crud div {
+  display: grid;
+  grid-template-columns: 5.6rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  background: #faf6ef;
+  border: 1px solid #eee6d8;
+}
+
+.crud dt {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #c4a574;
+}
+
+.crud dd {
+  margin: 0;
+  color: #3d4454;
+  line-height: 1.55;
+}
+
 .creds {
   display: grid;
   gap: 0.85rem;
@@ -610,5 +650,10 @@
 
   .form {
     grid-template-columns: 1fr;
+  }
+
+  .crud div {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
   }
 }

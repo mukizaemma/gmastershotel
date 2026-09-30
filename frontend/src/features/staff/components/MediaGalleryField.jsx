@@ -6,6 +6,30 @@ import { formatBytes, prepareUploadFiles, uploadMediaFile } from '../lib/prepare
 import MediaLibraryPicker from './MediaLibraryPicker'
 import styles from './MediaField.module.css'
 
+function unwrapDoc(payload) {
+  if (!payload) return null
+  if (payload.doc && (payload.doc.id || payload.doc.url)) return payload.doc
+  if (payload.id || payload.url || payload.filename) return payload
+  return payload.docs?.[0] || null
+}
+
+function previewSrc(item) {
+  return mediaUrl(item)
+}
+
+async function loadMedia(value) {
+  if (!value) return null
+  if (typeof value === 'object' && previewSrc(value)) return value
+  const id = mediaId(value)
+  if (!id) return null
+  try {
+    const { data } = await staffClient.get(`/api/media/${id}?depth=0`)
+    return unwrapDoc(data) || value
+  } catch {
+    return typeof value === 'object' ? value : { id }
+  }
+}
+
 export default function MediaGalleryField({
   label = 'Photos',
   values = [],
@@ -15,11 +39,24 @@ export default function MediaGalleryField({
   const [libraryOpen, setLibraryOpen] = useState(false)
   const [queue, setQueue] = useState([])
   const [busy, setBusy] = useState(false)
+  const [docs, setDocs] = useState([])
   const items = (values || []).filter(Boolean)
+  const ids = items.map((item) => mediaId(item)).join('|')
 
   useEffect(() => {
     return () => queue.forEach((item) => URL.revokeObjectURL(item.preview))
   }, [queue])
+
+  useEffect(() => {
+    let cancelled = false
+    Promise.all(items.map(loadMedia)).then((next) => {
+      if (!cancelled) setDocs(next.filter(Boolean))
+    })
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ids])
 
   async function pickFiles(event) {
     const files = event.target.files
@@ -53,9 +90,7 @@ export default function MediaGalleryField({
       queue.forEach((item) => URL.revokeObjectURL(item.preview))
       setQueue([])
       toast.success(
-        uploaded.some((unused, index) => queue[index]?.resized)
-          ? `${uploaded.length} image${uploaded.length === 1 ? '' : 's'} resized and uploaded.`
-          : `${uploaded.length} image${uploaded.length === 1 ? '' : 's'} uploaded.`,
+        `${uploaded.length} image${uploaded.length === 1 ? '' : 's'} added.`,
       )
     } catch {
       toast.error('Upload failed.')
@@ -68,6 +103,15 @@ export default function MediaGalleryField({
     onChange(items.filter((_, i) => i !== index))
   }
 
+  function move(index, dir) {
+    const to = index + dir
+    if (to < 0 || to >= items.length) return
+    const next = [...items]
+    const [item] = next.splice(index, 1)
+    next.splice(to, 0, item)
+    onChange(next)
+  }
+
   function addFromLibrary(files) {
     const incoming = (Array.isArray(files) ? files : [files]).filter(Boolean)
     const known = new Set(items.map((item) => mediaId(item)))
@@ -75,26 +119,46 @@ export default function MediaGalleryField({
     onChange([...items, ...next].slice(0, max))
   }
 
+  const shown = docs.length ? docs : items
+
   return (
     <div className={`${styles.field} ${styles.galleryField}`}>
       {label && <span className={styles.label}>{label}</span>}
       <p className={styles.hint}>
-        Choose several photos at once. Files over 700KB are resized before upload.
+        Choose several photos at once — they upload together. Remove any you do not want. Files over 700KB are resized first.
       </p>
 
-      <div className={styles.grid}>
-        {items.map((item, index) => (
-          <article key={mediaId(item) || index} className={styles.queueItem}>
-            <img src={mediaUrl(item)} alt="" />
-            <div>
-              <small>{index === 0 ? 'Main photo' : `Photo ${index + 1}`}</small>
-              <button type="button" className={styles.link} onClick={() => removeAt(index)}>
-                Remove
-              </button>
-            </div>
-          </article>
-        ))}
-      </div>
+      {shown.length > 0 && (
+        <div className={styles.grid}>
+          {shown.map((item, index) => {
+            const src = previewSrc(item)
+            return (
+              <article key={mediaId(item) || index} className={styles.queueItem}>
+                {src ? <img src={src} alt="" /> : <div className={styles.emptyTile}>Loading photo…</div>}
+                <div>
+                  <small>{index === 0 ? 'First photo' : `Photo ${index + 1}`}</small>
+                  <div className={styles.tileActions}>
+                    <button type="button" className={styles.btn} disabled={index === 0} onClick={() => move(index, -1)}>
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.btn}
+                      disabled={index === shown.length - 1}
+                      onClick={() => move(index, 1)}
+                    >
+                      →
+                    </button>
+                    <button type="button" className={styles.link} onClick={() => removeAt(index)}>
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </article>
+            )
+          })}
+        </div>
+      )}
 
       {queue.length > 0 && (
         <div className={styles.pendingBlock}>

@@ -5,7 +5,7 @@
 .media-grid-field__hint {
   margin: 0 0 0.75rem;
   font-size: 0.78rem;
-  color: #8a8172;
+  color: var(--theme-elevation-600, #8a8172);
 }
 
 .media-grid-field__grid {
@@ -16,7 +16,7 @@
 }
 
 .media-grid-field__grid article {
-  background: var(--theme-elevation-50, #fff);
+  background: var(--theme-elevation-100, #fff);
   border: 1px solid var(--theme-elevation-150, #e8dfd0);
   border-radius: 10px;
   overflow: hidden;
@@ -28,22 +28,22 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
-  background: #faf7f0;
+  background: var(--theme-elevation-50, #222);
 }
 
 .media-grid-field__empty {
   display: grid;
   place-items: center;
   font-size: 0.75rem;
-  color: #8a8172;
+  color: var(--theme-elevation-600, #8a8172);
 }
 
 .media-grid-field__grid button,
 .media-grid-field__actions button,
 .media-grid-field__actions label {
-  border: 1px solid #d8cdbe;
-  background: #fff;
-  color: #1a2b4b;
+  border: 1px solid var(--theme-elevation-250, #d8cdbe);
+  background: var(--theme-elevation-0, #fff);
+  color: var(--theme-text, #1a2b4b);
   border-radius: 6px;
   padding: 0.4rem 0.7rem;
   font-size: 0.78rem;
@@ -80,20 +80,8 @@
 }
 
 .media-grid-field__actions small {
-  color: #8a8172;
+  color: var(--theme-elevation-600, #8a8172);
   font-size: 0.75rem;
-}
-
-.media-grid-field__queue strong {
-  display: block;
-  margin-bottom: 0.55rem;
-}
-
-.media-grid-field__queue small {
-  display: block;
-  padding: 0.4rem 0.55rem 0.55rem;
-  color: #8a8172;
-  font-size: 0.7rem;
 }
 
 @media (max-width: 800px) {

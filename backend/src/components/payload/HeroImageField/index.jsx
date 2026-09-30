@@ -13,7 +13,11 @@ function mediaId(value) {
 
 function mediaSrc(doc) {
   if (!doc || typeof doc !== 'object') return ''
-  return doc.thumbnailURL || doc.sizes?.thumbnail?.url || doc.url || ''
+  const url = doc.url || doc.sizes?.card?.url || doc.thumbnailURL || doc.sizes?.thumbnail?.url || ''
+  if (!url) return ''
+  if (/^https?:\/\//i.test(url) || url.startsWith('data:') || url.startsWith('blob:')) return url
+  if (typeof window !== 'undefined' && url.startsWith('/')) return `${window.location.origin}${url}`
+  return url
 }
 
 function pickedDoc(selected) {

@@ -22,6 +22,7 @@ import { MenuItems } from './src/modules/hotel/menu/MenuItems.js'
 import { SiteAudit } from './src/core/settings/SiteAudit.js'
 import { UserGuide } from './src/core/settings/UserGuide.js'
 import { HandoverFeedback } from './src/modules/hotel/feedback/HandoverFeedback.js'
+import { Hosting } from './src/modules/hotel/hosting/Hosting.js'
 import { createEmailAdapter } from './src/core/security/email.js'
 import { attachSaveAndReturn } from './src/core/fields/saveAndReturn.js'
 
@@ -69,7 +70,15 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Rooms, GalleryPhotos, Bookings, AvailabilityBlocks, Experiences, Amenities, MenuItems, HandoverFeedback].map(attachSaveAndReturn),
-  globals: [Company, Navigation, Pages, SiteAudit, UserGuide].map(attachSaveAndReturn),
+  globals: [Company, Navigation, Pages, SiteAudit, UserGuide, Hosting].map(attachSaveAndReturn),
+  onInit: async (payload) => {
+    try {
+      const { startHostingReminders } = await import('./src/modules/hotel/hosting/reminders.js')
+      startHostingReminders(payload)
+    } catch (error) {
+      payload.logger?.error?.(error)
+    }
+  },
   cors: allowedOrigins,
   csrf: allowedOrigins,
   graphQL: {

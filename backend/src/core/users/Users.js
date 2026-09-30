@@ -1,3 +1,4 @@
+import { APIError } from 'payload'
 import { previewUpload } from '../fields/pageHero.js'
 import { rowActionsField, withRowActions } from '../fields/rowActions.js'
 
@@ -76,9 +77,13 @@ export const Users = {
       defaultValue: 'admin',
       options: [
         { label: 'Administrator', value: 'admin' },
+        { label: 'Super admin', value: 'super-admin' },
         { label: 'Editor', value: 'editor' },
       ],
-      admin: { position: 'sidebar' },
+      admin: {
+        position: 'sidebar',
+        description: 'Super admin can confirm a hosting invoice as paid.',
+      },
     },
     {
       name: 'status',
@@ -98,6 +103,13 @@ export const Users = {
     rowActionsField,
   ],
   hooks: {
+    beforeLogin: [
+      ({ user }) => {
+        if (user?.status === 'inactive') {
+          throw new APIError('This account is waiting for admin access. Contact Ireme Tech.', 401)
+        }
+      },
+    ],
     afterLogin: [
       ({ req, user }) => {
         if (!user?.id) return

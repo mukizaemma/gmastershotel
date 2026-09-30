@@ -14,7 +14,7 @@ export function coverMedia(row) {
 
 export function mediaUrlFrom(value) {
   if (!value || typeof value !== 'object') return ''
-  return value.thumbnailURL || value.sizes?.thumbnail?.url || value.url || ''
+  return value.url || value.sizes?.card?.url || value.thumbnailURL || value.sizes?.thumbnail?.url || ''
 }
 
 export async function populateRoomCover(doc, req, cache) {

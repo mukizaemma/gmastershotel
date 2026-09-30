@@ -19,6 +19,7 @@ import {
   ClipboardList,
   BookOpen,
   User,
+  Server,
 } from 'lucide-react'
 import { brandFromCompany } from '@features/hotel/companyBrand'
 import { useStaffAuth } from '../auth/StaffAuthContext'
@@ -27,6 +28,7 @@ import styles from './StaffLayout.module.css'
 
 const NAV = [
   { to: '/staff/settings', label: 'Site setting', icon: Settings },
+  { to: '/staff/hosting', label: 'Hosting', icon: Server },
   { to: '/staff/pages?open=home-page', label: 'Home Page', icon: Home },
   { to: '/staff/pages', label: 'Pages', icon: FileText, end: true },
   { to: '/staff/accommodation', label: 'Rooms', icon: BedDouble },
@@ -60,8 +62,8 @@ export default function StaffLayout() {
   const name = user.firstName || user.email
 
   return (
-    <div className={styles.shell}>
-      <aside className={`${styles.sidebar} ${open ? styles.open : ''}`}>
+    <div className={`${styles.shell} staffShell`}>
+      <aside className={`${styles.sidebar} ${open ? styles.open : ''} noPrint`}>
         <div className={styles.brand}>
           {brand.logo ? (
             <img className={styles.logo} src={brand.logo} alt="" />
@@ -89,8 +91,8 @@ export default function StaffLayout() {
         </nav>
       </aside>
 
-      <div className={styles.main}>
-        <header className={styles.top}>
+      <div className={`${styles.main} staffMain`}>
+        <header className={`${styles.top} noPrint`}>
           <button type="button" className={styles.menu} onClick={() => setOpen((v) => !v)}>
             <Menu size={18} />
           </button>
@@ -103,10 +105,10 @@ export default function StaffLayout() {
             </button>
           </div>
         </header>
-        <div className={styles.content}>
+        <div className={`${styles.content} staffContent`}>
           <Outlet />
         </div>
-        <footer className={styles.credit}>
+        <footer className={`${styles.credit} noPrint`}>
           Developed by{' '}
           <a href="https://iremetech.com" target="_blank" rel="noopener noreferrer">
             Ireme Tech

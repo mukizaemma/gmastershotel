@@ -388,7 +388,7 @@ export default function StaffPages() {
 
   async function open(page) {
     try {
-      const { data } = await staffClient.get('/api/globals/pages?depth=1')
+      const { data } = await staffClient.get('/api/globals/pages?depth=2')
       const group = PAGE_GROUP[page.slug]
       const raw = data[group] || {}
       setDefaults({ defaultHeaderImage: data.defaultHeaderImage || '' })

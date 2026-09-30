@@ -25,7 +25,12 @@ export function displayCaption(alt, filename) {
  */
 export function mediaUrl(field) {
   if (!field) return ''
-  const url = typeof field === 'string' ? field : field.url
+  if (typeof field === 'string') {
+    if (field.startsWith('http') || field.startsWith('blob:') || field.startsWith('data:')) return field
+    if (field.startsWith('/')) return `${CMS_URL}${field}`
+    return ''
+  }
+  const url = field.url || field.sizes?.card?.url || field.thumbnailURL || field.sizes?.thumbnail?.url
   if (!url) return ''
   return url.startsWith('http') ? url : `${CMS_URL}${url}`
 }
