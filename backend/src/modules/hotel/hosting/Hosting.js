@@ -13,7 +13,7 @@ export const Hosting = {
   admin: {
     group: false,
     description:
-      'Domain, server, and annual hosting invoices. Set the dollar rate here or in the staff desk. Only a super admin can confirm an invoice as paid.',
+      'Domain, server, and annual hosting invoices. Support is optional and is added only when a renewal is approaching. Only a super admin can confirm an invoice as paid.',
   },
   hooks: {
     beforeChange: [
@@ -22,6 +22,8 @@ export const Hosting = {
         const stored = reconcile(
           {
             usdRate: data?.usdRate === undefined ? originalDoc?.usdRate : data?.usdRate,
+            includeSupport:
+              data?.includeSupport === undefined ? originalDoc?.includeSupport : data?.includeSupport,
             invoices: sourceInvoices,
           },
           {
@@ -52,7 +54,17 @@ export const Hosting = {
       type: 'number',
       min: 0,
       admin: {
-        description: 'Rwandan francs for 1 US dollar. The next invoice uses $80 times this rate, plus 500,000 RWF support.',
+        description: 'Rwandan francs for 1 US dollar. The next invoice uses $80 times this rate. Support is added only when the checkbox below is on.',
+      },
+    },
+    {
+      name: 'includeSupport',
+      type: 'checkbox',
+      label: 'Include annual support on the next invoice',
+      defaultValue: false,
+      admin: {
+        description:
+          'Optional. Leave this off. Turn it on when a hosting renewal is approaching if 500,000 RWF support should be added to the unpaid invoice. Paid invoices keep the amount already confirmed.',
       },
     },
     {

@@ -11,11 +11,12 @@ function money(value) {
   return `${Math.round(n).toLocaleString('en-US')} RWF`
 }
 
-function quoteFor(rate, hostingUsd, supportRwf) {
+function quoteFor(rate, hostingUsd, supportRwf, includeSupport) {
   const n = Number(rate)
   if (!Number.isFinite(n) || n <= 0) return null
   const hosting = Math.round(hostingUsd * n)
-  return { hosting, support: supportRwf, total: hosting + supportRwf }
+  const support = includeSupport ? supportRwf : 0
+  return { hosting, support, total: hosting + support }
 }
 
 function badgeClass(status) {
@@ -57,7 +58,9 @@ export default function StaffHosting() {
   }
 
   const selected = hosting?.invoices?.find((inv) => inv.invoiceNumber === selectedNumber) || null
-  const quote = hosting ? quoteFor(rate, hosting.annualHostingUsd, hosting.annualSupportRwf) : null
+  const quote = hosting
+    ? quoteFor(rate, hosting.annualHostingUsd, hosting.annualSupportRwf, hosting.includeSupport)
+    : null
 
   async function saveRate(event) {
     event.preventDefault()
@@ -98,6 +101,23 @@ export default function StaffHosting() {
     }
   }
 
+  async function setSupportIncluded(includeSupport) {
+    setBusy(true)
+    try {
+      const { data } = await staffClient.post('/api/hosting', { action: 'support', includeSupport })
+      setHosting(data)
+      toast.success(
+        includeSupport
+          ? 'Annual support added to the next invoice.'
+          : 'Annual support removed from the next invoice.',
+      )
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Could not update support.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
   async function confirmPaid() {
     if (!selected) return
     setBusy(true)
@@ -125,7 +145,7 @@ export default function StaffHosting() {
         <p className="staffLead">
           Domain registration, the hosting server, and each annual invoice. Hosting renews on 1 August. It stays
           active while the current invoice is paid, and shows expired after that date until a super admin confirms
-          the renewal. Annual support is {money(hosting.annualSupportRwf)}. {hosting.supportIncludes}
+          the renewal. Annual support ({money(hosting.annualSupportRwf)}) is optional. {hosting.supportIncludes}
         </p>
 
         <div className="staffStats">
@@ -147,7 +167,7 @@ export default function StaffHosting() {
           <div className="staffStat">
             <span>Next amount</span>
             <strong>{hosting.amountToPayLabel === '—' ? '—' : money(hosting.amountToPay)}</strong>
-            <small>Hosting plus support</small>
+            <small>{hosting.includeSupport ? 'Hosting plus support' : 'Hosting only'}</small>
           </div>
         </div>
 
@@ -170,7 +190,7 @@ export default function StaffHosting() {
           </div>
           <div className={styles.fact}>
             <span>Annual support</span>
-            <strong>{money(hosting.annualSupportRwf)}</strong>
+            <strong>{hosting.includeSupport ? money(hosting.annualSupportRwf) : 'Optional'}</strong>
           </div>
         </div>
 
@@ -196,7 +216,8 @@ export default function StaffHosting() {
             </div>
             <div>
               <span>Support</span>
-              <strong>{money(hosting.annualSupportRwf)}</strong>
+              <strong>{hosting.includeSupport ? money(quote ? quote.support : hosting.annualSupportRwf) : 'Not included'}</strong>
+              <small>Optional, before renewal</small>
             </div>
             <div>
               <span>Amount to pay</span>
@@ -206,6 +227,15 @@ export default function StaffHosting() {
           <button type="submit" className="staffBtn" disabled={busy} style={{ gridColumn: '1 / -1', justifySelf: 'start' }}>
             Save rate
           </button>
+          <label className={`staffCheck ${styles.supportToggle}`}>
+            <input
+              type="checkbox"
+              checked={Boolean(hosting.includeSupport)}
+              disabled={busy}
+              onChange={(e) => setSupportIncluded(e.target.checked)}
+            />
+            Include annual support ({money(hosting.annualSupportRwf)}) on the next invoice
+          </label>
         </form>
 
         <div className="staffCard">

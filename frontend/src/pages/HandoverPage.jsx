@@ -4,7 +4,6 @@ import { toast } from 'sonner'
 import { CMS_URL } from '@lib/apiClient'
 import { brandFromCompany } from '@features/hotel/companyBrand'
 import { useSiteLayout } from '@lib/queries/useSiteLayout'
-import SiteAuditBoard from '@features/handover/SiteAuditBoard'
 import { HANDOVER_SECTIONS, HANDOVER_TABS } from '@features/handover/guide'
 import styles from './HandoverPage.module.css'
 
@@ -27,12 +26,6 @@ const MANAGE_LINKS = [
 function tabFromHash() {
   const id = String(window.location.hash || '').replace('#', '')
   return SECTIONS.includes(id) ? id : 'overview'
-}
-
-async function readJson(path) {
-  const res = await fetch(`${CMS_URL}${path}`)
-  if (!res.ok) throw new Error('request failed')
-  return res.json()
 }
 
 function copyText(value, ok) {
@@ -60,7 +53,6 @@ function Rich({ text }) {
 
 export default function HandoverPage() {
   const [tab, setTab] = useState(() => (typeof window === 'undefined' ? 'overview' : tabFromHash()))
-  const [report, setReport] = useState(null)
   const [origin, setOrigin] = useState('')
   const [form, setForm] = useState({ name: '', email: '', section: 'overview', message: '' })
   const [account, setAccount] = useState({ name: '', email: '', password: '', confirm: '' })
@@ -72,14 +64,13 @@ export default function HandoverPage() {
 
   const section = HANDOVER_SECTIONS[tab] || HANDOVER_SECTIONS.overview
   const chapter = HANDOVER_TABS.findIndex((item) => item.id === tab) + 1
-  const demoUrl = origin || 'https://demov2.iremetech.com'
+  const siteUrl = origin || 'https://gmastershotel.com'
   const loginUrl = origin ? `${origin}/staff` : '/staff'
   const shareUrl = origin ? `${origin}/handover${tab === 'overview' ? '' : `#${tab}`}` : '/handover'
 
   useEffect(() => {
     setOrigin(window.location.origin)
     setTab(tabFromHash())
-    readJson('/api/site-audit/report').then(setReport).catch(() => {})
     const onHash = () => setTab(tabFromHash())
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
@@ -105,11 +96,11 @@ export default function HandoverPage() {
 
   const credentials = useMemo(
     () => [
-      { label: 'Demo website', value: demoUrl, href: '/', copy: demoUrl, accent: true },
+      { label: 'Website', value: siteUrl, href: '/', copy: siteUrl, accent: true },
       { label: 'Staff desk', value: loginUrl, href: '/staff', copy: loginUrl, accent: true },
       { label: 'This guide', value: shareUrl, href: shareUrl, copy: shareUrl },
     ],
-    [demoUrl, loginUrl, shareUrl],
+    [siteUrl, loginUrl, shareUrl],
   )
 
   async function registerAccount(event) {
@@ -160,6 +151,35 @@ export default function HandoverPage() {
     }
   }
 
+  const quickLinks = (
+    <div className={styles.creds}>
+      <p className={styles.credsTitle}>Quick links</p>
+      {credentials.map((row) => (
+        <div key={row.label} className={row.accent ? styles.credAccent : undefined}>
+          <span>{row.label}</span>
+          <div className={styles.credRow}>
+            {row.href ? (
+              <a href={row.href} target={row.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">
+                {row.value}
+              </a>
+            ) : (
+              <strong>{row.value}</strong>
+            )}
+            {row.copy ? (
+              <button type="button" onClick={() => copyText(row.copy, 'Copied.')}>
+                Copy
+              </button>
+            ) : null}
+          </div>
+        </div>
+      ))}
+      <p className={styles.warn}>
+        This page does not show a login email or password. Register, then contact{' '}
+        <mark className={styles.term}>Ireme Tech</mark> to assign admin access before you sign in at the Staff desk.
+      </p>
+    </div>
+  )
+
   return (
     <div className={styles.page}>
       <header className={styles.top}>
@@ -174,7 +194,7 @@ export default function HandoverPage() {
           <button type="button" onClick={() => copyText(shareUrl, 'Guide link copied.')}>
             Copy guide link
           </button>
-          <a href="/">View demo</a>
+          <a href="/">View website</a>
           <button type="button" className={styles.register} onClick={openRegister}>
             Register
           </button>
@@ -184,26 +204,24 @@ export default function HandoverPage() {
       <div className={styles.heroStrip}>
         <div className={styles.heroInner}>
           <div className={styles.heroCopy}>
-            <p className={styles.heroEyebrow}>Development demo</p>
-            <h2 className={styles.heroTitle}>Review the site, then manage content in Staff desk</h2>
+            <p className={styles.heroEyebrow}>Live website</p>
+            <h2 className={styles.heroTitle}>The site is live. Here is what is done, and what is next.</h2>
             <p className={styles.heroLead}>
-              This <mark className={styles.term}>demo URL</mark> is for development and approval only.
-              Data added while testing will be <mark className={styles.term}>migrated to the real domain</mark> once
-              the demo is approved.
+              Hosting is <mark className={styles.term}>paid and active until 1 August 2027</mark>. Still open: cover
+              the <mark className={styles.term}>remaining balance</mark>, then set up social media when you are
+              available.
             </p>
           </div>
           <div className={styles.heroLinks}>
             <a className={styles.heroPrimary} href="/">
-              Open demo website
+              Open website
             </a>
+            <button type="button" className={styles.heroSecondary} onClick={() => openTab('overview')}>
+              What is done and next
+            </button>
             <button type="button" className={styles.heroSecondary} onClick={openRegister}>
               Register for admin access
             </button>
-            {report ? (
-              <button type="button" className={styles.heroAudit} onClick={() => openTab('audit')}>
-                Site audit · <strong>{report.score}%</strong>
-              </button>
-            ) : null}
           </div>
         </div>
       </div>
@@ -234,34 +252,7 @@ export default function HandoverPage() {
             <Rich text={section.lead} />
           </p>
 
-          {(tab === 'access' || tab === 'overview') && (
-            <div className={styles.creds}>
-              <p className={styles.credsTitle}>Quick links</p>
-              {credentials.map((row) => (
-                <div key={row.label} className={row.accent ? styles.credAccent : undefined}>
-                  <span>{row.label}</span>
-                  <div className={styles.credRow}>
-                    {row.href ? (
-                      <a href={row.href} target={row.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">
-                        {row.value}
-                      </a>
-                    ) : (
-                      <strong>{row.value}</strong>
-                    )}
-                    {row.copy ? (
-                      <button type="button" onClick={() => copyText(row.copy, 'Copied.')}>
-                        Copy
-                      </button>
-                    ) : null}
-                  </div>
-                </div>
-              ))}
-              <p className={styles.warn}>
-                This page does not show a login email or password. Register, then contact{' '}
-                <mark className={styles.term}>Ireme Tech</mark> to assign admin access before you sign in at the Staff desk.
-              </p>
-            </div>
-          )}
+          {tab === 'access' ? quickLinks : null}
 
           {tab === 'access' && (
             <section id="register" className={styles.block}>
@@ -343,14 +334,49 @@ export default function HandoverPage() {
                 </p>
               ) : null}
 
-              {block.callout === 'demo' ? (
+              {block.note ? (
                 <aside className={styles.callout}>
-                  <strong>Remember</strong>
+                  <strong>{block.note.title}</strong>
                   <p>
-                    Demo = review &amp; testing. Approved content moves to your <mark className={styles.term}>real domain</mark>{' '}
-                    at launch.
+                    <Rich text={block.note.text} />
                   </p>
                 </aside>
+              ) : null}
+
+              {block.done?.length ? (
+                <ul className={styles.statusList}>
+                  {block.done.map((item) => (
+                    <li key={item.title}>
+                      <span className={styles.statusMark} aria-hidden="true">
+                        ✓
+                      </span>
+                      <div>
+                        <strong>{item.title}</strong>
+                        <p>
+                          <Rich text={item.text} />
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+
+              {block.next?.length ? (
+                <ol className={`${styles.statusList} ${styles.statusNext}`}>
+                  {block.next.map((item, index) => (
+                    <li key={item.title}>
+                      <span className={`${styles.statusMark} ${styles.statusMarkNext}`} aria-hidden="true">
+                        {index + 1}
+                      </span>
+                      <div>
+                        <strong>{item.title}</strong>
+                        <p>
+                          <Rich text={item.text} />
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
               ) : null}
 
               {block.features?.length ? (
@@ -403,23 +429,7 @@ export default function HandoverPage() {
             </section>
           ))}
 
-          {tab === 'overview' && report ? (
-            <section className={styles.block}>
-              <h2>
-                <span className={styles.h2Mark} aria-hidden="true" />
-                Site audit snapshot
-              </h2>
-              <p>
-                Live readiness from the demo content:{' '}
-                <mark className={styles.term}>{report.score}% ready</mark>.
-              </p>
-              <button type="button" className={styles.auditJump} onClick={() => openTab('audit')}>
-                Open full site audit
-              </button>
-            </section>
-          ) : null}
-
-          {tab === 'audit' && <SiteAuditBoard report={report} />}
+          {tab === 'overview' ? quickLinks : null}
 
           {tab === 'feedback' && (
             <form className={styles.form} onSubmit={sendFeedback}>

@@ -13,11 +13,10 @@ export const HANDOVER_TABS = [
   { id: 'availability', label: 'Availability' },
   { id: 'reviews', label: 'Guest reviews' },
   { id: 'hosting', label: 'Hosting' },
-  { id: 'audit', label: 'Site audit' },
   { id: 'feedback', label: 'Send a note' },
 ]
 
-/** Public hosting facts. Support amount matches the staff desk (500,000 RWF). No bank details here. */
+/** Public hosting facts. Support is optional and is not part of the paid year. No bank details here. */
 export const HANDOVER_HOSTING = {
   registrar: 'namecheap.com',
   registrarUrl: 'https://www.namecheap.com',
@@ -25,32 +24,35 @@ export const HANDOVER_HOSTING = {
   serverUrl: 'https://www.digitalocean.com',
   hostingUsd: 80,
   supportRwf: '500,000',
-  renewal: '1 August each year',
+  renewal: '1 August 2027',
+  status: 'Active',
   support:
-    'Support covers updating the website content you send, keeping the site up and running, and following up on hosting renewals.',
+    'Annual support is optional. It can be added from the staff desk when a hosting renewal is approaching.',
 }
 
 export const HANDOVER_SECTIONS = {
   overview: {
     title: 'What was delivered',
-    lead: 'A **public website** for guests and a **Staff desk** for your team to manage content. This page is a short handover — not every setting, just what matters.',
+    lead: 'The **public website** is live on your domain, with a **Staff desk** for your team. This first section is the short version: what is already done, then the two things left.',
     blocks: [
       {
-        heading: 'Main features',
-        body: 'These are the core pieces live on the demo:',
-        features: [
-          { title: 'Public website', text: 'Home, accommodation, room pages, dining, things to do, gallery, about, contact, booking, reviews, and policy.' },
+        heading: 'What has been done',
+        body: 'These pieces are in place and live:',
+        done: [
+          { title: 'Website on the real domain', text: 'The site has been moved off the development address. Guests now use the live website for rooms, dining, things to do, the gallery, about, contact, booking, reviews, and policy.' },
           { title: 'Online booking', text: 'Guests pick a room, choose dates on the stay calendar, and send a reservation request.' },
-          { title: 'Staff desk', text: 'Your team updates hotel details, pages, rooms, photos, dining, activities, and bookings from one place.' },
-          { title: 'Availability control', text: 'Close nights for the hotel or selected rooms when you cannot take bookings.' },
-          { title: 'Contact & enquiries', text: 'General messages and room booking requests from the contact form.' },
-          { title: 'Site audit', text: 'A live readiness score that shows what content is still missing before launch.' },
+          { title: 'Staff desk', text: 'After you register and admin access is assigned, your team updates hotel details, pages, rooms, photos, dining, activities, and bookings from one place.' },
+          { title: 'Availability and enquiries', text: 'Close nights for the hotel or selected rooms when you cannot take bookings. General messages and room requests arrive from the contact form.' },
+          { title: 'Hosting paid for this year', text: 'Hosting is **active** and expires on **1 August 2027**. The domain is at namecheap.com and the site runs on a DigitalOcean Linux server.' },
         ],
       },
       {
-        heading: 'About this demo',
-        body: 'The **demo URL** is for development and client review only. Content and data you add while testing will be **migrated to the real domain** once this demo is approved.',
-        callout: 'demo',
+        heading: 'What happens next',
+        body: 'Two items are still open. Everything else in this guide is how to run the site once you are in.',
+        next: [
+          { title: 'Cover the remaining balance', text: 'Settle the outstanding balance for the website with **Ireme Tech**.' },
+          { title: 'Set up social media', text: 'When you are available, we will set up the hotel’s social media accounts and place those links on the website.' },
+        ],
       },
     ],
   },
@@ -84,7 +86,7 @@ export const HANDOVER_SECTIONS = {
           { title: 'Menu & activities', text: 'Restaurant dishes and “Things to do” listings.' },
           { title: 'Photos', text: 'Upload once in Media Gallery, reuse on pages and rooms, mark files for the public gallery.' },
           { title: 'Bookings', text: 'View reservations, update them, and close dates under Availability.' },
-          { title: 'Hosting', text: 'Domain, server, annual hosting, and support invoices.' },
+          { title: 'Hosting', text: 'Domain, server, and the annual hosting invoice. Support is optional and is added only when a renewal is approaching.' },
         ],
       },
     ],
@@ -314,49 +316,37 @@ export const HANDOVER_SECTIONS = {
   },
   hosting: {
     title: 'Hosting',
-    lead: 'Annual hosting is **$80**. Annual support is **500,000 RWF**, the amount set in the staff desk. The domain is registered at **namecheap.com** and the site runs on a **DigitalOcean Linux server**.',
+    lead: 'Hosting for this year is **paid**. The site is **active** and expires on **1 August 2027**. Annual hosting is **$80**. Annual support is **optional** — it is not required for the website to stay online.',
     blocks: [
       {
         heading: 'What you are paying for',
-        body: 'Hosting renews on **1 August** each year. Support covers updating the website content you send, keeping the site up and running, and following up on hosting renewals.',
+        body: 'The domain is registered at **namecheap.com** and the site runs on a **DigitalOcean Linux server**. Hosting renews on **1 August** each year. The current period runs until **1 August 2027**.',
         features: [
           { title: 'Domain registration', text: 'namecheap.com' },
           { title: 'Hosting server', text: 'DigitalOcean Linux server' },
-          { title: 'Annual hosting', text: '$80' },
-          { title: 'Annual support', text: '500,000 RWF, as set in the staff desk' },
+          { title: 'This year’s hosting', text: 'Paid and active until 1 August 2027. The next renewal is $80.' },
+          { title: 'Annual support', text: 'Optional. 500,000 RWF only if it is added before a renewal.' },
         ],
+        note: {
+          title: 'Support is optional',
+          text: 'Support covers content updates you send, keeping the site up, and following up on renewals. It is left off until someone adds it from the Staff desk when a renewal is approaching.',
+        },
       },
       {
         heading: 'Where to see invoices',
         body: 'After Ireme Tech assigns admin access, open Staff desk → **Hosting**.',
         crud: [
           { action: 'Create', text: 'The next annual invoice is created for you when the current one is paid. You do not add invoices by hand.' },
-          { action: 'View', text: 'Open **Hosting** to read the domain, server, fees, status, and each year’s invoice.' },
-          { action: 'Update', text: 'Enter the current dollar rate and **Save rate**. The next invoice total becomes $80 times that rate, plus 500,000 RWF support. Print or download any invoice.' },
+          { action: 'View', text: 'Open **Hosting** to read the domain, server, status, expiry, and each year’s invoice.' },
+          { action: 'Update', text: 'Enter the current dollar rate and **Save rate**. Turn on **Include annual support** only if support should be on the next invoice. Print or download any invoice.' },
           { action: 'Delete', text: 'Invoices are kept as the annual record. They are not deleted from this page.' },
-        ],
-      },
-    ],
-  },
-  audit: {
-    title: 'Site audit',
-    lead: 'This **readiness score** is calculated from live content on the demo. Use it to see what still needs attention before approval.',
-    blocks: [
-      {
-        heading: 'How to use it',
-        body: 'Work through anything marked as still needed, then refresh this page.',
-        steps: [
-          'Read the **score** and the list below.',
-          'Open the Staff desk link beside an item.',
-          'Add the missing photo, text, or detail.',
-          'Refresh — the score updates from the website itself.',
         ],
       },
     ],
   },
   feedback: {
     title: 'Send a note',
-    lead: 'If something is missing or should work differently before go-live, send a short note below.',
+    lead: 'If something on the live site should work differently, send a short note below.',
     blocks: [],
   },
 }

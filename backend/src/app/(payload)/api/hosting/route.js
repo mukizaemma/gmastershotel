@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '../../../../../payload.config.js'
 import { withCors, handleOptions } from '../../../../core/security/cors.js'
-import { loadHosting, markInvoicePaid, saveRate, userFromRequest } from '../../../../modules/hotel/hosting/service.js'
+import { loadHosting, markInvoicePaid, saveRate, setSupport, userFromRequest } from '../../../../modules/hotel/hosting/service.js'
 
 export const OPTIONS = handleOptions
 
@@ -34,6 +34,10 @@ export async function POST(request) {
 
     if (body.action === 'rate') {
       return json(await saveRate(payload, body.usdRate))
+    }
+
+    if (body.action === 'support') {
+      return json(await setSupport(payload, body.includeSupport))
     }
 
     if (body.action === 'mark-paid') {

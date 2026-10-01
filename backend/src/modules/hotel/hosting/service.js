@@ -51,6 +51,16 @@ export async function saveRate(payload, usdRate) {
   return loadHosting(payload)
 }
 
+export async function setSupport(payload, includeSupport) {
+  await payload.updateGlobal({
+    slug: HOSTING_SLUG,
+    overrideAccess: true,
+    showHiddenFields: true,
+    data: { includeSupport: Boolean(includeSupport) },
+  })
+  return loadHosting(payload)
+}
+
 export async function markInvoicePaid(payload, invoiceNumber) {
   const number = String(invoiceNumber || '').trim()
   const today = kigaliToday()

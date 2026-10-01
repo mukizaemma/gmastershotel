@@ -142,7 +142,7 @@ function renewalInvoice(start, seq) {
     periodEnd: addYears(start, 1),
     flat: false,
     hostingFeeUsd: ANNUAL_HOSTING_USD,
-    supportFeeRwf: ANNUAL_SUPPORT_RWF,
+    supportFeeRwf: 0,
     status: 'active',
     issuedOn: start,
     reminder30: false,
@@ -160,13 +160,18 @@ function nextSeq(invoices) {
   return max + 1
 }
 
-function applyRate(invoices, rate) {
+function supportAmount(includeSupport) {
+  return includeSupport ? ANNUAL_SUPPORT_RWF : 0
+}
+
+function applyRate(invoices, rate, includeSupport) {
+  const supportFeeRwf = supportAmount(includeSupport)
   return invoices.map((inv) => {
     if (inv.status === 'paid' || inv.flat) return inv
     const next = {
       ...inv,
       hostingFeeUsd: ANNUAL_HOSTING_USD,
-      supportFeeRwf: ANNUAL_SUPPORT_RWF,
+      supportFeeRwf,
     }
     if (!rate) {
       delete next.hostingFeeRwf
@@ -177,7 +182,7 @@ function applyRate(invoices, rate) {
     return {
       ...next,
       hostingFeeRwf,
-      totalRwf: hostingFeeRwf + ANNUAL_SUPPORT_RWF,
+      totalRwf: hostingFeeRwf + supportFeeRwf,
     }
   })
 }
@@ -198,12 +203,12 @@ function ensureNext(invoices) {
   return sorted
 }
 
-function markPaid(invoices, invoiceNumber, today, rate) {
+function markPaid(invoices, invoiceNumber, today, rate, includeSupport) {
   if (!invoiceNumber) return invoices
   return invoices.map((inv) => {
     if (inv.invoiceNumber !== invoiceNumber || inv.status === 'paid') return inv
     const hostingFeeRwf = inv.flat ? num(inv.hostingFeeRwf) : rate ? Math.round(ANNUAL_HOSTING_USD * rate) : num(inv.hostingFeeRwf)
-    const supportFeeRwf = inv.flat ? 0 : ANNUAL_SUPPORT_RWF
+    const supportFeeRwf = inv.flat ? 0 : supportAmount(includeSupport)
     const totalRwf = hostingFeeRwf == null ? num(inv.totalRwf) : hostingFeeRwf + supportFeeRwf
     return {
       ...inv,
@@ -244,21 +249,25 @@ export function cleanInvoice(inv) {
 
 export function reconcile(input, { today = kigaliToday(), markPaid: paidNumber = null, reminder = null } = {}) {
   const usdRate = normalizeRate(input?.usdRate)
+  let includeSupport = Boolean(input?.includeSupport)
   let invoices = cloneInvoices(input?.invoices)
   if (!invoices.length) invoices = seedInvoices()
   invoices = invoices.map((inv) => (inv.invoiceNumber === 'IREME/BH005/WH-002/2026' ? { ...inv, flat: true } : inv))
 
-  invoices = applyRate(invoices, usdRate)
-  invoices = markPaid(invoices, paidNumber, today, usdRate)
+  const paying = paidNumber ? invoices.find((inv) => inv.invoiceNumber === paidNumber && inv.status !== 'paid') : null
+  invoices = applyRate(invoices, usdRate, includeSupport)
+  invoices = markPaid(invoices, paidNumber, today, usdRate, includeSupport)
+  if (paying) includeSupport = false
   invoices = applyDue(invoices, today)
   invoices = ensureNext(invoices)
-  invoices = applyRate(invoices, usdRate)
+  invoices = applyRate(invoices, usdRate, includeSupport)
   invoices = applyDue(invoices, today)
   invoices = applyReminder(invoices, reminder)
 
   const service = deriveService(invoices, today)
   return {
     usdRate,
+    includeSupport,
     serviceStatus: service.serviceStatus,
     invoices: invoices.map(cleanInvoice),
   }
@@ -331,8 +340,25 @@ function statusLabel(status) {
 
 function presentInvoice(inv) {
   const hostingAmountLabel = num(inv.hostingFeeRwf) != null ? formatRwf(inv.hostingFeeRwf) : '—'
-  const supportAmountLabel = num(inv.supportFeeRwf) ? formatRwf(inv.supportFeeRwf) : '—'
+  const supportFee = num(inv.supportFeeRwf)
+  const supportAmountLabel = supportFee ? formatRwf(supportFee) : 'Not included'
   const totalLabel = num(inv.totalRwf) != null ? formatRwf(inv.totalRwf) : '—'
+  const rows = [
+    {
+      index: '1',
+      description: SERVICE_DESCRIPTION,
+      period: `${formatLong(inv.periodStart)} - ${formatLong(inv.periodEnd)}`,
+      amount: hostingAmountLabel,
+    },
+  ]
+  if (supportFee) {
+    rows.push({
+      index: '2',
+      description: SUPPORT_DESCRIPTION,
+      period: '—',
+      amount: supportAmountLabel,
+    })
+  }
   return {
     ...inv,
     periodLabel: `${formatLong(inv.periodStart)} - ${formatLong(inv.periodEnd)}`,
@@ -342,20 +368,7 @@ function presentInvoice(inv) {
     supportAmountLabel,
     totalLabel,
     preparedBy: ISSUER.preparedBy,
-    rows: [
-      {
-        index: '1',
-        description: SERVICE_DESCRIPTION,
-        period: `${formatLong(inv.periodStart)} - ${formatLong(inv.periodEnd)}`,
-        amount: hostingAmountLabel,
-      },
-      {
-        index: '2',
-        description: SUPPORT_DESCRIPTION,
-        period: '—',
-        amount: supportAmountLabel,
-      },
-    ],
+    rows,
   }
 }
 
@@ -377,9 +390,10 @@ export function present(input, today = kigaliToday()) {
     domainRegistrar: 'namecheap.com',
     hostingServer: 'DigitalOcean Linux server',
     supportIncludes:
-      'Updating website content you send, keeping the site up and running, and following up on hosting renewals.',
+      'Optional. Turn it on here when a renewal is approaching if support should be added to that invoice. It covers content updates you send, keeping the site up, and following up on renewals.',
     annualHostingUsd: ANNUAL_HOSTING_USD,
     annualSupportRwf: ANNUAL_SUPPORT_RWF,
+    includeSupport: Boolean(stored.includeSupport),
     billingTo: BILLING_TO,
     usdRate: stored.usdRate,
     serviceStatus: service.serviceStatus,
@@ -393,7 +407,7 @@ export function present(input, today = kigaliToday()) {
     amountToPay: next ? num(next.totalRwf) : null,
     amountToPayLabel: next?.totalLabel || '—',
     hostingFeeLabel: next?.hostingAmountLabel || '—',
-    supportFeeLabel: formatRwf(ANNUAL_SUPPORT_RWF),
+    supportFeeLabel: stored.includeSupport ? formatRwf(ANNUAL_SUPPORT_RWF) : 'Not included',
     note: HOSTING_NOTE,
     issuer: ISSUER,
     invoices,
@@ -403,6 +417,7 @@ export function present(input, today = kigaliToday()) {
 export function dataForSave(stored) {
   return {
     usdRate: stored.usdRate,
+    includeSupport: Boolean(stored.includeSupport),
     serviceStatus: stored.serviceStatus,
     invoices: (stored.invoices || []).map(cleanInvoice),
   }
@@ -411,6 +426,7 @@ export function dataForSave(stored) {
 export function snapshot(doc) {
   return {
     usdRate: normalizeRate(doc?.usdRate),
+    includeSupport: Boolean(doc?.includeSupport),
     serviceStatus: doc?.serviceStatus || null,
     invoices: (doc?.invoices || [])
       .map((inv) => ({

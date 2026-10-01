@@ -60,6 +60,13 @@
   font-size: 1.15rem;
 }
 
+.supportToggle {
+  grid-column: 1 / -1;
+  align-items: flex-start;
+  line-height: 1.45;
+  color: #1a2b4b;
+}
+
 .quote small {
   display: block;
   margin-top: 0.2rem;
