@@ -7,8 +7,8 @@ export default function PageHero({
   eyebrow,
   title,
   text,
-  primaryTo = '/book',
-  primaryLabel = 'Book Now',
+  primaryTo,
+  primaryLabel,
   secondaryTo,
   secondaryLabel,
 }) {
@@ -21,18 +21,22 @@ export default function PageHero({
       <div className={`container ${styles.inner}`}>
         <Reveal>
         {eyebrow && <span className={styles.eyebrow}>{eyebrow}</span>}
-        <h1 className={styles.title}>{title}</h1>
+        {title && <h1 className={styles.title}>{title}</h1>}
         {text && <p className={styles.text}>{text}</p>}
-        <div className={styles.actions}>
-          <Link to={primaryTo} className={styles.primary}>
-            {primaryLabel}
-          </Link>
-          {secondaryTo && (
-            <Link to={secondaryTo} className={styles.secondary}>
-              {secondaryLabel}
-            </Link>
-          )}
-        </div>
+        {(primaryLabel || secondaryLabel) && (
+          <div className={styles.actions}>
+            {primaryLabel && (
+              <Link to={primaryTo || '/book'} className={styles.primary}>
+                {primaryLabel}
+              </Link>
+            )}
+            {secondaryLabel && secondaryTo && (
+              <Link to={secondaryTo} className={styles.secondary}>
+                {secondaryLabel}
+              </Link>
+            )}
+          </div>
+        )}
         </Reveal>
       </div>
     </section>

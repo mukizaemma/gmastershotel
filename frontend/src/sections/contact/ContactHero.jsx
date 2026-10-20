@@ -8,16 +8,13 @@ export default function ContactHero() {
   return (
     <PageHero
       image={hero.backgroundImage}
-      eyebrow={hero.eyebrow || 'Get in touch'}
-      title={hero.headline || 'Let’s plan your stay'}
-      text={
-        hero.intro ||
-        'Ask about rooms, dining, or a quiet night by Lake Kivu — we will reply within a day.'
-      }
-      primaryTo={hero.cta?.path || '/book'}
-      primaryLabel={hero.cta?.label || 'Book now'}
-      secondaryTo={hero.secondaryCta?.path || '/accommodation'}
-      secondaryLabel={hero.secondaryCta?.label || 'See rooms'}
+      eyebrow={hero.eyebrow}
+      title={hero.headline}
+      text={hero.intro}
+      primaryTo={hero.cta?.path}
+      primaryLabel={hero.cta?.label}
+      secondaryTo={hero.secondaryCta?.path}
+      secondaryLabel={hero.secondaryCta?.label}
     />
   )
 }

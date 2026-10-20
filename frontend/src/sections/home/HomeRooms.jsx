@@ -24,19 +24,20 @@ export default function HomeRooms() {
   if (!rooms.length) return null
 
   const section = data.roomsSection || {}
-  const headline = section.headline || 'Rooms made for real rest'
-  const intro =
-    section.intro || 'Quiet nights, thoughtful details, and space to unwind by Lake Kivu.'
+  const headline = section.headline || ''
+  const intro = section.intro || ''
 
   return (
     <section className={styles.section}>
       <div className={`container ${styles.wide}`}>
-        <Reveal className={styles.header}>
-          <span className={styles.eyebrow}>{section.eyebrow || 'Stay'}</span>
-          <h2 className={styles.headline}>{prettyHeadline(headline)}</h2>
-          <span className={styles.rule} aria-hidden="true" />
-          {intro ? <p className={styles.intro}>{intro}</p> : null}
-        </Reveal>
+        {(section.eyebrow || headline || intro) && (
+          <Reveal className={styles.header}>
+            {section.eyebrow ? <span className={styles.eyebrow}>{section.eyebrow}</span> : null}
+            {headline ? <h2 className={styles.headline}>{prettyHeadline(headline)}</h2> : null}
+            {headline ? <span className={styles.rule} aria-hidden="true" /> : null}
+            {intro ? <p className={styles.intro}>{intro}</p> : null}
+          </Reveal>
+        )}
         <CardGrid
           items={rooms}
           initialCount={3}

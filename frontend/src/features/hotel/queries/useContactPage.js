@@ -17,12 +17,9 @@ async function fetchContactPage() {
 
   return {
     hero: {
-      eyebrow: page.hero?.eyebrow || 'Get In Touch',
-      headline: page.hero?.headline || "Let's Plan Your Stay",
-      intro: asPlain(
-        page.hero?.intro,
-        "Questions, special requests, or ready to book — send us a message and we'll reply within 24 hours.",
-      ),
+      eyebrow: page.hero?.eyebrow,
+      headline: page.hero?.headline,
+      intro: asPlain(page.hero?.intro),
       backgroundImage: headerUrl(page.hero?.backgroundImage, pages.defaultHeaderImage),
       cta: page.hero?.cta || {},
       secondaryCta: page.hero?.secondaryCta || {},

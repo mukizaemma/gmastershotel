@@ -151,11 +151,9 @@ function readPage(slug, page) {
         })),
       },
       roomsSection: {
-        eyebrow: page.roomsSection?.eyebrow || 'Stay',
-        headline: page.roomsSection?.headline || 'Rooms made for real rest',
-        intro:
-          page.roomsSection?.intro ||
-          'Quiet nights, thoughtful details, and space to unwind by Lake Kivu.',
+        eyebrow: page.roomsSection?.eyebrow || '',
+        headline: page.roomsSection?.headline || '',
+        intro: page.roomsSection?.intro || '',
       },
       location: {
         eyebrow: page.location?.eyebrow || 'Our location',
@@ -565,7 +563,8 @@ export default function StaffPages() {
                 />
 
                 <div className="full">
-                  <strong>Features</strong>
+                  <strong>Highlights under the hero</strong>
+                  <p className="staffLead">This is the row visitors see. Change the title and text for each item.</p>
                 </div>
                 {form.features.map((item, index) => (
                   <div key={index} className="full staffNested">

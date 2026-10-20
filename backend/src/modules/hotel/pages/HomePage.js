@@ -11,6 +11,13 @@ const FEATURE_ICONS = [
   { label: 'Concierge', value: 'bell' },
 ]
 
+const DEFAULT_FEATURES = [
+  { icon: 'coffee', title: 'Breakfast included', text: 'A calm start before meetings or a morning run.' },
+  { icon: 'wifi', title: 'Free high-speed Wi-Fi', text: 'Work from your room without hunting for a signal.' },
+  { icon: 'map-pin', title: 'Prime location', text: 'By Lake Kivu in Karongi, with town and the shoreline close by.' },
+  { icon: 'bed', title: 'Comfort & convenience', text: 'Thoughtful rooms for couples, families, and business stays.' },
+]
+
 function unnamedGroup(name, fields, extra = {}) {
   return {
     name,
@@ -90,14 +97,26 @@ export const HomePage = {
         },
         {
           label: 'Features',
-          description: 'Four short highlights directly under the hero.',
+          description: 'The highlight row under the hero. Edit the title and text for each item.',
           fields: [
             {
               name: 'features',
               type: 'array',
-              label: false,
-              labels: { singular: 'Feature', plural: 'Features' },
-              admin: { initCollapsed: false },
+              label: 'Highlights',
+              labels: { singular: 'Highlight', plural: 'Highlights' },
+              defaultValue: DEFAULT_FEATURES,
+              admin: {
+                initCollapsed: false,
+                description: 'These are the lines on the public home page. Change the wording, add a highlight, or remove one.',
+              },
+              hooks: {
+                afterRead: [
+                  ({ value }) => {
+                    if (Array.isArray(value) && value.some((item) => item?.title)) return value
+                    return DEFAULT_FEATURES
+                  },
+                ],
+              },
               fields: [
                 {
                   name: 'icon',
@@ -107,8 +126,17 @@ export const HomePage = {
                   admin: { width: '25%' },
                   options: FEATURE_ICONS,
                 },
-                { name: 'title', type: 'text', required: true, admin: { width: '75%' } },
-                { name: 'text', type: 'textarea', admin: { width: '100%' } },
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                  admin: { width: '75%', description: 'Short heading visitors see.' },
+                },
+                {
+                  name: 'text',
+                  type: 'textarea',
+                  admin: { width: '100%', description: 'One sentence under the heading.' },
+                },
               ],
             },
           ],

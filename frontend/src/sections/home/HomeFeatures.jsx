@@ -10,7 +10,7 @@ export default function HomeFeatures() {
 
   return (
     <section className={styles.section}>
-      <div className={`container ${styles.grid}`}>
+      <div className={`container ${styles.grid}`} style={{ '--cols': features.length }}>
         {features.map(({ icon, title, text }, index) => {
           const Icon = FEATURE_ICONS[icon] || FEATURE_ICONS.wifi
           return (

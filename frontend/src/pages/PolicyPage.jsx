@@ -1,22 +1,47 @@
 import { Link } from 'react-router-dom'
+import { headerUrl } from '@features/hotel/adapters'
+import { usePages } from '@lib/queries/usePages'
+import { asHtml, asPlain, isBlankHtml } from '@lib/richText'
+import PageHero from '@components/ui/PageHero'
+import RichText from '@components/ui/RichText'
 import Reveal from '@components/ui/Reveal'
 import styles from './PolicyPage.module.css'
 
 export default function PolicyPage() {
+  const { data } = usePages()
+  const page = data?.policy || {}
+  const hero = page.hero || {}
+  const headline = hero.headline || ''
+  const intro = asPlain(hero.intro)
+  const body = asHtml(page.body)
+  const hasBody = !isBlankHtml(body)
+  const hasHero = Boolean(headline || hero.eyebrow || intro || hero.backgroundImage || hero.cta?.label)
+
   return (
-    <section className={styles.section}>
+    <>
+      {hasHero && (
+        <PageHero
+          image={headerUrl(hero.backgroundImage, data?.defaultHeaderImage)}
+          eyebrow={hero.eyebrow}
+          title={headline}
+          text={intro}
+          primaryTo={hero.cta?.path}
+          primaryLabel={hero.cta?.label}
+          secondaryTo={hero.secondaryCta?.path}
+          secondaryLabel={hero.secondaryCta?.label}
+        />
+      )}
+      <section className={styles.section}>
       <div className="container">
         <Reveal>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
           <Link to="/">Home</Link>
           <span>/</span>
-          <span aria-current="page">Booking policy</span>
+          <span aria-current="page">{headline || 'Booking policy'}</span>
         </nav>
-        <h1 className={styles.headline}>Booking policy</h1>
-        <p className={styles.lede}>
-          These terms apply when you request a stay. Staff confirm every
-          reservation before it is final.
-        </p>
+        {!headline && <h1 className={styles.headline}>Booking policy</h1>}
+        {!hasHero && intro ? <p className={styles.lede}>{intro}</p> : null}
+        {!hasBody && (
         <div className={styles.body}>
           <h2>Requests, not instant confirmation</h2>
           <p>
@@ -40,8 +65,11 @@ export default function PolicyPage() {
             confirm what we can do based on occupancy.
           </p>
         </div>
+        )}
+        {hasBody && <RichText className={styles.body} value={body} />}
         </Reveal>
       </div>
     </section>
+    </>
   )
 }

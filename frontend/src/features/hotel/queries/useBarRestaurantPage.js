@@ -12,7 +12,6 @@ import { asPlain } from '@lib/richText'
 import {
   DEFAULT_DINING,
   DEFAULT_DINING_CTA,
-  DEFAULT_DINING_HERO,
   DEFAULT_DINING_HOURS,
   DEFAULT_HOME_SPOTLIGHT,
   DEFAULT_RESTAURANT_FEATURES,
@@ -88,12 +87,16 @@ async function fetchBarRestaurantPage() {
 
   return {
     hero: {
-      eyebrow: pickCopy(page.hero?.eyebrow, DEFAULT_DINING_HERO.eyebrow),
-      headline: pickCopy(page.hero?.headline, DEFAULT_DINING_HERO.headline),
-      intro: pickCopy(asPlain(page.hero?.intro), DEFAULT_DINING_HERO.intro),
+      eyebrow: page.hero?.eyebrow || '',
+      headline: page.hero?.headline || '',
+      intro: asPlain(page.hero?.intro),
       cta: {
-        label: pickCopy(page.hero?.cta?.label, 'Ask us to cook'),
-        path: page.hero?.cta?.path || '/contact',
+        label: page.hero?.cta?.label || '',
+        path: page.hero?.cta?.path || '',
+      },
+      secondaryCta: {
+        label: page.hero?.secondaryCta?.label || '',
+        path: page.hero?.secondaryCta?.path || '',
       },
       videoUrl: mediaUrl(page.hero?.videoUrl),
       backgroundImage: headerUrl(page.hero?.backgroundImage, pages.defaultHeaderImage),

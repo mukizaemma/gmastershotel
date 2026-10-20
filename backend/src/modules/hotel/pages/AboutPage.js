@@ -1,4 +1,4 @@
-import { pageCopyImageFields, previewUpload, textContentBlock } from '../../../core/fields/pageHero.js'
+import { pageHeroFields, previewUpload, textContentBlock } from '../../../core/fields/pageHero.js'
 
 export const AboutPage = {
   slug: 'about-page',
@@ -11,7 +11,7 @@ export const AboutPage = {
     {
       name: 'hero',
       type: 'group',
-      fields: pageCopyImageFields,
+      fields: pageHeroFields,
     },
     {
       name: 'story',

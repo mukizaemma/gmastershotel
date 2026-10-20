@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { headerUrl } from '@features/hotel/adapters';
+import { usePages } from '@lib/queries/usePages';
+import { asPlain } from '@lib/richText';
+import PageHero from '@components/ui/PageHero';
 import { BookingProvider, useBooking } from '@lib/booking/BookingContext';
 import { useCart } from '@lib/cart/CartContext';
 import { useAvailability } from '@lib/queries/useAvailability';
@@ -64,13 +68,32 @@ function BookingFlow() {
 }
 
 export default function BookingPage() {
+  const { data } = usePages();
+  const hero = data?.booking?.hero || {};
+  const intro = asPlain(hero.intro);
+  const hasHero = Boolean(hero.eyebrow || hero.headline || intro || hero.backgroundImage || hero.cta?.label);
+
   return (
-    <section className={styles.section}>
-      <div className="container">
-        <BookingProvider>
-          <BookingFlow />
-        </BookingProvider>
-      </div>
-    </section>
+    <>
+      {hasHero && (
+        <PageHero
+          image={headerUrl(hero.backgroundImage, data?.defaultHeaderImage)}
+          eyebrow={hero.eyebrow}
+          title={hero.headline}
+          text={intro}
+          primaryTo={hero.cta?.path}
+          primaryLabel={hero.cta?.label}
+          secondaryTo={hero.secondaryCta?.path}
+          secondaryLabel={hero.secondaryCta?.label}
+        />
+      )}
+      <section className={styles.section}>
+        <div className="container">
+          <BookingProvider>
+            <BookingFlow />
+          </BookingProvider>
+        </div>
+      </section>
+    </>
   );
 }

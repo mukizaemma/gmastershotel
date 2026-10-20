@@ -24,6 +24,8 @@ async function fetchAboutPage() {
       headline: page.hero?.headline,
       intro: asPlain(page.hero?.intro),
       backgroundImage: headerUrl(page.hero?.backgroundImage, pages.defaultHeaderImage),
+      cta: page.hero?.cta || {},
+      secondaryCta: page.hero?.secondaryCta || {},
     },
 
     story: {

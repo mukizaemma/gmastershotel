@@ -27,16 +27,13 @@ export default function ThingsToDoPage() {
     <>
       <PageHero
         image={hero.backgroundImage}
-        eyebrow={hero.eyebrow || 'Around the hotel'}
-        title={hero.headline || 'Things to do in Karongi'}
-        text={
-          hero.intro ||
-          'Spend the day on Lake Kivu, in town, or on a nearby trail — then come back to the apartment, or add an experience to your stay.'
-        }
-        primaryTo={hero.cta?.path || '/book'}
-        primaryLabel={hero.cta?.label || 'Book your stay'}
-        secondaryTo={hero.secondaryCta?.path || '/contact'}
-        secondaryLabel={hero.secondaryCta?.label || 'Ask the desk'}
+        eyebrow={hero.eyebrow}
+        title={hero.headline}
+        text={hero.intro}
+        primaryTo={hero.cta?.path}
+        primaryLabel={hero.cta?.label}
+        secondaryTo={hero.secondaryCta?.path}
+        secondaryLabel={hero.secondaryCta?.label}
       />
       <section className={styles.section}>
         <div className="container">
