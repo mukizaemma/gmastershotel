@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useBarRestaurantPage } from '@lib/queries/useBarRestaurantPage'
 import { RESTAURANT_FEATURE_ICONS } from '@features/hotel/restaurantSpotlight'
@@ -7,9 +8,11 @@ import styles from './HomeBarRestaurant.module.css'
 export default function HomeBarRestaurant() {
   const { data } = useBarRestaurantPage()
   const spotlight = data?.homeSpotlight
-  if (!spotlight) return null
+  const images = spotlight?.images || []
+  const [failed, setFailed] = useState([])
+  const photos = images.filter((src) => src && !failed.includes(src)).slice(0, 3)
 
-  const images = spotlight.images || []
+  if (!spotlight) return null
   const features = spotlight.features || []
 
   return (
@@ -38,11 +41,15 @@ export default function HomeBarRestaurant() {
           </ul>
         )}
 
-        {images.length > 0 && (
-          <div className={`${styles.gallery} ${styles[`count${Math.min(images.length, 4)}`]}`}>
-            {images.slice(0, 4).map((src, index) => (
-              <Reveal as="figure" key={`${src}-${index}`} className={styles.photo} delay={index * 80}>
-                <img src={src} alt="" />
+        {photos.length > 0 && (
+          <div className={styles.gallery}>
+            {photos.map((src, index) => (
+              <Reveal as="figure" key={src} className={styles.photo} delay={index * 80}>
+                <img
+                  src={src}
+                  alt=""
+                  onError={() => setFailed((current) => (current.includes(src) ? current : [...current, src]))}
+                />
               </Reveal>
             ))}
           </div>

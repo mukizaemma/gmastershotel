@@ -104,7 +104,7 @@ async function fetchBarRestaurantPage() {
       headline: pickCopy(page.homeSpotlight?.headline, DEFAULT_HOME_SPOTLIGHT.headline),
       intro: pickCopy(page.homeSpotlight?.intro, DEFAULT_HOME_SPOTLIGHT.intro),
       features: DEFAULT_RESTAURANT_FEATURES,
-      images: homeImages.length ? homeImages : photos.map((photo) => photo.image).slice(0, 4),
+      images: (homeImages.length ? homeImages : photos.map((photo) => photo.image)).slice(0, 6),
       cta: {
         label: pickCopy(page.homeSpotlight?.cta?.label, DEFAULT_HOME_SPOTLIGHT.ctaLabel),
         path: page.homeSpotlight?.cta?.path || '/bar-restaurant',

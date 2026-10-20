@@ -8,12 +8,12 @@ function prettyHeadline(text) {
   const value = String(text || '').trim()
   if (!value) return null
   const parts = value.split(/\s+/)
-  if (parts.length < 3) return value
-  const pivot = Math.max(2, Math.ceil(parts.length * 0.55))
+  if (parts.length < 4) return value
+  const accentCount = parts.length > 5 ? 3 : 2
   return (
     <>
-      <span className={styles.line}>{parts.slice(0, pivot).join(' ')}</span>
-      <span className={styles.accent}>{parts.slice(pivot).join(' ')}</span>
+      {parts.slice(0, -accentCount).join(' ')}{' '}
+      <span className={styles.accent}>{parts.slice(-accentCount).join(' ')}</span>
     </>
   )
 }

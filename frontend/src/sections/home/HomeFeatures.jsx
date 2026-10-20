@@ -15,7 +15,9 @@ export default function HomeFeatures() {
           const Icon = FEATURE_ICONS[icon] || FEATURE_ICONS.wifi
           return (
             <Reveal key={title || index} as="article" className={styles.item} delay={index * 80}>
-              <Icon size={22} />
+              <span className={styles.icon} aria-hidden="true">
+                <Icon size={18} strokeWidth={1.75} />
+              </span>
               <h3>{title}</h3>
               <p>{text}</p>
             </Reveal>
