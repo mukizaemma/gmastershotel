@@ -33,9 +33,7 @@ async function fetchHomePage() {
     hero: {
       slides: (page.hero?.slides || []).map((slide) => ({
         id: slide.id,
-        eyebrow: slide.eyebrow,
         headline: slide.headline,
-        subline: asPlain(slide.subline),
         image: headerUrl(slide.image, fallback),
       })),
       cta: {

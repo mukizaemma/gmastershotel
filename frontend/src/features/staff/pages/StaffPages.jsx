@@ -36,7 +36,7 @@ const PAGES = [
   { slug: 'policy-page', label: 'Booking policy', path: '/policy' },
 ]
 
-const emptySlide = () => ({ eyebrow: '', headline: '', subline: '', image: '' })
+const emptySlide = () => ({ headline: '', image: '' })
 const emptyFeature = (item = {}) => ({
   icon: item.icon || 'wifi',
   title: item.title || '',
@@ -119,9 +119,7 @@ function readPage(slug, page) {
   if (slug === 'home-page') {
     const slides = (page.hero?.slides || []).map((slide) => ({
       id: slide.id,
-      eyebrow: slide.eyebrow || '',
       headline: slide.headline || '',
-      subline: asHtml(slide.subline),
       image: slide.image || '',
     }))
     const features = (page.features || []).map((item) => emptyFeature(item))
@@ -234,9 +232,7 @@ function writePage(slug, current, form) {
         ...(current.hero || {}),
         slides: form.slides.map((slide) => ({
           id: slide.id,
-          eyebrow: slide.eyebrow,
           headline: slide.headline,
-          subline: htmlToLexical(slide.subline),
           image: mediaId(slide.image) || undefined,
         })),
         cta: form.cta,
@@ -515,17 +511,14 @@ export default function StaffPages() {
                 </div>
                 {form.slides.map((slide, index) => (
                   <div key={slide.id || index} className="full staffNested">
-                    <TextContentPanel
-                      eyebrow={slide.eyebrow}
-                      headline={slide.headline}
-                      intro={slide.subline}
-                      introLabel="Subline"
-                      headlineRequired
-                      editorKey={`home-slide-${index}`}
-                      onEyebrow={(eyebrow) => updateSlide(index, { eyebrow })}
-                      onHeadline={(headline) => updateSlide(index, { headline })}
-                      onIntro={(subline) => updateSlide(index, { subline })}
-                    />
+                    <label className="staffField headlineField full">
+                      Headline *
+                      <input
+                        value={slide.headline}
+                        onChange={(e) => updateSlide(index, { headline: e.target.value })}
+                        required
+                      />
+                    </label>
                     <div className="mediaSlot">
                       <MediaField
                         label="Slide image"

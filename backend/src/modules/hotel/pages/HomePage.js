@@ -47,14 +47,12 @@ export const HomePage = {
                 labels: { singular: 'Slide', plural: 'Slides' },
                 fields: [
                   textContentBlock([
-                    { name: 'eyebrow', type: 'text', admin: { width: '25%' } },
                     {
                       name: 'headline',
                       type: 'text',
                       required: true,
-                      admin: { width: '75%', className: 'hero-headline' },
+                      admin: { width: '100%', className: 'hero-headline' },
                     },
-                    { name: 'subline', type: 'richText' },
                   ]),
                   headerImageBlock(
                     previewUpload('image', {

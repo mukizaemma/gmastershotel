@@ -180,11 +180,7 @@ export default function HomeHero() {
               aria-hidden="true"
             />
             <div className={`${styles.slideContent} fade-in-up is-visible`}>
-              <span className={styles.slideKicker}>{slide.eyebrow || 'Welcome to'}</span>
               <h1 className={styles.slideTitle}>{slide.headline || 'Welcome'}</h1>
-              <p className={styles.slideDescription}>
-                {slide.subline || 'Comfortable rooms by Lake Kivu — a calm stay in Karongi, Western Province.'}
-              </p>
               <div className={styles.slideActions}>
                 <Link to={primaryCta.link || '/book'} className={styles.primaryBtn}>
                   {primaryCta.label || 'Book your stay'}

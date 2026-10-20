@@ -116,28 +116,13 @@
   color: var(--color-navy);
 }
 
-.slideKicker {
-  font-size: 0.7rem;
-  letter-spacing: 3px;
-  color: var(--color-gold, #d4af6a);
-  margin-bottom: 0.9rem;
-}
-
 .slideTitle {
   font-family: var(--font-display, 'Fraunces', serif);
   font-weight: 500;
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   color: var(--color-sand, #f5efe6);
-  margin: 0 0 0.75rem;
-  line-height: 1.15;
-}
-
-.slideDescription {
-  font-size: 0.9rem;
-  color: var(--color-sand-muted, #d8cdbe);
-  max-width: 26rem;
-  line-height: 1.6;
   margin: 0;
+  line-height: 1.15;
 }
 
 .foamOverlay {
