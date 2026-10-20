@@ -17,7 +17,7 @@ export const homeStats = [
   {
     id: 'distance',
     value: '2 min',
-    label: 'From lake shore',
+    label: 'Kagugu, Kigali',
     image: '/images/home/Lake-Kivu-Rwanda.jpg',
   },
   {
@@ -34,8 +34,8 @@ export const homeStats = [
   },
   {
     id: 'kigali-distance',
-    value: '~3h',
-    label: 'From Kigali',
+    value: 'Quiet',
+    label: 'Kagugu streets',
     image: '/images/home/hero-overview.jpg',
   },
 ];

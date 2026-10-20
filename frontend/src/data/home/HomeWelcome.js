@@ -13,8 +13,8 @@
 
 export const homeWelcome = {
   eyebrow: 'Welcome',
-  headline: 'A quieter kind of comfort on Lake Kivu',
-  body: "Restful rooms with breakfast included, and a bar & restaurant looking out over the water. We built this place for travelers who want Karongi's calm without paying resort prices — clean, comfortable, and genuinely welcoming.",
+  headline: 'A quieter kind of comfort in Kagugu',
+  body: "Restful rooms with breakfast included, in a quiet part of Kigali. We built this place for travelers who want Kigali's calmer streets without paying resort prices — clean, comfortable, and genuinely welcoming.",
   cta: { label: 'Discover More', path: '/about' },
   images: {
     // TODO: replace both with real property photography

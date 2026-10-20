@@ -25,7 +25,7 @@ export const rooms = [
     name: 'Standard Room',
     pricePerNight: 45,
     description:
-      'Cozy and comfortable, this room covers everything you need for a relaxed stay in Karongi.',
+      'Cozy and comfortable, this room covers everything you need for a relaxed stay in Kigali.',
     specs: {
       size: '22 m²',
       bed: '1 Queen Bed',
@@ -117,12 +117,12 @@ export const rooms = [
     name: 'Deluxe Lake View Room',
     pricePerNight: 85,
     description:
-      'Wake up to Lake Kivu right outside your window — our most requested room.',
+      'A comfortable room in Kagugu, Kigali — one of our most requested rooms.',
     specs: {
       size: '28 m²',
       bed: '1 King Bed',
       occupancy: '2 Adults',
-      view: 'Lake Kivu View',
+      view: 'Kigali',
       smoking: 'No Smoking',
       breakfast: 'Breakfast Included',
     },
@@ -145,7 +145,7 @@ export const rooms = [
       size: '40 m²',
       bed: '1 King Bed',
       occupancy: '2 Adults, 1 Child',
-      view: 'Lake Kivu View',
+      view: 'Kigali',
       smoking: 'No Smoking',
       breakfast: 'Breakfast Included',
     },

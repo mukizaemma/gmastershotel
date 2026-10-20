@@ -10,7 +10,7 @@ export const barRestaurantMenu = {
   items: [
     {
       id: 'tilapia',
-      name: 'Grilled Lake Kivu Tilapia',
+      name: 'Grilled tilapia',
       description: 'Whole fish, grilled simply, served with rice and vegetables.',
       price: 9,
       category: 'Main',

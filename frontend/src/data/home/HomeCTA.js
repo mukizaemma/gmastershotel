@@ -1,8 +1,8 @@
 /**
  * HOME CTA DATA
  * ─────────────────────────────────────────────────────────────
- * mapUrl uses a Google Maps search query (property name + "Karongi,
- * Rwanda") rather than real coordinates, since we don't have the
+ * mapUrl uses a Google Maps search query (property name + "Kagugu,
+ * Kigali") rather than real coordinates, since we don't have the
  * property's exact pin yet. TODO: replace with the real Google Maps
  * place link once available, so "Get Directions" points precisely at
  * the property rather than a general area search.
@@ -11,16 +11,16 @@
 
 /*export const homeCTA = {
   eyebrow: 'Ready When You Are',
-  headline: 'Your stay in Karongi starts here',
-  body: "Comfortable rooms, honest food, and Lake Kivu right outside — book direct and we'll take care of the rest.",
+  headline: 'Your stay in Kigali starts here',
+  body: "Comfortable rooms and honest food in Kagugu — book direct and we'll take care of the rest.",
   cta: { label: 'Book Now', path: '/contact' },
   // TODO: replace with a real exterior/lake photo
   backgroundImage: '/images/home/cta-bg.jpg',
   location: {
-    address: 'Karongi, Western Province, Rwanda',
-    distanceFromKigali: '~3h drive from Kigali',
+    address: 'Kagugu, Kigali, Rwanda',
+    distanceFromKigali: 'In Kigali — Kagugu',
     // TODO: swap for the real Google Maps place link once the property has a confirmed pin
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Karongi%2C+Rwanda',
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Kagugu%2C+Kigali%2C+Rwanda',
   },
 };
 */
@@ -28,8 +28,8 @@
 /**
  * HOME CTA DATA
  * ─────────────────────────────────────────────────────────────
- * mapUrl uses a Google Maps search query (property name + "Karongi,
- * Rwanda") rather than real coordinates, since we don't have the
+ * mapUrl uses a Google Maps search query (property name + "Kagugu,
+ * Kigali") rather than real coordinates, since we don't have the
  * property's exact pin yet. TODO: replace with the real Google Maps
  * place link once available, so "Get Directions" points precisely at
  * the property rather than a general area search.
@@ -38,8 +38,8 @@
 
 export const homeCTA = {
   eyebrow: 'Ready When You Are',
-  headline: 'Your stay in Karongi starts here',
-  body: "Comfortable rooms, honest food, and Lake Kivu right outside — book direct and we'll take care of the rest.",
+  headline: 'Your stay in Kigali starts here',
+  body: "Comfortable rooms and honest food in Kagugu — book direct and we'll take care of the rest.",
   cta: { label: 'Book Now', path: '/contact' },
   // TODO: replace with a real exterior/lake photo — using warm amber/gold
   // tones here (rather than another dark teal) so this placeholder is

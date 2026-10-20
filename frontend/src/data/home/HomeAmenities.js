@@ -36,13 +36,13 @@ export const homeAmenities = [
     id: 'transport',
     icon: 'transport',
     title: 'Airport & Town Transport',
-    description: 'Help arranging transport from Kigali or getting around Karongi.',
+    description: 'Help arranging transport around Kigali.',
   },
   {
     id: 'terrace',
     icon: 'terrace',
-    title: 'Lake-View Terrace',
-    description: 'A quiet spot to sit out and take in Lake Kivu at any time of day.',
+    title: 'Quiet terrace',
+    description: 'A quiet spot to sit out and enjoy a moment in Kagugu.',
   },
   {
     id: 'pool',

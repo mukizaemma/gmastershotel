@@ -42,7 +42,7 @@ export const homeBarRestaurant = {
   },
   captions: {
     // TODO: replace with captions matching the real photos above
-    primary: 'Fresh catch, grilled lakeside',
+    primary: 'Fresh catch, grilled to order',
     secondary: 'Sundowner hour on the terrace',
   },
 };

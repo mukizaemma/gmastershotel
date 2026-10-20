@@ -11,10 +11,10 @@
 export const heroSlides = [
   {
     id: 'overview',
-    eyebrow: 'Karongi · Lake Kivu',
+    eyebrow: 'Kagugu, Kigali',
     headline: 'Gmasters Boutique Hotel',
     subline:
-      'Comfortable rooms, breakfast included, on the shores of Lake Kivu.',
+      'Comfortable rooms, breakfast included, in Kagugu, Kigali.',
     image: '/images/home/hero-overview.jpg',
     placeholderGradient:
       'linear-gradient(180deg, #2C4A4E 0%, #1B3A3E 60%, #15302E 100%)',

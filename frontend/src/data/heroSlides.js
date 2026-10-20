@@ -5,10 +5,10 @@
 export const heroSlides = [
   {
     id: 'overview',
-    kicker: 'Karongi · Lake Kivu',
+    kicker: 'Kagugu, Kigali',
     title: 'Gmasters Boutique Hotel',
     description:
-      'Comfortable rooms, breakfast included, on the shores of Lake Kivu.',
+      'Comfortable rooms, breakfast included, in Kagugu, Kigali.',
     // TODO: replace with real hero photo (property exterior / lake view)
     image: '/images/home/hero-overview.jpg',
     placeholderGradient:
@@ -41,6 +41,6 @@ export const heroSlides = [
 // Placeholder — replace with real, CMS-driven values once available (reviews, distance, etc.)
 export const heroStats = [
   { id: 'rating', value: '4.8/5', label: 'Guest rating' },
-  { id: 'distance', value: '2 min', label: 'From lake shore' },
+  { id: 'distance', value: 'Kagugu', label: 'Kigali' },
   { id: 'breakfast', value: 'B&B', label: 'Breakfast included' },
 ];

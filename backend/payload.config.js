@@ -73,6 +73,12 @@ export default buildConfig({
   globals: [Company, Navigation, Pages, SiteAudit, UserGuide, Hosting].map(attachSaveAndReturn),
   onInit: async (payload) => {
     try {
+      const { replaceLakeCopy } = await import('./src/modules/hotel/pages/replaceLakeCopy.js')
+      await replaceLakeCopy(payload)
+    } catch (error) {
+      payload.logger?.error?.(error)
+    }
+    try {
       const { startHostingReminders } = await import('./src/modules/hotel/hosting/reminders.js')
       startHostingReminders(payload)
     } catch (error) {

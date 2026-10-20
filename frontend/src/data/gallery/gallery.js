@@ -37,7 +37,7 @@ export const galleryImages = [
   { id: 'g9', category: 'bar-restaurant', caption: 'Evening at the Bar', aspect: 'square',
     image: '/images/bar-restaurant/evening-at-the-bar.jpg' },
 
-  { id: 'g10', category: 'lake-grounds', caption: 'Lake Kivu Shoreline', aspect: 'wide',
+  { id: 'g10', category: 'lake-grounds', caption: 'Hotel grounds', aspect: 'wide',
     image: '/images/bar-restaurant/lake-kivu-shoreline.jpg' },
   { id: 'g11', category: 'lake-grounds', caption: 'Property Courtyard', aspect: 'tall',
     image: '/images/bar-restaurant/property-courtyard.jpg' },

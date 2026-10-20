@@ -53,7 +53,7 @@ export default function ThingsToDoPage() {
             )}
           />
           <Reveal className={styles.cta}>
-            <h2>Ready to make this your base by the lake?</h2>
+            <h2>Ready to make this your base in Kigali?</h2>
             <Link to="/book">Book now</Link>
           </Reveal>
         </div>

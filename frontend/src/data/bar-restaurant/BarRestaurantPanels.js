@@ -13,7 +13,7 @@ export const barRestaurantPanels = [
     id: 'sundowners',
     title: 'Lakeside Sundowners',
     description:
-      'As the sun drops behind the hills, pull up a seat on the terrace. Cold drinks, warm light, Lake Kivu doing all the work.',
+      'As the sun drops, pull up a seat on the terrace. Cold drinks, warm light, the evening settling in.',
     // TODO: replace with a real cocktail/terrace-at-sunset photo
     backgroundImage: '/images/bar-restaurant/sundowner.jpg',
   },
@@ -37,7 +37,7 @@ export const barRestaurantPanels = [
     id: 'all-day-dining',
     title: 'All-Day Dining',
     description:
-      'Coffee at sunrise, lunch on the terrace, dinner by candlelight. Open beyond hotel-guest hours, for anyone in Karongi.',
+      'Coffee at sunrise, lunch on the terrace, dinner by candlelight. Open beyond hotel-guest hours, for anyone nearby in Kigali.',
     // TODO: replace with a real breakfast-spread or dining-room photo
     backgroundImage: '/images/bar-restaurant/all-day-dining.jpg',
   },
